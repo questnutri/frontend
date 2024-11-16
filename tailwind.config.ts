@@ -14,6 +14,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        sans: ['Montserrat', 'Arial', 'Helvetica', 'sans-serif'],
+      },
     },
   },
   darkMode: "class",

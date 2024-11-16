@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import App from './app';
+import App from './app'
 
 export const metadata: Metadata = {
 	title: 'QuestNutri App',
@@ -13,7 +13,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="pt-BR">
+			<head>
+				<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
+			</head>
 			<body className={``}>
 				<App>
 					{children}

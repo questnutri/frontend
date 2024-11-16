@@ -6,16 +6,19 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-    code: number
-    token: string
+    token?: string
+    status?: number
+    error?: string
 }
 
-export const login = async (data: ILoginRequest): Promise<ILoginResponse> => {
-    const response = await axios.post<ILoginResponse>('/auth/login/admin', {
+export const login = async (path: string, data: ILoginRequest): Promise<ILoginResponse> => {
+    const response = await axios.post<ILoginResponse>(`auth/login/${path}`, {
         email: data.email,
         password: data.password,
     })
 
-    console.log(response.data)
-    return response.data
+    return {
+        status: response.status,
+        ...response.data
+    }
 }

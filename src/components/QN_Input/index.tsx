@@ -1,27 +1,41 @@
 'use client'
 import { Input } from '@nextui-org/react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 export interface QN_InputProps {
     label: string
     type?: 'text' | 'email' | 'password' | 'number' | 'tel'
     required?: boolean
+    clearable?: boolean
+    invalid?: boolean
+    invalidMessage?: string
     value: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    //inputController: React.Dispatch<React.SetStateAction<{ value: string; invalid: boolean; invalidMessage: string }>>
 }
 
-export default function QN_Input({ label, type = 'text', value, onChange, required }: QN_InputProps) {
+export default function QN_Input({ label, type = 'text', value, onChange, required, clearable, invalid, invalidMessage}: QN_InputProps) {
     const [inputType, setInputType] = useState(type)
 
-    const togglePassword = () => {
+    const togglePassword = (e: React.MouseEvent) => {
         setInputType(inputType === 'password' ? 'text' : 'password')
+    }
+
+    const handleClear = () => {
+        if (clearable) {
+            onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
+        }
     }
 
     return (
         <Input
-            isRequired={required}
             label={label}
             type={inputType}
+            isRequired={required}
+            isClearable={clearable}
+            onClear={handleClear}
+            isInvalid={invalid}
+            errorMessage={invalidMessage}
             value={value}
             onChange={onChange}
             endContent={
