@@ -3,7 +3,7 @@ import QN_Button from '@/components/QN_Button'
 import QN_Input from '@/components/QN_Input'
 import { login } from '@/lib/login'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 interface AuthPageProps {
     loginPath: string
@@ -92,41 +92,49 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                     break
             }
         } catch (error) {
-            console.error('Erro no login', error)
         }
     }
 
+    const emailInputRef = useRef<HTMLInputElement>(null)
+    const passwordInputRef = useRef<HTMLInputElement>(null)
+    const loginBtnRef = useRef<HTMLButtonElement>(null)
+
     return (
         <div
-            style={{
-                backgroundImage: 'url(/images/nutri-background.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                height: '100vh',
-                margin: 0
-            }}
         >
             <QN_Input
+                ref={emailInputRef}
                 label='E-mail'
                 type='email'
                 onChange={handleEmailChange}
                 value={email.value}
                 invalid={email.invalid}
                 invalidMessage={email.invalidMessage}
+                onTab={() => passwordInputRef.current?.focus()}
                 required
                 clearable
             />
             <QN_Input
+                ref={passwordInputRef}
                 label='Senha'
                 type='password'
                 onChange={handlePasswordChange}
                 value={password.value}
                 invalid={password.invalid}
                 invalidMessage={password.invalidMessage}
+                onTab={() => loginBtnRef.current?.focus()}
+                onEnter={handleLogin}
                 required
             />
-            <QN_Button type='button' onClick={handleLogin}>Login</QN_Button>
+            <QN_Button 
+                type='button' 
+                onClick={handleLogin}
+                onTab={() => emailInputRef.current?.focus()} 
+                onEnter={handleLogin}
+                ref={loginBtnRef}
+            >
+                Login
+            </QN_Button>
 
         </div >
     )

@@ -3,6 +3,7 @@ import { Input } from '@nextui-org/react'
 import React, { useState } from 'react'
 
 export interface QN_InputProps {
+    ref?: React.Ref<HTMLInputElement>
     label: string
     type?: 'text' | 'email' | 'password' | 'number' | 'tel'
     required?: boolean
@@ -11,10 +12,12 @@ export interface QN_InputProps {
     invalidMessage?: string
     value: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onTab?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    onEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void
     //inputController: React.Dispatch<React.SetStateAction<{ value: string; invalid: boolean; invalidMessage: string }>>
 }
 
-export default function QN_Input({ label, type = 'text', value, onChange, required, clearable, invalid, invalidMessage}: QN_InputProps) {
+export default function QN_Input({ ref, label, type = 'text', required, clearable, invalid, invalidMessage, value, onChange, onTab, onEnter }: QN_InputProps) {
     const [inputType, setInputType] = useState(type)
 
     const togglePassword = (e: React.MouseEvent) => {
@@ -27,8 +30,19 @@ export default function QN_Input({ label, type = 'text', value, onChange, requir
         }
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Tab' && onTab) {
+            e.preventDefault()
+            onTab(e)
+        } else if (e.key === 'Enter' && onEnter) {
+            e.preventDefault()
+            onEnter(e)
+        }
+    }
+
     return (
         <Input
+            ref={ref}
             label={label}
             type={inputType}
             isRequired={required}
@@ -38,11 +52,13 @@ export default function QN_Input({ label, type = 'text', value, onChange, requir
             errorMessage={invalidMessage}
             value={value}
             onChange={onChange}
+            onKeyDown={handleKeyDown}
             endContent={
                 type == 'password' && (
                     <button
                         type='button'
                         onClick={togglePassword}
+                        tabIndex={-1}
                     >
                         <img
                             src={`icons/${inputType == 'password' ? 'opened' : 'closed'}-eye2.png`}

@@ -17,6 +17,8 @@ export const login = async (path: string, data: ILoginRequest): Promise<ILoginRe
         password: data.password,
     })
 
+    console.log(response)
+
     return {
         status: response.status,
         ...response.data
