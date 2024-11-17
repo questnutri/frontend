@@ -43,6 +43,7 @@ export default function QN_Navbar({ children }: Readonly<{ children: React.React
             <div style={{
                 height: '10%',
                 marginTop: 'auto',
+                marginBottom: '20px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -56,20 +57,13 @@ export default function QN_Navbar({ children }: Readonly<{ children: React.React
                     }} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                <button
-                    style={{
-                        fontSize: '14px',
-                        color: 'white',
-                        background: 'red',
-                        border: 'none',
-                        borderRadius: '10px',
-                        cursor: 'pointer',
-                        width: '30%'
-                    }}
+                <QN_Button
+                    colorStyle='red'
+                    width='40%'
                     onClick={handleLogout}
                 >
-                    {'Sair'}
-                </button>
+                    Sair
+                </QN_Button>
             </div>
         </div>
     )

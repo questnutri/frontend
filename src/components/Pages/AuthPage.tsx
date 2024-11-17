@@ -101,6 +101,15 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
 
     return (
         <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%'
+            }}
         >
             <QN_Input
                 ref={emailInputRef}
@@ -126,12 +135,14 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                 onEnter={handleLogin}
                 required
             />
-            <QN_Button 
-                type='button' 
+            <QN_Button
+                type='button'
                 onClick={handleLogin}
-                onTab={() => emailInputRef.current?.focus()} 
+                onTab={() => emailInputRef.current?.focus()}
                 onEnter={handleLogin}
                 ref={loginBtnRef}
+                colorStyle='white'
+                width='60%'
             >
                 Login
             </QN_Button>

@@ -4,6 +4,7 @@ export interface QN_ButtonProps {
     ref?: React.Ref<HTMLButtonElement>
     type?: 'button' | 'submit' | 'reset'
     colorStyle?: 'blue' | 'white' | 'red'
+    width?: string
     blocked?: boolean
     children?: React.ReactNode
     onClick?: () => void
@@ -11,7 +12,7 @@ export interface QN_ButtonProps {
     onEnter?: () => void
 }
 
-export default function QN_Button({ ref, type = 'button', colorStyle='blue', children, onClick, onTab, onEnter}: QN_ButtonProps) {
+export default function QN_Button({ ref, type = 'button', colorStyle = 'blue', width = '70%', blocked, children, onClick, onTab, onEnter }: QN_ButtonProps) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (e.key === 'Tab' && onTab) {
             e.preventDefault()
@@ -23,12 +24,19 @@ export default function QN_Button({ ref, type = 'button', colorStyle='blue', chi
     }
 
     return (
-        <Button 
+        <Button
             ref={ref}
-            color="primary" 
-            type={type} 
-            onClick={onClick} 
+            type={type}
+            onClick={onClick}
             onKeyDown={handleKeyDown}
+            style={{
+                backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
+                color: colorStyle === 'white' ? '#23a3ff' : 'white',
+                boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
+                fontWeight: '600',
+                width: `${width}`
+            }}
+            isDisabled={blocked}
         >
             {children}
         </Button>

@@ -41,34 +41,38 @@ export default function QN_Input({ ref, label, type = 'text', required, clearabl
     }
 
     return (
-        <Input
-            ref={ref}
-            label={label}
-            type={inputType}
-            isRequired={required}
-            isClearable={clearable}
-            onClear={handleClear}
-            isInvalid={invalid}
-            errorMessage={invalidMessage}
-            value={value}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            endContent={
-                type == 'password' && (
-                    <button
-                        type='button'
-                        onClick={togglePassword}
-                        tabIndex={-1}
-                    >
-                        <img
-                            src={`icons/${inputType == 'password' ? 'opened' : 'closed'}-eye2.png`}
-                            alt="toggle password visibility"
-                            width={20}
-                            height={20}
-                        />
-                    </button>
-                )
-            }
-        />
+        <div style={{ boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)', backgroundColor: '#57b5fb', borderRadius: '15px', width: '100%', color: 'black' }}>
+            <Input
+                ref={ref}
+                label={label}
+                type={inputType}
+                isRequired={required}
+                isClearable={clearable}
+                onClear={handleClear}
+                isInvalid={invalid}
+                errorMessage={invalidMessage}
+                value={value}
+                onChange={onChange}
+                onKeyDown={handleKeyDown}
+                endContent={
+                    type == 'password' && (
+                        <button
+                            type='button'
+                            onClick={togglePassword}
+                            tabIndex={-1}
+                        >
+                            <img
+                                src={`icons/${inputType == 'password' ? 'opened' : 'closed'}-eye2.png`}
+                                alt="toggle password visibility"
+                                width={20}
+                                height={20}
+                            />
+                        </button>
+                    )
+                }
+
+            />
+        </div>
+
     )
 }
