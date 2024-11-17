@@ -13,6 +13,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customGray: '#767777',
       },
       fontFamily: {
         sans: ['Montserrat', 'Arial', 'Helvetica', 'sans-serif'],

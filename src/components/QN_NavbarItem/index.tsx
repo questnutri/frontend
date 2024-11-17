@@ -1,5 +1,4 @@
 'use client'
-import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,12 +11,15 @@ export default function NavbarItem({ name, image }: QN_NavbarItemProps) {
     const pathname = usePathname();
 
     return (
-        <Link href={`/${name?.toLocaleLowerCase()}`}>
-            <Button startContent={image} size="lg" style={{ backgroundColor: '#a4a4a4', justifyContent: 'start', gap: '10px' }}>
-                <span style={{ textDecoration: pathname && String(pathname).toLocaleUpperCase() === `/${name?.toLocaleUpperCase()}` ? 'underline' : '', fontSize: '18px' }}>
-                    {name}
-                </span>
-            </Button>
+        <Link href={'/home'}>
+            <div className="w-full h-fit p-[5px_20px] flex justify-start items-center gap-[15px] hover:bg-[#767777] rounded-lg transition-transform transition-colors duration-500">
+                <div>
+                    {image}
+                </div>
+                <div>
+                    <p className="text-[18px]">{name}</p>
+                </div>
+            </div>
         </Link>
     );
 }
