@@ -12,6 +12,7 @@ export default function QN_Navbar({ children }: Readonly<{ children: React.React
             router.push('/home')
         }
     }
+    
     return (
         <div style={{
             width: '250px',

@@ -13,6 +13,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'QN-blue': '#55B7FE',
+        'QN-strong-gray': '#676767',
         customGray: '#767777',
       },
       fontFamily: {
