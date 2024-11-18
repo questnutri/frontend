@@ -63,8 +63,12 @@ export default function RootPage() {
 					backgroundColor: isSelected ? '#55B7FE' : '#676767',
 					width: '450px',
 					height: '420px',
-					padding: '30px',
+					padding: '0px',
 					borderRadius: '0px 10px 10px 0px',
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'start'
 				}}>
 					<AuthPage loginPath={role} />
 				</div>

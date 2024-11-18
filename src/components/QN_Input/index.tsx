@@ -41,7 +41,7 @@ export default function QN_Input({ ref, label, type = 'text', required, clearabl
     }
 
     return (
-        <div style={{ boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)', backgroundColor: '#57b5fb', borderRadius: '15px', width: '100%', color: 'black' }}>
+        <div style={{ boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)', backgroundColor: !invalid ? '#57b5fb' : '#FEE7EF', borderRadius: '15px', width: '100%', color: 'black' }}>
             <Input
                 ref={ref}
                 label={label}
