@@ -26,5 +26,5 @@ export default function NavbarItem({ name, link, image }: QN_NavbarItemProps) {
                 </div>
             </div>
         </Link>
-    );
+    )
 }

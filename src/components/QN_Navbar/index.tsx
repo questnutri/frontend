@@ -1,71 +1,71 @@
 'use client'
-import QN_Button from '@/components/QN_Button'
-import { logout } from '@/lib/logout'
-import { useRouter } from 'next/navigation'
+import React from 'react'
 
-export default function QN_Navbar({ children }: Readonly<{ children: React.ReactNode }>) {
-    const router = useRouter()
-    const handleLogout = async () => {
-        const response = await logout('nutritionist')
-        if (response.status === 204) {
-            document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
-            router.push('/home')
-        }
+interface QN_NavbarProps {
+    padding?: {
+        left?: number
+        right?: number
+        bottom?: number
+        top?: number
     }
-    
+    header?: React.ReactNode
+    footer?: React.ReactNode
+    children: React.ReactNode
+}
+
+export default function QN_Navbar({ header, footer, children }: QN_NavbarProps) {
     return (
-        <div style={{
-            width: '250px',
-            backgroundColor: '#D9D9D9',
-            color: 'black',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100vh',
-            padding: '30px 0px',
-            gap: '20px'
-        }}>
+        <>
+
             <div style={{
-                width: '100%',
-                textAlign: 'center',
-                minHeight: '10%',
-                fontSize: '35px'
-            }}>
-                <h1>{'Olá, {nutri}!'}</h1>
-            </div>
-            <div style={{
+                width: '250px',
+                backgroundColor: '#D9D9D9',
+                color: 'black',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'start',
-                gap: '10px'
-            }}
-            >
-                {children}
-            </div>
-            <div style={{
-                height: '10%',
-                marginTop: 'auto',
-                marginBottom: '20px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '20px'
+                height: '100%',
+                padding: '30px 0px',
+                gap: '20px',
             }}>
-                <img src="/logo/logo_vector.png"
-                    style={{
-                        width: '100%',
-                        padding: '30px',
-                        height: 'auto'
-                    }} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                <QN_Button
-                    colorStyle='red'
-                    width='40%'
-                    onClick={handleLogout}
+                {header && (
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '10%',
+                        fontSize: '15px',
+                        gap: '10px'
+                    }}>
+                        {header}
+                    </div>
+                )}
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'start',
+                    gap: '10px'
+                }}
                 >
-                    Sair
-                </QN_Button>
+                    {children}
+                </div>
+                {footer && (
+                    <>
+                        <div style={{
+                            height: '10%',
+                            marginTop: 'auto',
+                            marginBottom: '30px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: '20px'
+                        }}>
+                            {footer}
+                        </div>
+                    </>
+                )}
+
             </div>
-        </div>
+        </>
     )
 }

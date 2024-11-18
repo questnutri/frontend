@@ -1,13 +1,14 @@
 'use client'
 import QN_Button from '@/components/QN_Button'
 import QN_Input from '@/components/QN_Input'
+import { fetchData } from '@/lib/fetchData'
 import { login } from '@/lib/login'
 import { Tabs, Tab } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useRef, useState, useEffect} from 'react'
 
 interface AuthPageProps {
-    loginPath: string
+    loginPath: 'nutritionist' | 'patient' | 'admin'
 }
 
 export default function AuthPage({ loginPath }: AuthPageProps) {
@@ -106,8 +107,16 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                 case 200:
                     if (response.token) {
                         document.cookie = `authToken=${response.token}; path=/`
-                        router.push('/home');
+                        await fetchData(loginPath)
+                        router.push('/home')
                     }
+                    break
+                case 204:
+                    setPassword({
+                        ...password,
+                        invalid: true,
+                        invalidMessage: 'Senha ainda não definida'
+                    })
                     break
                 case 404:
                     setEmail({
