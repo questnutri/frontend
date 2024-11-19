@@ -6,13 +6,14 @@ export interface QN_ButtonProps {
     colorStyle?: 'blue' | 'white' | 'red'
     width?: string
     blocked?: boolean
+    isLoading?: boolean
     children?: React.ReactNode
     onClick?: () => void
     onTab?: () => void
     onEnter?: () => void
 }
 
-export default function QN_Button({ ref, type = 'button', colorStyle = 'blue', width = '70%', blocked, children, onClick, onTab, onEnter }: QN_ButtonProps) {
+export default function QN_Button({ ref, type = 'button', colorStyle = 'blue', width = '70%', blocked, isLoading, children, onClick, onTab, onEnter }: QN_ButtonProps) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (e.key === 'Tab' && onTab) {
             e.preventDefault()
@@ -29,6 +30,7 @@ export default function QN_Button({ ref, type = 'button', colorStyle = 'blue', w
             type={type}
             onClick={onClick}
             onKeyDown={handleKeyDown}
+            isLoading={isLoading}
             style={{
                 backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
                 color: colorStyle === 'white' ? '#23a3ff' : 'white',

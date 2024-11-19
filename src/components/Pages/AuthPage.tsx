@@ -5,7 +5,7 @@ import { fetchData } from '@/lib/fetchData'
 import { login } from '@/lib/login'
 import { Tabs, Tab } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
-import { useContext, useRef, useState, useEffect} from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 interface AuthPageProps {
     loginPath: 'nutritionist' | 'patient' | 'admin'
@@ -13,6 +13,7 @@ interface AuthPageProps {
 
 export default function AuthPage({ loginPath }: AuthPageProps) {
     const router = useRouter()
+    const [isLoading, setLoading] = useState(false)
 
     const [email, setEmail] = useState({
         value: '',
@@ -45,9 +46,18 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
         setTab((prevTab) => ({
             ...prevTab,
             role: loginPath,
-        }));
+        }))
+        setEmail({
+            ...email,
+            invalid: false,
+            invalidMessage: ''
+        })
+        setPassword({
+            ...password,
+            invalid: false,
+            invalidMessage: ''
+        })
     }, [loginPath, tab.value]);
-    console.log(loginPath, tab);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail({
@@ -64,8 +74,8 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
         setTab({
             ...tab,
             value: tabValue
-        });
-    };
+        })
+    }
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword({
@@ -97,7 +107,7 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
         }
 
         if (hasError) return
-
+        setLoading(true)
         try {
             const response = await login(loginPath, {
                 email: email.value,
@@ -134,13 +144,17 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                     break
             }
         } catch (error) {
+
+        } finally {
+            setLoading(false)
         }
+
+
     }
 
     const emailInputRef = useRef<HTMLInputElement>(null)
     const passwordInputRef = useRef<HTMLInputElement>(null)
     const loginBtnRef = useRef<HTMLButtonElement>(null)
-    console.log(completeName);
 
     return (
         <>
@@ -231,6 +245,7 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                             invalid={email.invalid}
                             invalidMessage={email.invalidMessage}
                             onTab={() => passwordInputRef.current?.focus()}
+                            onEnter={() => passwordInputRef.current?.focus()}
                             required
                             clearable
                         />
@@ -257,6 +272,7 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
                             ref={loginBtnRef}
                             colorStyle='white'
                             width='60%'
+                            isLoading={isLoading}
                         >
                             Login
                         </QN_Button>

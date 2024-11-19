@@ -21,12 +21,17 @@ export const login = async (path: string, data: ILoginRequest): Promise<ILoginRe
         }),
     })
 
-    const responseData = await response.json()
-
-    console.log(response)
-
-    return {
-        status: response.status,
-        ...responseData,
+    try {
+        const responseData = await response.json()
+        return {
+            status: response.status,
+            ...responseData,
+        }
+    } catch (error) {
+        return {
+            status: response.status
+        }
     }
+
+
 }

@@ -8,10 +8,15 @@ import { useEffect, useState } from "react";
 import { IUserData } from "@/lib/fetchData";
 import { logout } from "@/lib/logout";
 import QN_Button from "@/components/QN_Button";
+import { QN_PopUp } from "@/components/QN_PopUp";
+import { usePopUpGlobal } from "@/components/QN_PopUp/popup.global.context";
 
 export default function LoggedLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     const router = useRouter()
     const [user, setUser] = useState<IUserData | null>()
+    const {showPopUp} = usePopUpGlobal()
+
+    const [logoutPopUp, setLogoutPopUp] = useState(false)
 
     const handleLogout = async () => {
         const response = await logout('nutritionist')
@@ -20,6 +25,13 @@ export default function LoggedLayout({ children }: Readonly<{ children: React.Re
             document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
             localStorage.removeItem('user')
             localStorage.removeItem('role')
+            setTimeout(() => {
+                showPopUp({
+                    title: 'Você foi desconectado',
+                    padding: '15px',
+                    okButton: true
+                })
+            }, 300)
         }
     }
 
@@ -91,6 +103,16 @@ export default function LoggedLayout({ children }: Readonly<{ children: React.Re
             <div style={{ flexGrow: 1, padding: '20px' }}>
                 {children}
             </div>
+            <QN_PopUp
+                isPopUpOpen={logoutPopUp}
+                setPopUpOpen={setLogoutPopUp}
+                config={
+                    {
+                        message: 'Você foi desconectado',
+                        okButton: true
+                    }
+                }
+            />
         </div>
     )
 }

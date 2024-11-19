@@ -3,9 +3,10 @@
 import QN_Table from "@/components/QN_Table"
 import { fetchOnePatient, fetchPatients, IPatientData } from "@/lib/fetchPatients"
 import { useEffect, useState } from "react"
-import QN_Modal, { QN_Modal2 } from "@/components/QN_Modal"
+import QN_Modal  from "@/components/QN_Modal"
 import QN_Navbar from "@/components/QN_Navbar"
 import QN_Button from "@/components/QN_Button"
+import QN_Patient_NutriView from "@/components/QN_Patient/QN_Patient_NutriView"
 
 export default function PatientsPage() {
     const [patients, setPatients] = useState<IPatientData[]>([])
@@ -39,18 +40,17 @@ export default function PatientsPage() {
                 onRowClick={handleRowClick}
             />
 
-            <QN_Modal content={patient ? JSON.stringify(patient) : null} contentClose={() => setPatient(null)} />
-            <QN_Modal2 isOpen={isOpen} setOpen={setIsOpen}>
-                <div style={{display: 'flex', height: '100vh'}}>
+            <QN_Modal isOpen={isOpen} setOpen={setIsOpen}>
+                <div style={{ display: 'flex', height: '100vh' }}>
                     <QN_Navbar
-                    footer={
-                        <QN_Button onClick={() => setIsOpen(false)}>Fechar</QN_Button>
-                    }
+                        footer={
+                            <QN_Button onClick={() => setIsOpen(false)}>Fechar</QN_Button>
+                        }
                     >
                         <div></div>
                     </QN_Navbar>
                 </div>
-            </QN_Modal2>
+            </QN_Modal>
         </h1>
     )
 }
