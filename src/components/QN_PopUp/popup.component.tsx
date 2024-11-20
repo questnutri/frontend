@@ -11,7 +11,7 @@ export default function QN_PopUpComponent({ isOpen, setOpen }: QN_PopUpProps) {
     const {popUpConfig, setPopUpConfig} = usePopUp()
 
     return (
-        <QN_Modal isOpen={isOpen} setOpen={setOpen} width={popUpConfig.width} height={popUpConfig.height}>
+        <QN_Modal isOpen={isOpen} setOpen={setOpen} width={popUpConfig.width} height={popUpConfig.height} blockOutsideClose={popUpConfig.blockOutsideClose}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', padding: popUpConfig.padding, textAlign: popUpConfig.textAlign }}>
                 {popUpConfig.title && (
                     <div style={{ fontWeight: 'bold', color: popUpConfig.titleColor, textAlign: popUpConfig.titleTextAlign, marginBottom: '8px' }}>

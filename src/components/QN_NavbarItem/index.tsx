@@ -1,30 +1,31 @@
 'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 export interface QN_NavbarItemProps {
     name: string
-    link: string
-    image?: React.ReactNode
+    icon?: React.ReactNode
+    isSelected?: boolean
+    onClick?: () => void
 }
 
-export default function NavbarItem({ name, link, image }: QN_NavbarItemProps) {
-    const pathname = usePathname()
-
+export default function NavbarItem({ name, icon, isSelected = false, onClick }: QN_NavbarItemProps) {
     return (
-        <Link href={link}>
-            <div className="w-full h-fit p-[5px_20px] flex justify-start items-center gap-[15px] hover:bg-[#767777] rounded-lg transition-transform transition-colors duration-500">
-                <div>
-                    {image}
-                </div>
-                <div>
-                    <p className="text-[15px]"
-                        style={{
-                            textDecoration: link == pathname ? 'underline' : '',
-                        }}
-                    >{name}</p>
-                </div>
+        <div
+            className="w-full h-fit p-[5px_20px] flex justify-start items-center gap-[15px] hover:bg-[#767777] rounded-lg transition-transform transition-colors duration-500"
+            style={{
+                cursor: 'pointer'
+            }}
+            onClick={onClick}
+        >
+            <div>
+                {icon}
             </div>
-        </Link>
+            <div>
+                <p className="text-[15px]"
+                    style={{
+                        textDecoration: isSelected ? 'underline' : '',
+                    }}
+                >{name}</p>
+            </div>
+        </div>
     )
 }

@@ -24,20 +24,26 @@ export const fetchPatients = async (): Promise<IPatientData[]> => {
     }
 }
 
-export const fetchOnePatient = async (id: string): Promise<IPatientData> => {
-    console.log(id)
+interface IFetchOnePatientResponse {
+    status: number
+    data?: IPatientData
+}
+
+export const fetchOnePatient = async (id: string): Promise<any> => {
     try {
         const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${id}`, {
             method: 'GET',
         })
 
-        if (response.ok) {
-            const data: IPatientData = await response.json()
-            console.log(data)
-            return data
+        if(response.status !== 200) {
+            throw new Error('Could not fetch patient data')
         }
 
-        throw new Error('Could not fetch patient data')
+        return {
+            status: response.status,
+            data: await response.json()
+        }
+        
     } catch (error) {
         console.error(error)
         throw new Error('Could not fetch patient')

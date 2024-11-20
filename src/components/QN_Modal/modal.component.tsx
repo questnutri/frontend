@@ -6,9 +6,10 @@ interface QN_ModalComponentProps {
     width: string
     height: string
     children: ReactNode
+    blockOutsideClose: boolean
 }
 
-export default function QN_ModalComponent({ width, height, children }: QN_ModalComponentProps) {
+export default function QN_ModalComponent({ width, height, blockOutsideClose, children }: QN_ModalComponentProps) {
     const { closeModal } = useModal()
     const [isAnimating, setIsAnimating] = useState(false)
 
@@ -20,7 +21,9 @@ export default function QN_ModalComponent({ width, height, children }: QN_ModalC
 
     return (
         <div
-            onClick={closeModal}
+            onClick={() => {
+                if(!blockOutsideClose) closeModal()
+            }}
             style={{
                 position: 'fixed',
                 top: 0,

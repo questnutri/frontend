@@ -8,17 +8,18 @@ interface QN_ModalProps {
     height?: string
     isOpen: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    blockOutsideClose?: boolean
     children: ReactNode
 }
 
-export default function QN_Modal({width='85%', height='90%', isOpen, setOpen, children}: QN_ModalProps) {
+export default function QN_Modal({width='85%', height='90%', isOpen, setOpen, blockOutsideClose=false, children}: QN_ModalProps) {
     const closeModal = () => setOpen(false)
 
     return (
         <ModalContext.Provider value={{ closeModal }}>
             <>
                 {isOpen && (
-                    <QN_ModalComponent width={width} height={height}>
+                    <QN_ModalComponent width={width} height={height} blockOutsideClose={blockOutsideClose}>
                         {children}
                     </QN_ModalComponent>
                 )}

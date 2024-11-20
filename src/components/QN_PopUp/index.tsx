@@ -25,6 +25,7 @@ export function QN_PopUp({ config, isPopUpOpen, setPopUpOpen}: PopUpProps) {
         title: '',
         titleColor: '#000000',
         titleTextAlign: 'center',
+        blockOutsideClose: false,
     })
 
     useEffect(() => {
@@ -45,6 +46,7 @@ export function QN_PopUp({ config, isPopUpOpen, setPopUpOpen}: PopUpProps) {
                     title: config?.title || '',
                     titleColor: config?.titleColor || '#000000',
                     titleTextAlign: config?.titleTextAlign || 'center',
+                    blockOutsideClose: config?.blockOutsideClose || false,
                 })
                 setPopUpOpen(true)
 

@@ -4,8 +4,6 @@ import { IoNutrition } from 'react-icons/io5'
 import { FaUserAlt } from 'react-icons/fa'
 import QN_Switch from "@/components/QN_Switch"
 import { useState } from "react"
-import QN_Button from "@/components/QN_Button"
-import { QN_PopUp } from "@/components/QN_PopUp"
 
 export default function RootPage() {
 	const [role, setRole] = useState<'nutritionist' | 'patient'>('nutritionist')
@@ -72,66 +70,9 @@ export default function RootPage() {
 					alignItems: 'center',
 					justifyContent: 'start'
 				}}>
-					<PopUpTestButton />
 					<AuthPage loginPath={role} />
 				</div>
 			</div>
-		</>
-	)
-}
-
-function PopUpTestButton() {
-
-	const [popUpVisible, setPopUpVisible] = useState(false)
-	const handlePopUp = () => {
-		setPopUpVisible(true)
-	}
-
-	const [popUpConfirm, setPopUpConfirm] = useState(false)
-	const handlePopUpConfirm = () => {
-		setPopUpConfirm(true)
-	}
-	return (
-		<>
-			<QN_Button colorStyle='red' onClick={() => handlePopUp()}>Abrir PopUp de teste</QN_Button>
-			<QN_PopUp
-				isPopUpOpen={popUpVisible}
-				setPopUpOpen={setPopUpVisible}
-				config={
-					{
-						message: 'Teste',
-						width: '350px',
-						title: 'Atenção!!',
-						textAlign: 'left',
-						padding: '15px',
-						customButtons: [
-							{
-								text: 'Cancelar',
-								colorStyle: 'red',
-								onClick: () => console.log('Negar'),
-							},
-							{
-								text: 'Confirmar',
-								colorStyle: 'blue',
-								confirmationTextRequired: 'QUERO CANCELAR',
-								onClick: () => {
-									handlePopUpConfirm()
-								},
-							},
-
-
-						],
-					}
-				} />
-			<QN_PopUp
-				isPopUpOpen={popUpConfirm}
-				setPopUpOpen={setPopUpConfirm}
-				config={
-					{
-						message: 'Você cancelou',
-						okButton: true
-					}
-				} />
 		</>
 	)
 }

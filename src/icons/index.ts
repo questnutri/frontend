@@ -1,6 +1,6 @@
 import { RiHome2Fill } from "react-icons/ri"
 import { LuCalendarClock } from "react-icons/lu"
-import { FaUsers, FaUser } from "react-icons/fa";
+import { FaUsers, FaUser, FaAppleAlt } from "react-icons/fa";
 
 
 export {
@@ -8,4 +8,5 @@ export {
     LuCalendarClock,
     FaUser,
     FaUsers,
+    FaAppleAlt,
 }

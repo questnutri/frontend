@@ -1,71 +1,38 @@
 'use client'
-import React from 'react'
+import QN_NavbarComponent from "./navbar.component"
+import { NavbarItemContext, NavbarItemType } from "./navbar.context"
+import { useState } from "react"
 
 interface QN_NavbarProps {
-    padding?: {
-        left?: number
-        right?: number
-        bottom?: number
-        top?: number
-    }
+    items?: NavbarItemType[]
     header?: React.ReactNode
     footer?: React.ReactNode
-    children: React.ReactNode
+    setFirstSelected?: number
 }
 
-export default function QN_Navbar({ header, footer, children }: QN_NavbarProps) {
+export default function QN_Navbar({ items, header, footer, setFirstSelected }: QN_NavbarProps) {
+    const [navbarItems, setNavbarItems] = useState<NavbarItemType[]>(() =>
+        items?.map((item, index) => ({
+            ...item,
+            isSelected: index === (setFirstSelected ?? -1)
+        })) || []
+    )
+
+    const toggleSelection = (index: number) => {
+        const updatedItems = [...navbarItems]
+        updatedItems.forEach((item, i) => {
+            item.isSelected = i === index
+        })
+        setNavbarItems(updatedItems)
+    }
+
     return (
-        <>
-
-            <div style={{
-                width: '250px',
-                backgroundColor: '#D9D9D9',
-                color: 'black',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                padding: '30px 0px',
-                gap: '20px',
-            }}>
-                {header && (
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minHeight: '10%',
-                        fontSize: '15px',
-                        gap: '10px'
-                    }}>
-                        {header}
-                    </div>
-                )}
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'start',
-                    gap: '10px'
-                }}
-                >
-                    {children}
-                </div>
-                {footer && (
-                    <>
-                        <div style={{
-                            height: '10%',
-                            marginTop: 'auto',
-                            marginBottom: '30px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '20px'
-                        }}>
-                            {footer}
-                        </div>
-                    </>
-                )}
-
-            </div>
-        </>
+        <NavbarItemContext.Provider value={{ navbarItems, setNavbarItems, toggleSelection }}>
+            <QN_NavbarComponent
+                header={header}
+                items={navbarItems}
+                footer={footer}
+            />
+        </NavbarItemContext.Provider>
     )
 }

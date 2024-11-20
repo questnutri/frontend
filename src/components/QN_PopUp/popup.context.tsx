@@ -40,4 +40,5 @@ export interface PopUpConfigType {
     title?: string
     titleColor?: string
     titleTextAlign?: 'left' | 'center' | 'right'
+    blockOutsideClose?: boolean
 }
