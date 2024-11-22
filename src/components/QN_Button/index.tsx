@@ -25,22 +25,42 @@ export default function QN_Button({ ref, type = 'button', colorStyle = 'blue', w
     }
 
     return (
-        <Button
-            ref={ref}
-            type={type}
-            onClick={onClick}
-            onKeyDown={handleKeyDown}
-            isLoading={isLoading}
+        <div
             style={{
-                backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
-                color: colorStyle === 'white' ? '#23a3ff' : 'white',
-                boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
-                fontWeight: '600',
-                width: `${width}`
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: `100%`,
+                justifyContent: 'space-around'
             }}
-            isDisabled={blocked}
         >
-            {children}
-        </Button>
+            <span
+                style={{
+                    fontSize: "15px",
+                    marginLeft: "8px",
+                    color: "black",
+                    fontWeight: "500",
+                }}
+            >
+                { }
+            </span>
+            <Button
+                ref={ref}
+                type={type}
+                onClick={onClick}
+                onKeyDown={handleKeyDown}
+                isLoading={isLoading}
+                style={{
+                    backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
+                    color: colorStyle === 'white' ? '#23a3ff' : 'white',
+                    boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
+                    fontWeight: '600',
+                    width: `${width}`
+                }}
+                isDisabled={blocked}
+            >
+                {children}
+            </Button>
+        </div>
     )
 }

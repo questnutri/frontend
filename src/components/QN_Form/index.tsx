@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 
 interface QN_FormProps {
@@ -6,6 +7,7 @@ interface QN_FormProps {
 }
 
 export default function QN_Form({ children, title }: QN_FormProps): JSX.Element {
+
     return (
         <div
             style={{
@@ -20,11 +22,13 @@ export default function QN_Form({ children, title }: QN_FormProps): JSX.Element 
                 borderRadius: '10px',
                 color: 'black',
                 gap: '20px',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                boxSizing: 'border-box'
             }}
         >
-            <h1 style={{ color: 'black', fontWeight: '600', marginLeft: '5px' }}>{title}</h1>
+            <h1 style={{ color: 'black', fontWeight: '600', marginLeft: '5px', fontSize: '20px' }}>{title}</h1>
             {children}
         </div>
+
     );
 }
