@@ -1,7 +1,7 @@
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react"
 
 interface QN_DropDownProps {
-    items: string[],
+    items: string[]
     label: string
     widthButton?: string
     widthOptions?: string
@@ -10,7 +10,7 @@ interface QN_DropDownProps {
     colorFontButton?: string
     colorFontOptions?: string
     value: string
-    setValue: React.Dispatch<React.SetStateAction<string>>
+    onChange: (value: string) => void // Alterado para aceitar o valor diretamente
     disabled?: boolean
     readyOnly?: boolean
 }
@@ -24,11 +24,11 @@ export default function QN_DropDown({
     bgColorOption = 'white',
     colorFontButton = 'black',
     colorFontOptions = 'black',
-    value, setValue,
+    value,
+    onChange,
     disabled,
     readyOnly
 }: QN_DropDownProps) {
-
     return (
         <div
             style={{
@@ -49,28 +49,30 @@ export default function QN_DropDown({
             >
                 {label}
             </span>
-            <Dropdown style={{ width: `${widthOptions}`, color: `${colorFontOptions}` }} isDisabled={disabled}>
-                <DropdownTrigger
-                    style={{
-                        width: `${widthButton}`,
-                        backgroundColor: `${bgColorButton}`,
-                        color: `${colorFontButton}`
-                    }}
-                >
+            <Dropdown isDisabled={disabled}>
+                <DropdownTrigger>
                     <Button
                         variant="bordered"
+                        style={{
+                            width: `${widthButton}`,
+                            backgroundColor: `${bgColorButton}`,
+                            color: `${colorFontButton}`,
+                        }}
                     >
                         {value}
                     </Button>
                 </DropdownTrigger>
-                <DropdownMenu >
+                <DropdownMenu
+                    style={{
+                        width: `${widthOptions}`,
+                        backgroundColor: `${bgColorOption}`,
+                        color: `${colorFontOptions}`,
+                    }}
+                >
                     {items.map((item, index) => (
                         <DropdownItem
                             key={index}
-                            onClick={() => {
-                                setValue(item), console.log(value);
-                            }}
-                            isReadOnly={readyOnly}
+                            onClick={() => !readyOnly && onChange(item)} // Usa onClick para capturar o valor
                         >
                             {item}
                         </DropdownItem>

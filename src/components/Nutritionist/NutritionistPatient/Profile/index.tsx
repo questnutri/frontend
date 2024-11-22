@@ -7,15 +7,25 @@ import QN_Input2 from '@/components/QN_Input2'
 import QN_TextArea from '@/components/QN_TextArea'
 import QN_Button from '@/components/QN_Button'
 import { address } from 'framer-motion/client'
+import QN_CheckBoxGroup from '@/components/QN_CheckBoxGroup'
+import QN_Tabs from '@/components/QN_Tabs'
+import QN_DropDown from '@/components/QN_DropDown'
 
 export default function QN_NutritionistPatient_ProfilePage() {
     const { patient } = useNutritionistPatient()
 
     const [personalForm, setPersonalForm] = useState({
-        fullName: patient?.name || '',
+        firstName: patient?.name || '',
+        lastName: patient?.name || '',
         birth: '',
         gender: '',
         height: '',
+    })
+
+    const [nutritionalInfo, setNutritionalInfo] = useState({
+        followUpTime: '',
+        firstConsultation: patient?.createdAt,
+        lastConsultation: ''
     })
 
     const [addressForm, setAddressForm] = useState({
@@ -71,17 +81,42 @@ export default function QN_NutritionistPatient_ProfilePage() {
             <h1>Profile Page</h1>
             <QN_Form title="Informações Pessoais" >
                 <QN_FormRow>
-                    <QN_Input2 label='Primeiro nome' value={personalForm.fullName} onChange={e => setPersonalForm({ ...personalForm, fullName: e.target.value })} validation={verificarTexto} />
-                    <QN_Input2 label='Data de nascimento' value={personalForm.birth} onChange={e => setPersonalForm({ ...personalForm, birth: e.target.value })} type='date' />
-                    <div>
-                        <h1 style={{ fontWeight: '700' }}>Tempo de acompanhamento</h1>
-                        <h1 style={{ fontWeight: '500' }}>11/11/2024 - (10 dias)</h1>
-                    </div>
+                    <QN_Input2
+                        label='Primeiro nome'
+                        value={personalForm.firstName}
+                        onChange={e => setPersonalForm({
+                            ...personalForm,
+                            firstName: e.target.value
+                        })}
+                        validation={verificarTexto}
+                    />
+                    <QN_Input2
+                        label='Último nome'
+                        value={personalForm.lastName}
+                        onChange={e => setPersonalForm({
+                            ...personalForm,
+                            lastName: e.target.value
+                        })}
+                        validation={verificarTexto}
+                    />
+                    <QN_Input2
+                        label='Data de nascimento'
+                        value={personalForm.birth}
+                        onChange={e => setPersonalForm({
+                            ...personalForm,
+                            birth: e.target.value
+                        })}
+                        type='date'
+                    />
+                </QN_FormRow>
+                <QN_FormRow>
+                    <QN_Input2 label='Data da primeira consulta' value={new Date(nutritionalInfo.firstConsultation).toISOString().split('T')[0]} onChange={e => setNutritionalInfo({ ...nutritionalInfo, firstConsultation: e.target.value })} type='date' removeStyle={true} />
                 </QN_FormRow>
             </QN_Form>
             <QN_Form title="Nutricionais" >
                 <QN_FormRow>
-                    {/* <QN_Input2 label='Tempo de acompanhamento' value={} setValue={setQNForm()} /> */}
+                    <QN_Input2 label='Tempo de acompanhamento' value={nutritionalInfo.followUpTime} onChange={e => setNutritionalInfo({ ...nutritionalInfo, followUpTime: e.target.value })} />
+                    <QN_Input2 label='Data da última consulta' value={nutritionalInfo.lastConsultation} onChange={e => setNutritionalInfo({ ...nutritionalInfo, lastConsultation: e.target.value })} type='date' />
                 </QN_FormRow>
             </QN_Form>
 

@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef, useState } from "react"
 import QN_Button from "../QN_Button"
 import QN_Input from "../QN_Input"
@@ -7,14 +8,14 @@ import { useRouter } from 'next/navigation'
 
 
 interface QN_FormLoginProps {
-    loginPath: 'nutritionist' | 'patient'
+    loginPath: 'nutritionist' | 'patient',
+    setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function QN_FormLogin({ loginPath }: QN_FormLoginProps) {
+export default function QN_FormLogin({ loginPath, setForgotPassword }: QN_FormLoginProps) {
     const router = useRouter()
-
+    const [isHovered, setIsHovered] = useState(false)
     const [isLoading, setLoading] = useState(false)
-    console.log(loginPath);
 
     const [email, setEmail] = useState({
         value: '',
@@ -157,7 +158,20 @@ export default function QN_FormLogin({ loginPath }: QN_FormLoginProps) {
                 required
             />
             <div>
-                <p>Esqueci minha senha</p>
+                <span
+                    onClick={() => setForgotPassword(true)}
+                    style={{
+                        fontSize: '17px',
+                        fontWeight: '600',
+                        color: 'white',
+                        cursor: 'pointer',
+                        textDecoration: isHovered ? 'underline' : 'none',
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    Esqueci minha senha
+                </span>
             </div>
             <QN_Button
                 type='button'
