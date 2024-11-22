@@ -1,4 +1,5 @@
-import { IUser } from "@/context/user.context"
+
+import { IUser } from "@/models/User.interface"
 import { fetchWithAuth } from "./fetchWithAuth"
 
 export const fetchData = async (role: 'nutritionist' | 'patient' | 'admin'): Promise<void> => {
@@ -12,9 +13,8 @@ export const fetchData = async (role: 'nutritionist' | 'patient' | 'admin'): Pro
 
         if (response.ok) {
             const data: IUser = await response.json()
-            localStorage.setItem('role', role)
             localStorage.setItem('user', JSON.stringify({
-                name: data.name,
+                firstName: data.firstName,
                 email: data.email,
             }))
         }

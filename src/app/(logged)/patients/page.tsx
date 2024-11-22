@@ -1,13 +1,14 @@
 'use client'
 
 import QN_Table from "@/components/QN_Table"
-import { fetchPatients, IPatientData } from "@/lib/fetchPatients"
+import { fetchPatients } from "@/lib/fetchPatients"
 import { useEffect, useState } from "react"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import QN_PatientModal from "@/components/QN_PatientModal"
+import { IPatient } from "@/models/Patient/Patient.interface"
 
 export default function PatientsPage() {
-    const [patients, setPatients] = useState<IPatientData[]>([])
+    const [patients, setPatients] = useState<IPatient[]>([])
     const { setModalPatient } = useNutritionistPatient()
 
     const handleRowClick = async (id: string | null) => {
@@ -29,7 +30,7 @@ export default function PatientsPage() {
             </h1>
             <QN_Table
                 columns={[
-                    { key: 'name', label: 'Nome' },
+                    { key: 'firstName', label: 'Nome' },
                     { key: 'email', label: 'E-mail' }
                 ]}
                 rows={patients}

@@ -1,18 +1,23 @@
+'use client'
 import QN_Button from "@/components/QN_Button";
 import { usePopUpGlobal } from "@/components/QN_PopUp/popup.global.context";
+import { useUser } from "@/context/user.context";
 import { logout } from "@/lib/logout";
 import { useRouter } from "next/navigation";
 
-export default function NutritionistNavbarFooter() {
+export default function QN_NavbarFooter_Default() {
+    const { setUser, role, setRole} = useUser()
     const router = useRouter()
     const { showPopUp } = usePopUpGlobal()
 
     const handleLogout = async () => {
-        const response = await logout('nutritionist')
+        const response = await logout(role as string)
         if (response.status === 204 || response.status === 401) {
+            setUser(null)
+            setRole(null)
             document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+            document.cookie = 'role=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
             localStorage.removeItem('user')
-            localStorage.removeItem('role')
             showPopUp({
                 title: 'Você foi desconectado',
                 padding: '15px',

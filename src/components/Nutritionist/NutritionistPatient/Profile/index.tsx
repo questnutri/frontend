@@ -15,8 +15,8 @@ export default function QN_NutritionistPatient_ProfilePage() {
     const { patient } = useNutritionistPatient()
 
     const [personalForm, setPersonalForm] = useState({
-        firstName: patient?.name || '',
-        lastName: patient?.name || '',
+        firstName: patient?.firstName || '',
+        lastName: patient?.lastName || '',
         birth: '',
         gender: '',
         height: '',

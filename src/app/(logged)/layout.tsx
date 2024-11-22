@@ -1,13 +1,14 @@
 'use client'
-import { QN_PopUp } from "@/components/QN_PopUp";
 import { QN_NutritionistPatientProvider } from "@/context/modal.patient.context";
 import NutritionistNavbar from "@/components/Nutritionist/Navbar";
-import { useEffect, useState } from "react";
-import { IUser, UserContext } from "@/context/user.context";
+import { useEffect } from "react";
+import { useUser } from "@/context/user.context";
+import { findCookie } from "@/lib/findCookie";
+import QN_ConditionalRender from "@/components/QN_ConditionalRender";
+import PatientNavbar from "@/components/Patient/Navbar";
 
 export default function LoggedLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-    const [user, setUser] = useState<IUser | null>(null)
-    const [logoutPopUp, setLogoutPopUp] = useState(false)
+    const { setUser, role, setRole } = useUser()
 
     useEffect(() => {
         const userData = localStorage.getItem('user')
@@ -16,29 +17,31 @@ export default function LoggedLayout({ children }: Readonly<{ children: React.Re
         } else {
             setUser(null)
         }
+        if (setRole) setRole(findCookie('role') as 'nutritionist' | 'patient' | 'admin' | null)
     }, [])
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
-            <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-                <NutritionistNavbar />
-                <div style={{ flexGrow: 1, padding: '20px' }}>
-                    <QN_NutritionistPatientProvider>
-                        {children}
-                    </QN_NutritionistPatientProvider>
-                </div>
-                <QN_PopUp
-                    isPopUpOpen={logoutPopUp}
-                    setPopUpOpen={setLogoutPopUp}
-                    config={
-                        {
-                            message: 'Você foi desconectado',
-                            okButton: true
-                        }
-                    }
-                />
-            </div >
-        </UserContext.Provider>
-
+        <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+            <QN_ConditionalRender
+                nutritionist={
+                    <>
+                        <NutritionistNavbar />
+                        <div style={{ flexGrow: 1, padding: '20px' }}>
+                            <QN_NutritionistPatientProvider>
+                                {children}
+                            </QN_NutritionistPatientProvider>
+                        </div>
+                    </>
+                }
+                patient={
+                    <>
+                        <PatientNavbar />
+                        <div style={{ flexGrow: 1, padding: '20px' }}>
+                            {children}
+                        </div>
+                    </>
+                }
+            />
+        </div>
     )
 }

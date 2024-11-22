@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import QN_Tabs from '../QN_Tabs'
 import QN_FormLogin from '../QN_FormLogin'
 import QN_FormRegister from '../QN_FormRegister'
@@ -21,9 +21,7 @@ export default function AuthPage({ loginPath }: AuthPageProps) {
         } else {
             setTabs(['Login'])
         }
-
-    }, [loginPath]);
-    console.log(selectedTabIndex);
+    }, [loginPath])
 
     const currentForm = (loginPath: string, tab: string): JSX.Element => {
         if (forgotPassword) {

@@ -1,14 +1,12 @@
+'use client'
+import { IUser } from "@/models/User.interface"
 import { createContext, useContext } from "react"
-
-export interface IUser {
-    role: 'nutritionist' | 'patient' | 'admin'
-    name: string
-    email: string
-}
 
 type UserContextType = {
     user: IUser | null
     setUser: (user: IUser | null) => void
+    role: 'nutritionist' | 'patient' | 'admin' | null
+    setRole: (role: 'nutritionist' | 'patient' | 'admin' | null) => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)

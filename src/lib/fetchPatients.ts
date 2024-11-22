@@ -1,13 +1,7 @@
+import { IPatient } from "@/models/Patient/Patient.interface"
 import { fetchWithAuth } from "./fetchWithAuth"
 
-export interface IPatientData {
-    id: string
-    name: string
-    email: string
-    diets?: string
-}
-
-export const fetchPatients = async (): Promise<IPatientData[]> => {
+export const fetchPatients = async (): Promise<IPatient[]> => {
     try {
         const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient`, {
             method: 'GET',
@@ -26,7 +20,7 @@ export const fetchPatients = async (): Promise<IPatientData[]> => {
 
 interface IFetchOnePatientResponse {
     status: number
-    data?: IPatientData
+    data?: IPatient
 }
 
 export const fetchOnePatient = async (id: string): Promise<any> => {

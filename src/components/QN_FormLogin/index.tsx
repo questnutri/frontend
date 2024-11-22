@@ -5,6 +5,7 @@ import QN_Input from "../QN_Input"
 import { fetchData } from "@/lib/fetchData"
 import { login } from "@/lib/login"
 import { useRouter } from 'next/navigation'
+import { useUser } from "@/context/user.context"
 
 
 interface QN_FormLoginProps {
@@ -122,7 +123,6 @@ export default function QN_FormLogin({ loginPath, setForgotPassword }: QN_FormLo
         } finally {
             setLoading(false)
         }
-
 
     }
 

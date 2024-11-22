@@ -1,15 +1,7 @@
-const getAuthToken = (): string | null => {
-    if (typeof window !== 'undefined') {
-        const token = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('authToken='))?.split('=')[1]
-        return token || null
-    }
-    return null
-}
+import { findCookie } from "./findCookie"
 
 export const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Response> => {
-    const token = getAuthToken()
+    const token = findCookie('authToken')
 
     const headers = {
         'Content-Type': 'application/json',

@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react"
 import QN_Modal from "../QN_Modal"
 import QN_NutritionistPatient_Navbar from "../Nutritionist/NutritionistPatient/Navbar"
 import QN_NutritionistPatient_ProfilePage from "../Nutritionist/NutritionistPatient/Profile"
-import { FaUser, FaAppleAlt } from '../../icons'
+import { FaUser, FaAppleAlt, FaHeartPulse } from '../../icons'
 import QN_NutritionistPatient_DietPage from "../Nutritionist/NutritionistPatient/Diet"
+import QN_NutritionistPatient_HealthPage from "../Nutritionist/NutritionistPatient/Health"
 
 export default function QN_PatientModal() {
     const { patient, setModalPatient } = useNutritionistPatient()
@@ -37,6 +38,12 @@ export default function QN_PatientModal() {
         )
     }
 
+    const healthPage = () => {
+        return (
+            <QN_NutritionistPatient_HealthPage />
+        )
+    }
+
     const [currentPage, setCurrentPage] = useState(profilePage)
 
     return (
@@ -57,12 +64,20 @@ export default function QN_PatientModal() {
                             }
                         },
                         {
+                            name: 'Saúde',
+                            icon: <FaHeartPulse color='#23a3ff' size={30} />,
+                            onClick() {
+                                setCurrentPage(healthPage)
+                            },
+                        },
+                        {
                             name: 'Dieta',
                             icon: <FaAppleAlt color='#23a3ff' size={30} />,
                             onClick: () => {
                                 setCurrentPage(dietPage)
                             }
-                        }
+                        },
+
                     ]}
                 />
                 {

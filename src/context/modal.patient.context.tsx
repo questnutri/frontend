@@ -1,13 +1,7 @@
 'use client'
-import { usePopUpGlobal } from "@/components/QN_PopUp/popup.global.context"
 import { fetchOnePatient } from "@/lib/fetchPatients"
-import { createContext, ReactNode, useContext, useEffect, useState } from "react"
-
-interface IPatient {
-    _id: string
-    name: string
-    email: string
-}
+import { IPatient } from "@/models/Patient/Patient.interface"
+import { createContext, ReactNode, useContext, useState } from "react"
 
 interface NutritionistPatientContextType {
     patient: IPatient | null

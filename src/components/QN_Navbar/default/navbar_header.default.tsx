@@ -1,13 +1,11 @@
+'use client'
 import { NavbarItemContext } from "@/components/QN_Navbar/navbar.context"
-import { IUser } from "@/context/user.context"
+import { useUser } from "@/context/user.context"
 import { Avatar, Tooltip } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 
-interface NutritionistNavbarHeaderProps {
-    user: IUser
-}
-
-export default function NutritionistNavbarHeader({ user }: NutritionistNavbarHeaderProps) {
+export default function QN_NavbarHeader_Default() {
+    const {user} = useUser()
     const router = useRouter()
     return (
         <NavbarItemContext.Consumer>
@@ -29,7 +27,7 @@ export default function NutritionistNavbarHeader({ user }: NutritionistNavbarHea
                             <h1 onClick={handleProfileNavigation}
                                 style={{ cursor: 'pointer' }}
                             >
-                                {`Olá, ${user?.name || ''}!`}
+                                {`Olá, ${user?.firstName || ''}!`}
                             </h1>
                         </Tooltip>
                     </>
