@@ -8,7 +8,11 @@ interface QN_ConditionalRenderProps {
     admin?: React.ReactNode
 }
 
-export default function QN_ConditionalRender({nutritionist, patient, admin}: QN_ConditionalRenderProps) {
+export default function QN_ConditionalRender({
+    nutritionist=(<></>), 
+    patient=(<></>), 
+    admin=(<></>)
+}: QN_ConditionalRenderProps) {
     const {role} = useUser()
     
     switch(role) {

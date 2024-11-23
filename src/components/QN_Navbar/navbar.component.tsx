@@ -25,6 +25,8 @@ export default function QN_NavbarComponent({ header, footer, items }: QN_NavbarP
     return (
         <div style={{
             width: '250px',
+            maxWidth: '250px',
+            minWidth: '250px',
             backgroundColor: '#D9D9D9',
             color: 'black',
             display: 'flex',

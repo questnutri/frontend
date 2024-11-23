@@ -1,4 +1,4 @@
-import QN_MealViewer from "@/components/QN_ModalViewer"
+import QN_MealViewer from "@/components/QN_MealViewer"
 
 export default function QN_NutritionistPatient_DietPage() {
     return (
