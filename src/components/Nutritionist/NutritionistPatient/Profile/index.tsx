@@ -6,24 +6,25 @@ import { useNutritionistPatient } from '@/context/modal.patient.context'
 import QN_Input2 from '@/components/QN_Input2'
 import QN_TextArea from '@/components/QN_TextArea'
 import QN_Button from '@/components/QN_Button'
-import { address } from 'framer-motion/client'
 import QN_CheckBoxGroup from '@/components/QN_CheckBoxGroup'
 import QN_Tabs from '@/components/QN_Tabs'
 import QN_DropDown from '@/components/QN_DropDown'
+import QN_RadioGroup from '@/components/QN_RadioGroup'
 
 export default function QN_NutritionistPatient_ProfilePage() {
     const { patient } = useNutritionistPatient()
+    console.log(patient);
 
     const [personalForm, setPersonalForm] = useState({
         firstName: patient?.firstName || '',
         lastName: patient?.lastName || '',
         birth: '',
         gender: '',
-        height: '',
+        height: '1,76',
     })
 
     const [nutritionalInfo, setNutritionalInfo] = useState({
-        followUpTime: '',
+        followUpTime: calcularDiasDesdeConsulta(new Date(patient?.createdAt).toISOString().split('T')[0]),
         firstConsultation: patient?.createdAt,
         lastConsultation: ''
     })
@@ -48,6 +49,16 @@ export default function QN_NutritionistPatient_ProfilePage() {
         const regex = /[^a-zA-Záéíóúãõâêîôûç\s]/
         return !regex.test(texto)
     };
+
+    function calcularDiasDesdeConsulta(createdAt: string): number {
+        const currentDate = new Date() // Data atual
+        const dateObj = new Date(createdAt) // Convertendo a data recebida para um objeto Date
+
+        const diffEmMs = currentDate.getTime() - dateObj.getTime() // Diferença em milissegundos
+        const diffEmDias = diffEmMs / (1000 * 3600 * 24) // Convertendo de milissegundos para dias
+
+        return Math.floor(diffEmDias); // Retorna a diferença em dias (arredondado para baixo)
+    }
 
     const verificaNumero = (texto: string) => {
         const regex = /\d/; // Verifica se há qualquer número
@@ -82,7 +93,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
             <QN_Form title="Informações Pessoais" >
                 <QN_FormRow>
                     <QN_Input2
-                        label='Primeiro nome'
+                        label='Nome'
                         value={personalForm.firstName}
                         onChange={e => setPersonalForm({
                             ...personalForm,
@@ -91,7 +102,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         validation={verificarTexto}
                     />
                     <QN_Input2
-                        label='Último nome'
+                        label='Sobrenome'
                         value={personalForm.lastName}
                         onChange={e => setPersonalForm({
                             ...personalForm,
@@ -110,36 +121,109 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2 label='Data da primeira consulta' value={new Date(nutritionalInfo.firstConsultation).toISOString().split('T')[0]} onChange={e => setNutritionalInfo({ ...nutritionalInfo, firstConsultation: e.target.value })} type='date' removeStyle={true} />
+                    <QN_Input2
+                        label='Altura'
+                        value={`${personalForm.height} m.`}
+                        onChange={(e) =>
+                            setPersonalForm({
+                                ...personalForm,
+                                height: e.target.value
+                            })
+                        }
+                    />
+                    <QN_DropDown
+                        label='Gênero'
+                        items={['Masculino', 'Feminino', 'Outros']}
+                        value={personalForm.gender}
+                        onChange={(e) =>
+                            setPersonalForm({
+                                ...personalForm,
+                                gender: e.target.value
+                            })
+                        }
+                        widthButton='200px'
+                    />
+
+                </QN_FormRow>
+                <QN_FormRow>
+                    <QN_Input2
+                        label='Tempo de acompanhamento'
+                        value={String(nutritionalInfo.followUpTime)}
+                        onChange={e =>
+                            setNutritionalInfo({
+                                ...nutritionalInfo,
+                                firstConsultation: e.target.value
+                            })
+                        }
+                        removeStyle={true}
+                    />
                 </QN_FormRow>
             </QN_Form>
-            <QN_Form title="Nutricionais" >
+            <QN_Form title="Detalhamento" >
                 <QN_FormRow>
-                    <QN_Input2 label='Tempo de acompanhamento' value={nutritionalInfo.followUpTime} onChange={e => setNutritionalInfo({ ...nutritionalInfo, followUpTime: e.target.value })} />
-                    <QN_Input2 label='Data da última consulta' value={nutritionalInfo.lastConsultation} onChange={e => setNutritionalInfo({ ...nutritionalInfo, lastConsultation: e.target.value })} type='date' />
                 </QN_FormRow>
             </QN_Form>
 
             <QN_Form title='Contato'>
                 <QN_FormRow>
-                    <QN_Input2 label='E-mail' value={contactForm.email} onChange={e => setContactForm({ ...contactForm, email: e.target.value })} />
-                    <QN_Input2 label='Telefone/Celular' value={contactForm.phone} onChange={e => setContactForm({ ...contactForm, phone: e.target.value })} />
-                    <QN_Button colorStyle='blue'>Alterar senha?</QN_Button>
+                    <QN_Input2
+                        label='E-mail'
+                        value={contactForm.email}
+                        onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
+                    />
+                    <QN_Input2
+                        label='Telefone/Celular'
+                        value={contactForm.phone}
+                        onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
+                    />
+                    <QN_Button
+                        colorStyle='blue'
+                    >
+                        Alterar senha?
+                    </QN_Button>
                 </QN_FormRow>
             </QN_Form>
             <QN_Form title='Endereço'>
                 <QN_FormRow>
-                    <QN_Input2 label='CEP' value={addressForm.cep} onChange={e => setAddressForm({ ...addressForm, cep: e.target.value })} />
-                    <QN_Input2 label='Número' value={addressForm.number as string} onChange={e => setAddressForm({ ...addressForm, number: e.target.value })} />
-                    <QN_Input2 label='Complemento' value={addressForm.complement} onChange={e => setAddressForm({ ...addressForm, complement: e.target.value })} />
+                    <QN_Input2
+                        label='CEP'
+                        value={addressForm.cep}
+                        onChange={e => setAddressForm({ ...addressForm, cep: e.target.value })}
+                    />
+                    <QN_Input2
+                        label='Número'
+                        value={addressForm.number as string}
+                        onChange={e => setAddressForm({ ...addressForm, number: e.target.value })}
+                    />
+                    <QN_Input2
+                        label='Complemento'
+                        value={addressForm.complement}
+                        onChange={e => setAddressForm({ ...addressForm, complement: e.target.value })}
+                    />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2 label='Rua' value={addressForm.street} onChange={e => setAddressForm({ ...addressForm, street: e.target.value })} />
+                    <QN_Input2
+                        label='Rua'
+                        value={addressForm.street}
+                        onChange={e => setAddressForm({ ...addressForm, street: e.target.value })}
+                    />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2 label='Bairro' value={addressForm.hood} onChange={e => setAddressForm({ ...addressForm, hood: e.target.value })} />
-                    <QN_Input2 label='Cidade' value={addressForm.city} onChange={e => setAddressForm({ ...addressForm, city: e.target.value })} />
-                    <QN_Input2 label='Estado' value={addressForm.state} onChange={e => setAddressForm({ ...addressForm, state: e.target.value })} />
+                    <QN_Input2
+                        label='Bairro'
+                        value={addressForm.hood}
+                        onChange={e => setAddressForm({ ...addressForm, hood: e.target.value })}
+                    />
+                    <QN_Input2
+                        label='Cidade'
+                        value={addressForm.city}
+                        onChange={e => setAddressForm({ ...addressForm, city: e.target.value })}
+                    />
+                    <QN_Input2
+                        label='Estado'
+                        value={addressForm.state}
+                        onChange={e => setAddressForm({ ...addressForm, state: e.target.value })}
+                    />
                 </QN_FormRow>
             </QN_Form>
         </div>

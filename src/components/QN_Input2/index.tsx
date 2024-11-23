@@ -17,6 +17,8 @@ interface QN_Input2Props {
     removeStyle?: boolean
     fontSize?: 'text-base' | 'text-lg' | 'text-xl'
     fontWeight?: 'font-normal' | 'font-medium' | 'font-bold' | 'font-extrabold'
+    cursor?: boolean,
+    color?: '#55b7fe' | 'black' | 'white'
 }
 
 export default function QN_Input2({
@@ -33,7 +35,9 @@ export default function QN_Input2({
     placeHolder,
     removeStyle = false,
     fontSize,
-    fontWeight
+    fontWeight,
+    cursor,
+    color = 'black'
 }: QN_Input2Props) {
     const [showErrorMessage, setShowErrorMessage] = useState(false)
 
@@ -43,6 +47,16 @@ export default function QN_Input2({
     }
 
     const isReadOnly = removeStyle ? true : readyOnly
+
+    // Mapeamento de cores
+    const colorMap = {
+        'white': 'text-white',
+        'black': 'text-black',
+        '#55b7fe': 'text-[#55b7fe]'
+    }
+
+    const textColorClass = colorMap[color] || 'text-black'
+    const cursorClass = isReadOnly ? 'cursor-text' : 'cursor-default'
 
     return (
         <div
@@ -58,7 +72,7 @@ export default function QN_Input2({
                 style={{
                     fontSize: "15px",
                     marginLeft: "8px",
-                    color: "black",
+                    color: color,
                     fontWeight: "500",
                 }}
             >
@@ -78,8 +92,8 @@ export default function QN_Input2({
                 style={{ backgroundColor: 'white' }}
                 classNames={
                     removeStyle ? {
-                        input: [`bg-white !bg-white text-black ${fontSize} ${fontWeight}`],
-                        inputWrapper: ["bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black"]
+                        input: [`bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
+                        inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`]
                     } : undefined
                 }
             />
