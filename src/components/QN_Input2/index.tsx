@@ -7,6 +7,7 @@ interface QN_Input2Props {
     width?: string
     type?: string
     value: string
+    clearable?: boolean
     validation?: (value: string) => boolean
     format?: (value: string) => string
     errorMessage?: string
@@ -19,6 +20,7 @@ interface QN_Input2Props {
     fontWeight?: 'font-normal' | 'font-medium' | 'font-bold' | 'font-extrabold'
     cursor?: boolean,
     color?: '#55b7fe' | 'black' | 'white'
+    mask?: string //#####-### ou ###.###.###-##
 }
 
 export default function QN_Input2({
@@ -37,13 +39,21 @@ export default function QN_Input2({
     fontSize,
     fontWeight,
     cursor,
-    color = 'black'
+    color = 'black',
+    clearable=false,
+    mask
 }: QN_Input2Props) {
     const [showErrorMessage, setShowErrorMessage] = useState(false)
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e)
         if (validation) setShowErrorMessage(!validation(e.target.value))
+    }
+
+    const handleClear = () => {
+        if (clearable) {
+            onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
+        }
     }
 
     const isReadOnly = removeStyle ? true : readyOnly
@@ -84,6 +94,8 @@ export default function QN_Input2({
                 radius="sm"
                 placeholder={placeHolder}
                 value={value}
+                // isClearable={clearable}
+                // onClear={handleClear}
                 isInvalid={showErrorMessage}
                 errorMessage={errorMessage}
                 isDisabled={disabled}

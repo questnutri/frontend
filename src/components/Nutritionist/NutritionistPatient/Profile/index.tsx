@@ -57,16 +57,15 @@ export default function QN_NutritionistPatient_ProfilePage() {
         const diffEmMs = currentDate.getTime() - dateObj.getTime() // Diferença em milissegundos
         const diffEmDias = diffEmMs / (1000 * 3600 * 24) // Convertendo de milissegundos para dias
 
-        return Math.floor(diffEmDias); // Retorna a diferença em dias (arredondado para baixo)
+        return Math.floor(diffEmDias);
     }
 
     const verificaNumero = (texto: string) => {
-        const regex = /\d/; // Verifica se há qualquer número
+        const regex = /\d/;
         return !regex.test(texto);
     };
 
     function formatarCPF(cpf: string): string {
-        // Remove tudo que não é número
         const apenasNumeros = cpf.replace(/\D/g, "");
 
         // Aplica a máscara do CPF
