@@ -161,7 +161,7 @@ export default function QN_FormLogin({ loginPath, setForgotPassword }: QN_FormLo
                 <span
                     onClick={() => setForgotPassword(true)}
                     style={{
-                        fontSize: '17px',
+                        fontSize: '14px',
                         fontWeight: '600',
                         color: 'white',
                         cursor: 'pointer',

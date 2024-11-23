@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { IoArrowBack } from '../../icons/index'
+import { IoIosArrowBack } from '../../icons/index'
 import QN_Input from '../QN_Input'
 import QN_Button from '../QN_Button'
 
@@ -36,7 +36,7 @@ export default function QN_ForgotPassword({ role, setForgotPassword }: QN_Forgot
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                alignItems: 'center'
+                alignItems: 'center',
             }}
         >
             <div
@@ -50,27 +50,28 @@ export default function QN_ForgotPassword({ role, setForgotPassword }: QN_Forgot
                     alignSelf: 'start',
                     gap: '10px',
                     marginTop: '10px',
-                    backgroundColor: isHovered ? 'white' : 'transparent',
+                    backgroundColor: 'transparent',
                     transition: 'background-color 0.3s ease',
                     cursor: 'pointer',
                     borderRadius: '15px',
-                    padding: '8px'
+                    padding: '8px',
+                    textDecoration: isHovered ? 'underline' : 'none',
+                    color: 'white'
                 }}
                 onClick={() => setForgotPassword(false)}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <IoArrowBack
-                    size={'30px'}
-                    color={isHovered ? '#55B7FE' : 'white'}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                <IoIosArrowBack
+                    size={'20px'}
+                    color={'white'}
+                    fontWeight={900}
                 />
                 <span
                     style={{
                         fontSize: '17px',
                         fontWeight: '600',
-                        color: isHovered ? '#55B7FE' : 'white'
+                        color: 'white'
                     }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}

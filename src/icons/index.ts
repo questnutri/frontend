@@ -8,6 +8,7 @@ import { FaRegClock } from "react-icons/fa6"
 import { BsFire } from "react-icons/bs"
 import { FaRegTrashCan } from "react-icons/fa6"
 import { FaHeartPulse } from "react-icons/fa6"
+import { IoIosArrowBack } from "react-icons/io"
 
 export {
     RiHome2Fill,
@@ -22,4 +23,5 @@ export {
     BsFire,
     FaRegTrashCan,
     FaHeartPulse,
+    IoIosArrowBack,
 }
