@@ -9,6 +9,7 @@ export interface IPatient {
 	details?: {
 		rg?: string
 		cpf?: string
+		phone?: string
 		birth?: Date
 		height?: number
 		gender?: 'male' | 'female' | 'other'

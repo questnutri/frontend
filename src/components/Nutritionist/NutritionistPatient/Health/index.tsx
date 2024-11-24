@@ -1,9 +1,9 @@
 'use client'
-import QN_HealthCards from "@/components/QN_HealthCards";
-import QN_Tabs from "@/components/QN_Tabs";
+import QN_HealthCards from "@/components/QN_Components/QN_HealthCards";
+import QN_Tabs from "@/components/QN_Components/QN_Tabs"; 
 import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useState } from "react";
-import QN_ContainerHealthConditions from "@/components/QN_ContainerHealthConditions";
+import QN_ContainerHealthConditions from "@/components/QN_Components/QN_ContainerHealthConditions";
 
 export default function QN_NutritionistPatient_HealthPage() {
     const { patient } = useNutritionistPatient();

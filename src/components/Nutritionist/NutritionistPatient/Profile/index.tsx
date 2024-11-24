@@ -1,16 +1,17 @@
 'use client'
 import { useRef, useState } from 'react'
-import QN_Form from '@/components/QN_Form'
-import QN_FormRow from '@/components/QN_FormRow'
+import QN_Form from '@/components/QN_Components/QN_Form'
+import QN_FormRow from '@/components/QN_Components/QN_FormRow'
 import { useNutritionistPatient } from '@/context/modal.patient.context'
-import QN_Input2 from '@/components/QN_Input2'
-import QN_TextArea from '@/components/QN_TextArea'
-import QN_Button from '@/components/QN_Button'
-import QN_CheckBoxGroup from '@/components/QN_CheckBoxGroup'
-import QN_Tabs from '@/components/QN_Tabs'
-import QN_DropDown from '@/components/QN_DropDown'
-import QN_RadioGroup from '@/components/QN_RadioGroup'
+import QN_Input from '@/components/QN_Components/QN_Input'
+import QN_TextArea from '@/components/QN_Components/QN_TextArea'
+import QN_Button from '@/components/QN_Components/QN_Button'
+import QN_CheckBoxGroup from '@/components/QN_Components/QN_CheckBoxGroup'
+import QN_Tabs from '@/components/QN_Components/QN_Tabs'
+import QN_DropDown from '@/components/QN_Components/QN_DropDown'
+import QN_RadioGroup from '@/components/QN_Components/QN_RadioGroup'
 import { fetchCep } from '@/lib/fetchCep'
+import QN_TimeInput from '@/components/QN_Components/QN_TimeInput'
 
 export default function QN_NutritionistPatient_ProfilePage() {
     const { patient } = useNutritionistPatient()
@@ -120,7 +121,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                width: "80%",
+                width: "100%",
                 padding: "20px",
                 gap: '20px',
                 height: '100%',
@@ -130,7 +131,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
             <h1>Profile Page</h1>
             <QN_Form title="Informações Pessoais" >
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         ref={nameInputRef}
                         label='Nome'
                         value={personalForm.firstName}
@@ -140,7 +141,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         })}
                         validation={verificarTexto}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Sobrenome'
                         value={personalForm.lastName}
                         onChange={e => setPersonalForm({
@@ -149,9 +150,9 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         })}
                         validation={verificarTexto}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Data de nascimento'
-                        value={personalForm.birth}
+                        value={personalForm.birth.toLocaleString()}
                         onChange={e => setPersonalForm({
                             ...personalForm,
                             birth: e.target.value
@@ -160,7 +161,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='RG'
                         value={personalForm.rg}
                         onChange={(e) => {
@@ -171,7 +172,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         }}
                         mask='##.###.###-#'
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='CPF'
                         value={personalForm.cpf}
                         onChange={(e) => {
@@ -184,7 +185,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='Altura'
                         value={`${personalForm.height} m.`}
                         onChange={(e) => {
@@ -212,13 +213,9 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         }
                         widthButton="100%"
                     />
-
-
-                </QN_FormRow>
-                <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='Tempo de acompanhamento'
-                        value={String(nutritionalInfo.followUpTime)}
+                        value={`${String(nutritionalInfo.followUpTime)} dias`}
                         onChange={e =>
                             setNutritionalInfo({
                                 ...nutritionalInfo,
@@ -227,21 +224,17 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         }
                         removeStyle={true}
                     />
-                </QN_FormRow>
-            </QN_Form>
-            <QN_Form title="Detalhamento" >
-                <QN_FormRow>
-                </QN_FormRow>
-            </QN_Form>
 
+                </QN_FormRow>
+            </QN_Form>
             <QN_Form title='Contato'>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='E-mail'
                         value={contactForm.email}
                         onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Telefone/Celular'
                         value={contactForm.phone}
                         onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
@@ -257,18 +250,18 @@ export default function QN_NutritionistPatient_ProfilePage() {
             </QN_Form>
             <QN_Form title='Endereço'>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='CEP'
                         value={addressForm.cep}
                         onChange={handleCepChange}
                         mask='#####-###'
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Número'
                         value={addressForm.number as string}
                         onChange={e => setAddressForm({ ...addressForm, number: e.target.value })}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Complemento'
                         value={addressForm.complement}
                         onChange={e => setAddressForm({ ...addressForm, complement: e.target.value })}
@@ -279,7 +272,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         ref={streetInputRef}
                         label='Rua'
                         value={addressForm.street}
@@ -288,19 +281,19 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
                 <QN_FormRow>
-                    <QN_Input2
+                    <QN_Input
                         label='Bairro'
                         value={addressForm.hood}
                         onChange={e => setAddressForm({ ...addressForm, hood: e.target.value })}
                         disabled={isValidCep}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Cidade'
                         value={addressForm.city}
                         onChange={e => setAddressForm({ ...addressForm, city: e.target.value })}
                         disabled={isValidCep}
                     />
-                    <QN_Input2
+                    <QN_Input
                         label='Estado'
                         value={addressForm.state}
                         onChange={e => setAddressForm({ ...addressForm, state: e.target.value })}

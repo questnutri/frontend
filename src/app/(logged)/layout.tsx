@@ -4,7 +4,7 @@ import NutritionistNavbar from "@/components/Nutritionist/Navbar";
 import { useEffect } from "react";
 import { useUser } from "@/context/user.context";
 import { findCookie } from "@/lib/findCookie";
-import QN_ConditionalRender from "@/components/QN_ConditionalRender";
+import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender";
 import PatientNavbar from "@/components/Patient/Navbar";
 
 export default function LoggedLayout({ children }: Readonly<{ children: React.ReactNode }>) {

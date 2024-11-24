@@ -1,5 +1,5 @@
-import QN_Button from "@/components/QN_Button";
-import { useModal } from "@/components/QN_Modal/modal.context";
+import QN_Button from "@/components/QN_Components/QN_Button";
+import { useModal } from "@/components/QN_Components/QN_Modal/modal.context";
 
 export default function QN_NutritionistPatient_Navbar_Footer() {
     const {closeModal} = useModal()

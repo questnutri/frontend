@@ -2,7 +2,7 @@
 import AuthPage from "@/components/Pages/AuthPage"
 import { IoNutrition } from 'react-icons/io5'
 import { FaUserAlt } from 'react-icons/fa'
-import QN_Switch from "@/components/QN_Switch"
+import QN_Switch from "@/components/QN_Components/QN_Switch"
 import { useState } from "react"
 
 export default function RootPage() {

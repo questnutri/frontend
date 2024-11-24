@@ -1,11 +1,13 @@
 'use client'
 
-import QN_Table from "@/components/QN_Table"
+import QN_Table from "@/components/QN_Components/QN_Table"
 import { fetchPatients } from "@/lib/fetchPatients"
 import { useEffect, useState } from "react"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
-import QN_PatientModal from "@/components/QN_PatientModal"
+import QN_PatientModal from "@/components/QN_Components/QN_PatientModal"
 import { IPatient } from "@/models/Patient/Patient.interface"
+import { ListPatientsContext } from "@/components/Pages/ListPatients/context"
+import ListPatientsPage from "@/components/Pages/ListPatients"
 
 export default function PatientsPage() {
     const [patients, setPatients] = useState<IPatient[]>([])
@@ -24,8 +26,9 @@ export default function PatientsPage() {
     }, [])
 
     return (
-        <>
-            <h1 style={{ padding: '30px' }}>
+        <ListPatientsContext.Provider value={{patients, setPatients}}>
+            <ListPatientsPage />
+            {/* <h1 style={{ padding: '30px' }}>
                 Patients Page
             </h1>
             <QN_Table
@@ -36,7 +39,8 @@ export default function PatientsPage() {
                 rows={patients}
                 onRowClick={handleRowClick}
             />
-            <QN_PatientModal />
-        </>
+            <QN_PatientModal /> */}
+
+        </ListPatientsContext.Provider>
     )
 }

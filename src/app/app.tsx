@@ -1,5 +1,5 @@
 'use client'
-import QN_PopUpGlobalProvider from '@/components/QN_PopUp/popup.global'
+import QN_PopUpGlobalProvider from '@/components/QN_Components/QN_PopUp/popup.global'
 import { UserContext } from '@/context/user.context'
 import { IUser } from '@/models/User.interface'
 import { NextUIProvider } from '@nextui-org/react'

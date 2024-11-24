@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
-import QN_Tabs from '../QN_Tabs'
-import QN_FormLogin from '../QN_FormLogin'
-import QN_FormRegister from '../QN_FormRegister'
-import QN_ForgotPassword from '../QN_ForgotPassword'
+import QN_Tabs from '../QN_Components/QN_Tabs'
+import QN_FormLogin from '../QN_Components/QN_FormLogin'
+import QN_FormRegister from '../QN_Components/QN_FormRegister'
+import QN_ForgotPassword from '../QN_Components/QN_ForgotPassword'
 
 interface AuthPageProps {
     loginPath: 'nutritionist' | 'patient' | 'admin'

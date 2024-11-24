@@ -1,8 +1,8 @@
-import QN_Navbar from "@/components/QN_Navbar"
+import QN_Navbar from "@/components/QN_Components/QN_Navbar"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import QN_NutritionistPatient_Navbar_Header from "./header"
 import QN_NutritionistPatient_Navbar_Footer from "./footer"
-import {NavbarItemType} from '../../../QN_Navbar/navbar.context'
+import {NavbarItemType} from '../../../QN_Components/QN_Navbar/navbar.context'
 
 export default function QN_NutritionistPatient_Navbar({items}: {items?: NavbarItemType[]}) {
     return (
