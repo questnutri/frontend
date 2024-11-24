@@ -16,20 +16,20 @@ export interface QN_ButtonProps {
     onEnter?: () => void
 }
 
-export default function QN_Button({ 
-    ref, 
-    type = 'button', 
-    colorStyle = 'blue', 
-    width = '70%', 
-    height, 
-    blocked, 
+export default function QN_Button({
+    ref,
+    type = 'button',
+    colorStyle = 'blue',
+    width = '70%',
+    height,
+    blocked,
     isLoading,
     borderRadius,
     fontSize,
-    children, 
-    onClick, 
-    onTab, 
-    onEnter 
+    children,
+    onClick,
+    onTab,
+    onEnter
 }: QN_ButtonProps) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (e.key === 'Tab' && onTab) {
@@ -51,7 +51,7 @@ export default function QN_Button({
                 justifyContent: 'space-around'
             }}
         >
-            <span
+            {/* <span
                 style={{
                     fontSize: "15px",
                     marginLeft: "8px",
@@ -60,7 +60,7 @@ export default function QN_Button({
                 }}
             >
                 { }
-            </span>
+            </span> */}
             <Button
                 ref={ref}
                 type={type}

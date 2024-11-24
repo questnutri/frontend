@@ -1,23 +1,31 @@
+
 import { Textarea } from "@nextui-org/react"
 
 interface QN_TextAreaProps {
-    label: string,
+    label?: string,
     value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>
-    minRows: number,
-    maxRows: number,
+    minRows?: number,
+    maxRows?: number,
     disabled?: boolean
     readOnly?: boolean
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-
+    placeholder?: string,
+    isSelected?: boolean
+    setIsSelected?: (value: boolean) => void
 }
 
-export default function QN_TextArea({ label, minRows, maxRows, value, setValue, disabled, readOnly, onChange }: QN_TextAreaProps) {
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const text = event.target.value
-        setValue(text)
-    }
+export default function QN_TextArea({
+    label,
+    minRows = 3,
+    maxRows = 3,
+    value,
+    disabled,
+    readOnly,
+    onChange,
+    placeholder,
+    isSelected = false,
+    setIsSelected,
+}: QN_TextAreaProps) {
 
     return (
         <div
@@ -27,6 +35,11 @@ export default function QN_TextArea({ label, minRows, maxRows, value, setValue, 
                 alignItems: 'flex-start',
                 width: `100%`,
                 gap: '3px',
+                padding: "4px",
+                borderRadius: "5px",
+                resize: "none",
+                transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                height: '100%'
             }}
         >
             <span
@@ -39,15 +52,22 @@ export default function QN_TextArea({ label, minRows, maxRows, value, setValue, 
             >
                 {label}
             </span>
+
             <Textarea
-                placeholder={`Digite a(o) ${label}`}
+                placeholder={placeholder}
                 variant="bordered"
-                minRows={minRows}
-                maxRows={maxRows}
-                onChange={handleChange}
+                minRows={isSelected ? minRows * 2 : minRows}
+                maxRows={isSelected ? maxRows * 2 : maxRows}
+                onChange={onChange}
                 value={value}
                 isDisabled={disabled}
                 isReadOnly={readOnly}
+                classNames={{
+                    inputWrapper: ['bg-white border-black hover:border-black focus:border-black'],
+                    input: ['text-black']
+                }}
+                onFocus={() => setIsSelected?.(true)}
+                onBlur={() => setIsSelected?.(false)}
             />
         </div>
     );

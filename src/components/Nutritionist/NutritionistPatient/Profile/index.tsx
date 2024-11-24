@@ -18,14 +18,16 @@ export default function QN_NutritionistPatient_ProfilePage() {
     const [personalForm, setPersonalForm] = useState({
         firstName: patient?.firstName || '',
         lastName: patient?.lastName || '',
-        birth: '',
-        gender: '',
-        height: '1,76',
+        birth: patient?.details?.birth || '',
+        gender: patient?.details?.gender || '',
+        height: patient?.details?.height || 0,
+        rg: patient?.details?.rg || '589712937',
+        cpf: patient?.details?.cpf || '',
     })
 
     const [nutritionalInfo, setNutritionalInfo] = useState({
         followUpTime: calcularDiasDesdeConsulta(new Date(patient?.createdAt).toISOString().split('T')[0]),
-        firstConsultation: patient?.createdAt,
+        firstConsultation: '',
         lastConsultation: ''
     })
 
@@ -95,6 +97,20 @@ export default function QN_NutritionistPatient_ProfilePage() {
         }
     }
 
+    const genderMap: Record<'Masculino' | 'Feminino' | 'Outros', 'male' | 'female' | 'others'> = {
+        Masculino: "male",
+        Feminino: "female",
+        Outros: "others",
+    };
+
+    const reverseGenderMap: Record<'male' | 'female' | 'others', 'Masculino' | 'Feminino' | 'Outros'> = {
+        male: "Masculino",
+        female: "Feminino",
+        others: "Outros",
+    };
+
+
+
     const nameInputRef = useRef<HTMLInputElement>(null)
     const streetInputRef = useRef<HTMLInputElement>(null)
 
@@ -145,27 +161,59 @@ export default function QN_NutritionistPatient_ProfilePage() {
                 </QN_FormRow>
                 <QN_FormRow>
                     <QN_Input2
-                        label='Altura'
-                        value={`${personalForm.height}`}
-                        onChange={(e) =>
+                        label='RG'
+                        value={personalForm.rg}
+                        onChange={(e) => {
                             setPersonalForm({
                                 ...personalForm,
-                                height: e.target.value
+                                rg: e.target.value
                             })
-                        }
+                        }}
+                        mask='##.###.###-#'
+                    />
+                    <QN_Input2
+                        label='CPF'
+                        value={personalForm.cpf}
+                        onChange={(e) => {
+                            setPersonalForm({
+                                ...personalForm,
+                                cpf: e.target.value
+                            })
+                        }}
+                        mask='###.###.###-##'
+                    />
+                </QN_FormRow>
+                <QN_FormRow>
+                    <QN_Input2
+                        label='Altura'
+                        value={`${personalForm.height} m.`}
+                        onChange={(e) => {
+                            const newValue = e.target.value.replace(' m.', ''); // Remove a unidade 'm.'
+                            const height = parseFloat(newValue); // Converte o valor para um número
+
+                            if (!isNaN(height)) {
+                                setPersonalForm({
+                                    ...personalForm,
+                                    height: height, // Armazena o valor numérico
+                                });
+                            }
+                        }}
+                        mask='#.##'
                     />
                     <QN_DropDown
-                        label='Gênero'
-                        items={['Masculino', 'Feminino', 'Outros']}
-                        value={personalForm.gender}
-                        onChange={(e) =>
+                        label="Gênero"
+                        items={Object.keys(genderMap)}
+                        value={reverseGenderMap[personalForm.gender as keyof typeof reverseGenderMap] || genderMap[personalForm.gender as keyof typeof genderMap]}
+                        onChange={(selected) =>
                             setPersonalForm({
                                 ...personalForm,
-                                gender: e
+                                gender: genderMap[selected as keyof typeof genderMap]
                             })
                         }
-                        widthButton='200px'
+                        widthButton="100%"
                     />
+
+
                 </QN_FormRow>
                 <QN_FormRow>
                     <QN_Input2
@@ -197,6 +245,8 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         label='Telefone/Celular'
                         value={contactForm.phone}
                         onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
+                        mask='(##)#####-####'
+                        placeHolder='(xx)xxxxx-xxxx'
                     />
                     <QN_Button
                         colorStyle='blue'

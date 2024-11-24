@@ -12,6 +12,7 @@ import { MdModeEditOutline } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { FaCopy } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io"
+import { MdAddBox } from "react-icons/md";
 
 export {
     RiHome2Fill,
@@ -30,4 +31,5 @@ export {
     FaTrash,
     FaCopy,
     IoIosArrowBack,
+    MdAddBox,
 }
