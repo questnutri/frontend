@@ -1,7 +1,12 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react"
 
+type QN_DropDownItem = {
+    label: string
+    value: string
+}
+
 interface QN_DropDownProps {
-    items: string[]
+    items: QN_DropDownItem[]
     label?: string
     widthButton?: string
     widthOptions?: string
@@ -10,9 +15,10 @@ interface QN_DropDownProps {
     colorFontButton?: string
     colorFontOptions?: string
     value: string
-    onChange: (value: string) => void // Alterado para aceitar o valor diretamente
+    onChange: (value: string) => void
     disabled?: boolean
     readyOnly?: boolean
+    onTab?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
 }
 
 export default function QN_DropDown({
@@ -25,10 +31,19 @@ export default function QN_DropDown({
     colorFontButton = 'black',
     colorFontOptions = 'black',
     value,
-    onChange,
     disabled,
-    readyOnly
+    readyOnly,
+    onChange,
+    onTab,
 }: QN_DropDownProps) {
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (e.key === 'Tab' && onTab) {
+            e.preventDefault()
+            onTab(e)
+        }
+    }
+
     return (
         <div
             style={{
@@ -58,8 +73,9 @@ export default function QN_DropDown({
                             backgroundColor: `${bgColorButton}`,
                             color: `${colorFontButton}`,
                         }}
+                        onKeyDown={handleKeyDown}
                     >
-                        {value}
+                        {items.find(item => item.value === value)?.label || 'Selecione'}
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu
@@ -72,9 +88,9 @@ export default function QN_DropDown({
                     {items.map((item, index) => (
                         <DropdownItem
                             key={index}
-                            onClick={() => !readyOnly && onChange(item)} // Usa onClick para capturar o valor
+                            onClick={() => !readyOnly && onChange(item.value)}
                         >
-                            {item}
+                            {item.label}
                         </DropdownItem>
                     ))}
                 </DropdownMenu>

@@ -23,7 +23,7 @@ export default function PatientsPage() {
             setPatients(data)
         }
         getPatients()
-    }, [])
+    }, [patients])
 
     return (
         <ListPatientsContext.Provider value={{patients, setPatients}}>

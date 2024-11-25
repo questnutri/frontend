@@ -10,7 +10,9 @@ export interface QN_ButtonProps {
     isLoading?: boolean
     borderRadius?: string
     fontSize?: string
+    marginTop?: string
     children?: React.ReactNode
+    noShadow?: boolean
     onClick?: () => void
     onTab?: () => void
     onEnter?: () => void
@@ -27,6 +29,8 @@ export default function QN_Button({
     borderRadius,
     fontSize,
     children,
+    marginTop,
+    noShadow=false,
     onClick,
     onTab,
     onEnter
@@ -48,7 +52,8 @@ export default function QN_Button({
                 flexDirection: "column",
                 alignItems: "center",
                 width: `100%`,
-                justifyContent: 'space-around'
+                justifyContent: 'space-around',
+                marginTop
             }}
         >
             {/* <span
@@ -70,7 +75,7 @@ export default function QN_Button({
                 style={{
                     backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
                     color: colorStyle === 'white' ? '#23a3ff' : 'white',
-                    boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
+                    boxShadow: !noShadow ? '0 3px 4px rgba(0, 0, 0, 0.4)': '',
                     fontWeight: '600',
                     fontSize,
                     width: `${width}`,

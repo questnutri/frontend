@@ -43,3 +43,17 @@ export const fetchOnePatient = async (id: string): Promise<any> => {
         throw new Error('Could not fetch patient')
     }
 }
+
+export const updateOnePatient = async (id: string, data: Partial<IPatient>) => {
+    try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(data)
+        })
+
+        console.log(await response.json())
+
+    } catch (error) {
+        
+    }
+}

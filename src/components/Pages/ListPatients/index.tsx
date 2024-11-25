@@ -14,37 +14,58 @@ export default function ListPatientsPage() {
 
     const handleRowClick = async (id: string | null) => {
         setModalPatient(id)
-    };
+    }
+
+    const searchTypes = [
+        {
+            label: 'Nome',
+            value: 'name'
+        },
+        {
+            label: 'E-mail',
+            value: 'email'
+        },
+        {
+            label: 'Data de nascimento',
+            value: 'birth'
+        },
+        {
+            label: 'CPF',
+            value: 'cpf'
+        },
+        {
+            label: 'Telefone/Celular',
+            value: 'phone'
+        }
+    ]
 
     const [filter, setFilter] = useState('')
-    const [filterType, setFilterType] = useState('Nome')
+    const [filterType, setFilterType] = useState(searchTypes[0].value)
     const [filteredPatients, setFilteredPatients] = useState<IPatient[]>([])
 
-
-    const searchTypes = ['Nome', 'E-mail', 'Data de nascimento', 'CPF', 'Telefone/Celular']
     useEffect(() => {
         setFilteredPatients(
             patients.filter((patient) => {
                 const searchValue = filter.toLocaleLowerCase()
                 switch (filterType) {
-                    case searchTypes[0]: {
+                    case searchTypes[0].value: {
                         const fullName = `${patient.firstName ?? ''} ${patient.lastName ?? ''}`.toLocaleLowerCase()
                         return fullName.includes(searchValue)
                     }
-                    case searchTypes[1]: {
+                    case searchTypes[1].value: {
                         const email = patient.email?.toLocaleLowerCase() ?? ''
                         return email.includes(searchValue)
                     }
-                    case searchTypes[2]: {
+                    case searchTypes[2].value: {
                         const birth = patient.details?.birth?.toDateString().toLocaleLowerCase() ?? ''
                         return birth.includes(searchValue)
                     }
-                    case searchTypes[3]: {
+                    case searchTypes[3].value: {
                         const cpf = patient.details?.cpf?.toLocaleLowerCase() ?? ''
                         return cpf.includes(searchValue)
                     }
 
-                    case searchTypes[4]: {
+                    case searchTypes[4].value: {
                         const phone = patient.details?.phone?.toLocaleLowerCase() ?? ''
                         return phone.includes(searchValue)
                     }
@@ -55,18 +76,18 @@ export default function ListPatientsPage() {
 
     return (
         <>
-            <div style={{ display: 'flex', width: '100%'}}>
-                <QN_DropDown value={filterType} onChange={setFilterType} items={searchTypes} widthButton='25%'/>
-                <QN_Input version={2} value={filter} onChange={(e) => setFilter(e.target.value)} clearable/>
+            <div style={{ display: 'flex', width: '100%' }}>
+                <QN_DropDown value={filterType} onChange={setFilterType} items={searchTypes} widthButton='25%' />
+                <QN_Input version={2} value={filter} onChange={(e) => setFilter(e.target.value)} clearable />
             </div>
 
             <QN_Table
                 columns={[
-                    { key: 'firstName', label: searchTypes[0], render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
-                    { key: 'email', label: searchTypes[1] },
-                    { key: 'details.birth', label: searchTypes[2] },
-                    { key: 'details.cpf', label: searchTypes[3] },
-                    { key: 'details.phone', label: searchTypes[4] },
+                    { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
+                    { key: 'email', label: searchTypes[1].label },
+                    { key: 'details.birth', label: searchTypes[2].label },
+                    { key: 'details.cpf', label: searchTypes[3].label },
+                    { key: 'details.phone', label: searchTypes[4].label },
                 ]}
                 rows={filteredPatients}
                 onRowClick={handleRowClick}

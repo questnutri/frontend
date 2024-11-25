@@ -1,60 +1,58 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import QN_Form from '@/components/QN_Components/QN_Form'
 import QN_FormRow from '@/components/QN_Components/QN_FormRow'
 import { useNutritionistPatient } from '@/context/modal.patient.context'
 import QN_Input from '@/components/QN_Components/QN_Input'
-import QN_TextArea from '@/components/QN_Components/QN_TextArea'
 import QN_Button from '@/components/QN_Components/QN_Button'
-import QN_CheckBoxGroup from '@/components/QN_Components/QN_CheckBoxGroup'
-import QN_Tabs from '@/components/QN_Components/QN_Tabs'
 import QN_DropDown from '@/components/QN_Components/QN_DropDown'
-import QN_RadioGroup from '@/components/QN_Components/QN_RadioGroup'
 import { fetchCep } from '@/lib/fetchCep'
-import QN_TimeInput from '@/components/QN_Components/QN_TimeInput'
+import { updateOnePatient } from '@/lib/fetchPatients'
+
+
 
 export default function QN_NutritionistPatient_ProfilePage() {
-    const { patient } = useNutritionistPatient()
+    const { patient, setModalPatient } = useNutritionistPatient()
+
+    const updatePatientBtn = (data: any): React.ReactNode => {
+        return (
+            <QN_Button width='120px' height='32px' onClick={() => {
+                updateOnePatient(patient?._id as string, data)
+                setModalPatient(patient!._id)
+            }}
+                noShadow
+            >Salvar</QN_Button>
+        )
+    }
 
     const [personalForm, setPersonalForm] = useState({
         firstName: patient?.firstName || '',
         lastName: patient?.lastName || '',
-        birth: patient?.details?.birth || '',
+        birth: patient?.details?.birth ? new Date(patient.details.birth).toISOString().split('T')[0] : '',
         gender: patient?.details?.gender || '',
         height: patient?.details?.height || 0,
-        rg: patient?.details?.rg || '589712937',
+        rg: patient?.details?.rg || '',
         cpf: patient?.details?.cpf || '',
     })
 
     const [nutritionalInfo, setNutritionalInfo] = useState({
-        followUpTime: calcularDiasDesdeConsulta(new Date(patient?.createdAt).toISOString().split('T')[0]),
+        followUpTime: calculateFollowUpTime(new Date(patient?.createdAt).toISOString().split('T')[0]),
         firstConsultation: '',
         lastConsultation: ''
     })
 
-    const cleanAddress = {
-        street: '',
-        number: '',
-        complement: '',
-        cep: '',
-        hood: '',
-        city: '',
-        state: ''
-    }
-    const [addressForm, setAddressForm] = useState(cleanAddress)
-
     const [contactForm, setContactForm] = useState({
         email: patient?.email || '',
-        phone: '',
+        phone: patient?.details?.phone || '',
     })
 
 
-    const verificarTexto = (texto: string) => {
+    const checkIsText = (texto: string) => {
         const regex = /[^a-zA-Záéíóúãõâêîôûç\s]/
         return !regex.test(texto)
     }
 
-    function calcularDiasDesdeConsulta(createdAt: string): number {
+    function calculateFollowUpTime(createdAt: string): number {
         const currentDate = new Date()
         const dateObj = new Date(createdAt)
 
@@ -64,21 +62,43 @@ export default function QN_NutritionistPatient_ProfilePage() {
         return Math.floor(diffEmDias)
     }
 
-    const verificaNumero = (texto: string) => {
-        const regex = /\d/;
-        return !regex.test(texto);
-    };
-
-    function formatarCPF(cpf: string): string {
-        const apenasNumeros = cpf.replace(/\D/g, "");
-
-        return apenasNumeros
-            .replace(/(\d{3})(\d)/, "$1.$2")
-            .replace(/(\d{3})(\d)/, "$1.$2")
-            .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    const cleanAddress = {
+        street: '',
+        number: 0,
+        complement: '',
+        cep: '',
+        hood: '',
+        city: '',
+        state: ''
     }
 
+    const [addressForm, setAddressForm] = useState({
+        street: patient?.details?.address?.street || '',
+        number: patient?.details?.address?.number || 0,
+        complement: patient?.details?.address?.complement || '',
+        cep: patient?.details?.address?.cep || '',
+        hood: patient?.details?.address?.hood || '',
+        city: patient?.details?.address?.city || '',
+        state: patient?.details?.address?.state || '',
+    })
+
     const [isValidCep, setIsValidCep] = useState(false)
+
+    useEffect(() => {
+        const checkCep = async () => {
+            const data = await fetchCep(addressForm.cep)
+            if(data) {
+                setIsValidCep(true)
+            } else {
+                setIsValidCep(false)
+            }
+        }
+
+        if (addressForm.cep !== '') {
+            checkCep()
+        }
+    }, [])
+    
     const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddressForm({ ...addressForm, cep: e.target.value })
         const data = await fetchCep(e.target.value)
@@ -87,6 +107,8 @@ export default function QN_NutritionistPatient_ProfilePage() {
             setAddressForm({
                 ...addressForm,
                 cep: e.target.value,
+                number: addressForm.number,
+                complement: addressForm.complement,
                 ...data
             })
         } else {
@@ -94,23 +116,56 @@ export default function QN_NutritionistPatient_ProfilePage() {
             setAddressForm({
                 ...cleanAddress,
                 cep: e.target.value,
+                number: addressForm.number,
+                complement: addressForm.complement
             })
         }
     }
 
-    const genderMap: Record<'Masculino' | 'Feminino' | 'Outros', 'male' | 'female' | 'others'> = {
-        Masculino: "male",
-        Feminino: "female",
-        Outros: "others",
-    };
+    const genderOptions = [
+        {
+            label: 'Masculino',
+            value: 'male'
+        },
+        {
+            label: 'Feminino',
+            value: 'female'
+        },
+        {
+            label: 'Outros',
+            value: 'others'
+        }
+    ]
 
-    const reverseGenderMap: Record<'male' | 'female' | 'others', 'Masculino' | 'Feminino' | 'Outros'> = {
-        male: "Masculino",
-        female: "Feminino",
-        others: "Outros",
-    };
-
-
+    const stateOptions = [
+        { label: 'AC', value: 'AC' },
+        { label: 'AL', value: 'AL' },
+        { label: 'AP', value: 'AP' },
+        { label: 'AM', value: 'AM' },
+        { label: 'BA', value: 'BA' },
+        { label: 'CE', value: 'CE' },
+        { label: 'DF', value: 'DF' },
+        { label: 'ES', value: 'ES' },
+        { label: 'GO', value: 'GO' },
+        { label: 'MA', value: 'MA' },
+        { label: 'MT', value: 'MT' },
+        { label: 'MS', value: 'MS' },
+        { label: 'MG', value: 'MG' },
+        { label: 'PA', value: 'PA' },
+        { label: 'PB', value: 'PB' },
+        { label: 'PR', value: 'PR' },
+        { label: 'PE', value: 'PE' },
+        { label: 'PI', value: 'PI' },
+        { label: 'RJ', value: 'RJ' },
+        { label: 'RN', value: 'RN' },
+        { label: 'RS', value: 'RS' },
+        { label: 'RO', value: 'RO' },
+        { label: 'RR', value: 'RR' },
+        { label: 'SC', value: 'SC' },
+        { label: 'SP', value: 'SP' },
+        { label: 'SE', value: 'SE' },
+        { label: 'TO', value: 'TO' }
+    ]
 
     const nameInputRef = useRef<HTMLInputElement>(null)
     const streetInputRef = useRef<HTMLInputElement>(null)
@@ -129,7 +184,19 @@ export default function QN_NutritionistPatient_ProfilePage() {
             }}
         >
             <h1>Profile Page</h1>
-            <QN_Form title="Informações Pessoais" >
+            <QN_Form title="Informações Pessoais" actionButton={
+                updatePatientBtn({
+                    firstName: personalForm.firstName,
+                    lastName: personalForm.lastName,
+                    details: {
+                        rg: personalForm.rg,
+                        cpf: personalForm.cpf,
+                        height: personalForm.height,
+                        birth: new Date(personalForm.birth),
+                        gender: personalForm.gender,
+                    }
+                })
+            }>
                 <QN_FormRow>
                     <QN_Input
                         ref={nameInputRef}
@@ -139,7 +206,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                             ...personalForm,
                             firstName: e.target.value
                         })}
-                        validation={verificarTexto}
+                        validation={checkIsText}
                     />
                     <QN_Input
                         label='Sobrenome'
@@ -148,7 +215,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                             ...personalForm,
                             lastName: e.target.value
                         })}
-                        validation={verificarTexto}
+                        validation={checkIsText}
                     />
                     <QN_Input
                         label='Data de nascimento'
@@ -186,29 +253,32 @@ export default function QN_NutritionistPatient_ProfilePage() {
                 </QN_FormRow>
                 <QN_FormRow>
                     <QN_Input
-                        label='Altura'
-                        value={`${personalForm.height} m.`}
+                        label='Altura (metros)'
+                        value={`${personalForm.height}`}
                         onChange={(e) => {
-                            const newValue = e.target.value.replace(' m.', ''); // Remove a unidade 'm.'
-                            const height = parseFloat(newValue); // Converte o valor para um número
-
-                            if (!isNaN(height)) {
+                            const height = parseFloat(e.target.value)
+                            if (isNaN(height)) {
                                 setPersonalForm({
                                     ...personalForm,
-                                    height: height, // Armazena o valor numérico
-                                });
+                                    height: 0,
+                                })
+                            } else {
+                                setPersonalForm({
+                                    ...personalForm,
+                                    height: parseFloat(e.target.value),
+                                })
                             }
                         }}
                         mask='#.##'
                     />
                     <QN_DropDown
                         label="Gênero"
-                        items={Object.keys(genderMap)}
-                        value={reverseGenderMap[personalForm.gender as keyof typeof reverseGenderMap] || genderMap[personalForm.gender as keyof typeof genderMap]}
+                        items={genderOptions}
+                        value={personalForm.gender}
                         onChange={(selected) =>
                             setPersonalForm({
                                 ...personalForm,
-                                gender: genderMap[selected as keyof typeof genderMap]
+                                gender: selected
                             })
                         }
                         widthButton="100%"
@@ -227,28 +297,53 @@ export default function QN_NutritionistPatient_ProfilePage() {
 
                 </QN_FormRow>
             </QN_Form>
-            <QN_Form title='Contato'>
+            <QN_Form title='Contato' actionButton={
+                updatePatientBtn({
+                    email: contactForm.email,
+                    details: {
+                        phone: contactForm.phone
+                    }
+                })
+            }>
                 <QN_FormRow>
                     <QN_Input
                         label='E-mail'
                         value={contactForm.email}
                         onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
                     />
+                    <QN_Button
+                        colorStyle='blue'
+                        width='100%'
+                        height='40px'
+                        marginTop='27px'
+                        noShadow
+                    >
+                        Enviar redefinição de senha
+                    </QN_Button>
                     <QN_Input
                         label='Telefone/Celular'
                         value={contactForm.phone}
                         onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
-                        mask='(##)#####-####'
-                        placeHolder='(xx)xxxxx-xxxx'
+                        mask='(##) # ####-####'
+                        placeHolder='(xx) xxxxx-xxxx'
                     />
-                    <QN_Button
-                        colorStyle='blue'
-                    >
-                        Alterar senha?
-                    </QN_Button>
                 </QN_FormRow>
             </QN_Form>
-            <QN_Form title='Endereço'>
+            <QN_Form title='Endereço' actionButton={
+                updatePatientBtn({
+                    details: {
+                        address: {
+                            cep: addressForm.cep,
+                            number: addressForm.number,
+                            complement: addressForm.complement,
+                            street: addressForm.street,
+                            hood: addressForm.hood,
+                            city: addressForm.city,
+                            state: addressForm.state,
+                        }
+                    }
+                })
+            }>
                 <QN_FormRow>
                     <QN_Input
                         label='CEP'
@@ -258,8 +353,21 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                     <QN_Input
                         label='Número'
-                        value={addressForm.number as string}
-                        onChange={e => setAddressForm({ ...addressForm, number: e.target.value })}
+                        value={`${addressForm.number}`}
+                        onChange={(e) => {
+                            const addrNumber = parseFloat(e.target.value)
+                            if (isNaN(addrNumber)) {
+                                setAddressForm({
+                                    ...addressForm,
+                                    number: 0,
+                                })
+                            } else {
+                                setAddressForm({
+                                    ...addressForm,
+                                    number: addrNumber,
+                                })
+                            }
+                        }}
                     />
                     <QN_Input
                         label='Complemento'
@@ -293,15 +401,22 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         onChange={e => setAddressForm({ ...addressForm, city: e.target.value })}
                         disabled={isValidCep}
                     />
-                    <QN_Input
-                        label='Estado'
+                    <QN_DropDown
+                        label="Estado"
+                        items={stateOptions}
                         value={addressForm.state}
-                        onChange={e => setAddressForm({ ...addressForm, state: e.target.value })}
+                        onChange={(selected) =>
+                            setAddressForm({
+                                ...addressForm,
+                                state: selected
+                            })
+                        }
                         disabled={isValidCep}
+                        widthButton="100%"
                         onTab={(e) => nameInputRef.current?.focus()}
                     />
                 </QN_FormRow>
             </QN_Form>
-        </div>
+        </div >
     );
 }

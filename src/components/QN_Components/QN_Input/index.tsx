@@ -112,15 +112,18 @@ export default function QN_Input({
     const applyMask = (rawValue: string, mask: string): string => {
         let formattedValue = ''
         let rawIndex = 0
+    
         for (let i = 0; i < mask.length; i++) {
             if (rawIndex >= rawValue.length) break
             if (mask[i] === '#') {
                 formattedValue += rawValue[rawIndex]
                 rawIndex++
             } else {
+                // Adiciona os caracteres fixos diretamente
                 formattedValue += mask[i]
             }
         }
+    
         return formattedValue
     }
 
@@ -128,22 +131,41 @@ export default function QN_Input({
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (mask) {
             const inputElement = e.target
-            const rawValue = e.target.value.replace(/[^0-9]/g, '')
+            const rawValue = e.target.value.replace(/[^0-9]/g, '') // Remove caracteres que não são números
             const oldMaskedValue = value || ''
-            const maskedValue = mask ? applyMask(rawValue, mask) : rawValue
-
+            const maskedValue = applyMask(rawValue, mask)
+    
             const cursorPosition = inputElement.selectionStart || 0
-            let newCursorPosition = cursorPosition
-            for (let i = 0; i < cursorPosition; i++) {
-                if (maskedValue[i] !== oldMaskedValue[i] && mask[i] !== '#') {
-                    newCursorPosition++
+            let adjustedCursorPosition = cursorPosition
+    
+            // Ajusta a posição do cursor ao inserir ou excluir caracteres
+            if (maskedValue.length > oldMaskedValue.length) {
+                // Inserção: pula caracteres fixos da máscara
+                for (let i = cursorPosition - 1; i < mask.length; i++) {
+                    if (mask[i] !== '#' && maskedValue[i]) {
+                        adjustedCursorPosition++
+                    } else {
+                        break
+                    }
+                }
+            } else if (maskedValue.length < oldMaskedValue.length) {
+                // Exclusão: retorna sobre caracteres fixos
+                for (let i = cursorPosition - 1; i >= 0; i--) {
+                    if (mask[i] !== '#' && maskedValue[i] !== rawValue[i]) {
+                        adjustedCursorPosition--
+                    } else {
+                        break
+                    }
                 }
             }
+    
+            // Atualiza o valor do input
             onChange({ ...e, target: { ...e.target, value: maskedValue } })
             if (validation) setShowErrorMessage(!validation(maskedValue))
-
+    
             setTimeout(() => {
-                inputElement.setSelectionRange(newCursorPosition, newCursorPosition)
+                // Define a nova posição do cursor
+                inputElement.setSelectionRange(adjustedCursorPosition, adjustedCursorPosition)
             }, 0)
         } else {
             onChange(e)

@@ -1,4 +1,4 @@
-import { Address } from '@/models/Address.interface'
+import { IAddress } from '@/models/Address.interface'
 
 export async function fetchCep(cep: string): Promise<any | null> {
     const cleanCep = cep.replace(/\D/g, "")

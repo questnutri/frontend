@@ -1,12 +1,14 @@
 'use client'
 import React from 'react'
+import QN_Button from '../QN_Button';
 
 interface QN_FormProps {
     title?: string
+    actionButton?: React.ReactNode
     children: React.ReactNode
 }
 
-export default function QN_Form({ children, title }: QN_FormProps): JSX.Element {
+export default function QN_Form({ children, actionButton, title }: QN_FormProps): JSX.Element {
 
     return (
         <div
@@ -26,7 +28,12 @@ export default function QN_Form({ children, title }: QN_FormProps): JSX.Element 
                 boxSizing: 'border-box'
             }}
         >
-            <h1 style={{ color: 'black', fontWeight: '600', marginLeft: '5px', fontSize: '20px' }}>{title}</h1>
+            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <h1 style={{ color: 'black', fontWeight: '600', marginLeft: '5px', fontSize: '20px', width: '100%' }}>{title}</h1>
+                <div style={{ width: '180px', height: '45px', marginRight: '-15px' }}>
+                    {actionButton}
+                </div>
+            </div>
             {children}
         </div>
 

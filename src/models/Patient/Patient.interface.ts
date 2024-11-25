@@ -1,3 +1,4 @@
+import { IAddress } from "../Address.interface"
 import { IWeight } from "./Weight/Weight.interface"
 
 export interface IPatient {
@@ -44,7 +45,8 @@ export interface IPatient {
 				frequency?: string
 			}[]
 			obs?: string
-		}
+		},
+		address: IAddress
 	}
 	nutri: string
 	activeDiet?: string

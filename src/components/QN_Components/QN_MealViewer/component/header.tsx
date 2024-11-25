@@ -1,7 +1,6 @@
 'use client'
 import { useMealViewer } from "../context"
 import { BiSolidRightArrow, BsFire, FaCopy, FaRegClock } from '../../../../icons'
-import QN_Input2 from "@/components/QN_Components/QN_Input2"
 import { useUser } from "@/context/user.context"
 import { MdEdit } from "react-icons/md"
 import { FaTrash } from "react-icons/fa6"
@@ -10,6 +9,7 @@ import { use, useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { useMeal } from "@/context/diet.context"
+import QN_Input from "../../QN_Input"
 
 function HourComponent({
     value,
@@ -24,7 +24,7 @@ function HourComponent({
     const { meal } = useMealViewer()
 
     return (
-        <QN_Input2
+        <QN_Input
             width='120px'
             height='100%'
             removeStyle={!isEditable}
@@ -43,7 +43,7 @@ function HourComponent({
 
 function KcalComponent() {
     return (
-        <QN_Input2
+        <QN_Input
             width='130px'
             height='100%'
             removeStyle={true}
@@ -119,7 +119,7 @@ export default function QN_MealViewer_Component_Header({ inputSize }: { inputSiz
             </div>
 
             <div style={{ flex: 1, maxWidth: inputSize || '70%', cursor: 'pointer' }} onClick={() => { if (!isEditable) toggleOpened() }}>
-                <QN_Input2
+                <QN_Input
                     value={mealName ?? 'Refeição'}
                     onChange={() => undefined}
                     removeStyle={!isEditable}
