@@ -12,6 +12,8 @@ import { FaTrash } from "react-icons/fa";
 import { FaCopy } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io"
 import { MdAddBox } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa6";
 
 export {
     RiHome2Fill,
@@ -33,4 +35,6 @@ export {
     BiSolidUpArrow,
     BiSolidLeftArrow,
     MdAddBox,
+    FaEdit,
+    FaPlus,
 }

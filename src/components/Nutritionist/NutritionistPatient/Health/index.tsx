@@ -4,6 +4,7 @@ import QN_Tabs from "@/components/QN_Components/QN_Tabs";
 import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useState } from "react";
 import QN_ContainerHealthConditions from "@/components/QN_Components/QN_ContainerHealthConditions";
+import QN_MealComponent from "@/components/QN_Components/QN_AlimentComponent";
 
 export default function QN_NutritionistPatient_HealthPage() {
     const { patient } = useNutritionistPatient();
@@ -114,6 +115,21 @@ export default function QN_NutritionistPatient_HealthPage() {
                 }}
             >
                 <QN_ContainerHealthConditions healthCondition={healthCondition} onChange={setHealthCondition} />
+            </div>
+            <div
+                style={{
+                    display:'flex',
+                    flexDirection:'column',
+                    width: "100%",
+                    justifyContent: "start",
+                    padding: "10px",
+                    color: "#55b7fe",
+                    gap: "8px",
+                    alignItems:'center'
+                }}
+            >
+                <QN_MealComponent/>
+ 
             </div>
         </div>
     );
