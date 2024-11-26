@@ -10,6 +10,9 @@ interface QN_TextAreaProps {
     readOnly?: boolean
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     placeholder?: string,
+    fontSizeLabel?: string,
+    fontColorLabel?: string,
+    fontWeightLabel?: string,
     isSelected?: boolean
     setIsSelected?: (value: boolean) => void
 }
@@ -25,6 +28,9 @@ export default function QN_TextArea({
     placeholder,
     isSelected = false,
     setIsSelected,
+    fontSizeLabel = '15px',
+    fontColorLabel = 'black',
+    fontWeightLabel = '500'
 }: QN_TextAreaProps) {
 
     return (
@@ -44,10 +50,10 @@ export default function QN_TextArea({
         >
             <span
                 style={{
-                    fontSize: '15px',
+                    fontSize: `${fontSizeLabel}`,
                     marginLeft: '8px',
-                    color: 'black',
-                    fontWeight: '500',
+                    color: `${fontColorLabel}`,
+                    fontWeight: `${fontWeightLabel}`,
                 }}
             >
                 {label}

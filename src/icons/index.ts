@@ -14,6 +14,7 @@ import { IoIosArrowBack } from "react-icons/io"
 import { MdAddBox } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 
 export {
     RiHome2Fill,
@@ -37,4 +38,5 @@ export {
     MdAddBox,
     FaEdit,
     FaPlus,
+    FaSearch,
 }

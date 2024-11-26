@@ -35,6 +35,7 @@ interface QN_InputProps {
     placeHolder?: string
     removeStyle?: boolean
     cursor?: boolean,
+    withBorder?: boolean
 
     //Attachments
     label?: string
@@ -82,6 +83,7 @@ export default function QN_Input({
     placeHolder,
     removeStyle = false,
     cursor,
+    withBorder = false,
 
     //Attachments
     label,
@@ -280,7 +282,10 @@ export default function QN_Input({
                         classNames={
                             removeStyle ? {
                                 input: [`bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
-                                inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`]
+                                inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`],
+                            } : withBorder ?{
+                                input:['bg-neutral-50 text-black'],
+                                inputWrapper:['bg-neutral-50 border-solid border-gray-400 border']
                             } : undefined
                         }
 
