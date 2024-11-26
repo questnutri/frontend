@@ -5,6 +5,8 @@ import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useState } from "react";
 import QN_ContainerHealthConditions from "@/components/QN_Components/QN_ContainerHealthConditions";
 import QN_MealComponent from "@/components/QN_Components/QN_AlimentComponent";
+import QN_Input from "@/components/QN_Components/QN_Input";
+import QN_Table from "@/components/QN_Components/QN_Table";
 
 export default function QN_NutritionistPatient_HealthPage() {
     const { patient } = useNutritionistPatient();
@@ -24,14 +26,16 @@ export default function QN_NutritionistPatient_HealthPage() {
     const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
     const anyCardSelected = selectedCardId !== null;
 
+    const [dietObjective, setDietObjective] = useState('');
+
     const cards = [
-        {
+        /*{
             id: "goals",
             name: "Objetivos",
             value: personalCharacteristic.goals,
             onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setPersonalCharacteristic({ ...personalCharacteristic, goals: e.target.value })
-        },
+        },*/
         {
             id: "routine",
             name: "Rotina",
@@ -58,6 +62,13 @@ export default function QN_NutritionistPatient_HealthPage() {
     return (
         <div
             style={{
+                width: '100%',
+                height: '100%',
+                overflowY: 'auto'
+            }}
+        >
+        <div
+            style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 padding: '20px',
@@ -79,6 +90,24 @@ export default function QN_NutritionistPatient_HealthPage() {
                 fontWeight: '600',
                 color: '#55b7fe'
             }}>Health Page</h1>
+            <div
+                style={{
+                    display: 'flex',
+                    width: '100%'
+                }}
+            >
+                <h1 style={{
+                    color: 'Black',
+                    fontSize: '15px',
+                    fontWeight: 'bold',
+                    padding: '5px'
+                }}>Objetivo da Dieta</h1>
+                <QN_Input
+                        label=''
+                        value={dietObjective}
+                        onChange={e => setDietObjective(e.target.value)}
+                    />
+            </div>
             <div
                 style={{
                     display: 'flex',
@@ -131,6 +160,7 @@ export default function QN_NutritionistPatient_HealthPage() {
                 <QN_MealComponent/>
  
             </div>
+        </div>
         </div>
     );
 }
