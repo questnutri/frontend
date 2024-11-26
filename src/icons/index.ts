@@ -2,7 +2,7 @@ import { RiHome2Fill } from "react-icons/ri"
 import { LuCalendarClock } from "react-icons/lu"
 import { FaUsers, FaUser, FaAppleAlt } from "react-icons/fa"
 import { IoArrowBack } from "react-icons/io5"
-import { BiSolidRightArrow, BiSolidDownArrow, BiSolidUpArrow, BiSolidLeftArrow} from "react-icons/bi"
+import { BiSolidRightArrow, BiSolidDownArrow, BiSolidUpArrow, BiSolidLeftArrow } from "react-icons/bi"
 import { FaRegClock } from "react-icons/fa6"
 import { BsFire } from "react-icons/bs"
 import { FaRegTrashCan } from "react-icons/fa6"
@@ -15,6 +15,7 @@ import { MdAddBox } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 export {
     RiHome2Fill,
@@ -39,4 +40,5 @@ export {
     FaEdit,
     FaPlus,
     FaSearch,
+    IoClose
 }

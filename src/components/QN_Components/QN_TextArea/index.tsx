@@ -69,7 +69,7 @@ export default function QN_TextArea({
                 isDisabled={disabled}
                 isReadOnly={readOnly}
                 classNames={{
-                    inputWrapper: ['bg-white border-black hover:border-black focus:border-black'],
+                    inputWrapper: ['bg-white border-black border hover:border-black focus:border-black'],
                     input: ['text-black']
                 }}
                 onFocus={() => setIsSelected?.(true)}

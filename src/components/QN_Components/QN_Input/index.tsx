@@ -114,7 +114,7 @@ export default function QN_Input({
     const applyMask = (rawValue: string, mask: string): string => {
         let formattedValue = ''
         let rawIndex = 0
-    
+
         for (let i = 0; i < mask.length; i++) {
             if (rawIndex >= rawValue.length) break
             if (mask[i] === '#') {
@@ -125,7 +125,7 @@ export default function QN_Input({
                 formattedValue += mask[i]
             }
         }
-    
+
         return formattedValue
     }
 
@@ -136,10 +136,10 @@ export default function QN_Input({
             const rawValue = e.target.value.replace(/[^0-9]/g, '') // Remove caracteres que não são números
             const oldMaskedValue = value || ''
             const maskedValue = applyMask(rawValue, mask)
-    
+
             const cursorPosition = inputElement.selectionStart || 0
             let adjustedCursorPosition = cursorPosition
-    
+
             // Ajusta a posição do cursor ao inserir ou excluir caracteres
             if (maskedValue.length > oldMaskedValue.length) {
                 // Inserção: pula caracteres fixos da máscara
@@ -160,11 +160,11 @@ export default function QN_Input({
                     }
                 }
             }
-    
+
             // Atualiza o valor do input
             onChange({ ...e, target: { ...e.target, value: maskedValue } })
             if (validation) setShowErrorMessage(!validation(maskedValue))
-    
+
             setTimeout(() => {
                 // Define a nova posição do cursor
                 inputElement.setSelectionRange(adjustedCursorPosition, adjustedCursorPosition)
@@ -283,9 +283,9 @@ export default function QN_Input({
                             removeStyle ? {
                                 input: [`bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
                                 inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`],
-                            } : withBorder ?{
-                                input:['bg-neutral-50 text-black'],
-                                inputWrapper:['bg-neutral-50 border-solid border-gray-400 border']
+                            } : withBorder ? {
+                                input: ['bg-neutral-50 text-black'],
+                                inputWrapper: ['bg-neutral-50 border-solid border-gray-400 border']
                             } : undefined
                         }
 
