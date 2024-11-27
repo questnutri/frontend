@@ -4,6 +4,7 @@ import { createContext, useContext } from "react"
 interface ListPatientsContextType {
     patients: IPatient[]
     setPatients: (patients: any) => void
+    refreshList: () => void
 }
 
 export const ListPatientsContext = createContext<ListPatientsContextType | undefined> (undefined)

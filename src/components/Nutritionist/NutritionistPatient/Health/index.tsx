@@ -4,7 +4,6 @@ import QN_Tabs from "@/components/QN_Components/QN_Tabs";
 import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useState } from "react";
 import QN_ContainerHealthConditions from "@/components/QN_Components/QN_ContainerHealthConditions";
-import QN_MealComponent from "@/components/QN_Components/QN_AlimentComponent";
 import QN_Input from "@/components/QN_Components/QN_Input";
 import QN_Table from "@/components/QN_Components/QN_Table";
 
@@ -157,8 +156,6 @@ export default function QN_NutritionistPatient_HealthPage() {
                         alignItems: 'center'
                     }}
                 >
-                    <QN_MealComponent />
-
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@ export interface CustomButtonType {
 }
 
 export interface PopUpConfigType {
-    message?: string | null
+    message?: string | React.ReactNode | null
     width?: string
     height?: string
     closeButton?: boolean

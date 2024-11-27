@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FaEdit } from "../../../icons/index";
 import QN_MealGeneralInfo from "./QN_AlimentGeneralInfo";
 import QN_Modal from "../QN_Modal";
 import QN_AlimentInfo from "../QN_AlimentInfo";
+import { useModal } from "../QN_Modal/modal.context";
+import QN_Button from "../QN_Button";
 
 
-export default function QN_MealComponent() {
+export default function MealDisplay_FoodComponent() {
+	const {setBlockModal} = useModal()
 	const [openModal, setOpenModal] = useState(false);
+
+	useEffect(() => {
+		if(!openModal) {
+			if(setBlockModal) setBlockModal(false)
+		}
+	}, [openModal])
 
 	return (
 		<div
@@ -19,7 +28,10 @@ export default function QN_MealComponent() {
 				height: "40px",
 				borderRadius: "10px",
 			}}
-			onClick={() => setOpenModal(true)}
+			onClick={() => {
+				if(setBlockModal) setBlockModal(true)
+				setOpenModal(true)
+			}}
 		>
 			<div
 				style={{
@@ -43,9 +55,22 @@ export default function QN_MealComponent() {
 				</h1>
 			</div>
 			{<QN_MealGeneralInfo />}
-			<QN_Modal isOpen={openModal} setOpen={setOpenModal} blockOutsideClose={false} height="98%" width="90%">
-				<QN_AlimentInfo name="Suco de maracujá" isOpen={openModal} setOpen={setOpenModal} />
+			<QN_Modal isOpen={openModal} setOpen={setOpenModal} blockOutsideClose={false}>
+					<Test />
 			</QN_Modal>
 		</div>
+	)
+}
+
+function Test(){
+	const {setBlockModal, closeModal} = useModal()
+	useEffect(() => {
+		if(setBlockModal) setBlockModal(false)
+	}, [])
+	return (
+		<>
+			<QN_Button onClick={closeModal}>Fechar</QN_Button>
+		</>
+		
 	)
 }

@@ -1,5 +1,5 @@
 'use client'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import QN_ModalComponent from './modal.component'
 import { ModalContext } from './modal.context'
 
@@ -14,12 +14,13 @@ interface QN_ModalProps {
 
 export default function QN_Modal({width='85%', height='90%', isOpen, setOpen, blockOutsideClose=false, children}: QN_ModalProps) {
     const closeModal = () => setOpen(false)
+    const [blockModal, setBlockModal] = useState<boolean>(blockOutsideClose)
 
     return (
-        <ModalContext.Provider value={{ closeModal }}>
+        <ModalContext.Provider value={{ closeModal, setBlockModal }}>
             <>
                 {isOpen && (
-                    <QN_ModalComponent width={width} height={height} blockOutsideClose={blockOutsideClose}>
+                    <QN_ModalComponent width={width} height={height} blockOutsideClose={blockModal}>
                         {children}
                     </QN_ModalComponent>
                 )}

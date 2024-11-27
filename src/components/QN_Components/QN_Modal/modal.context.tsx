@@ -2,6 +2,7 @@ import { createContext, useContext } from "react"
 
 type ModalContextType = {
     closeModal: () => void
+    setBlockModal?: (state: boolean) => void
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(undefined)

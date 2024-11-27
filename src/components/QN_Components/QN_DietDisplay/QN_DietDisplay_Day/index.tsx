@@ -1,18 +1,43 @@
-import { daysOfWeekBR, daysOfWeekEN } from "../../Nutritionist/NutritionistPatient/DietDisplay"
-import { useDietDisplay } from "../../Nutritionist/NutritionistPatient/DietDisplay/contex"
-import QN_DietDisplay_Meal from "../QN_DietDisplay_Meal"
-import { BiSolidLeftArrow, BiSolidRightArrow } from '../../../icons'
+import { daysOfWeekBR, daysOfWeekEN } from "../../../Nutritionist/NutritionistPatient/DietDisplay"
+import { useDietDisplay } from "../../../Nutritionist/NutritionistPatient/DietDisplay/contex"
+import { BiSolidLeftArrow, BiSolidRightArrow } from '../../../../icons'
 import { MealContextProvider, useDiet } from "@/context/diet.context"
 import { DayOfWeek } from "@/models/Patient/Diet/Diet.interface"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import DietDisplay_Meal_Provider from "../QN_DietDisplay_Meal/context"
+import MealDisplay_Component from "../QN_DietDisplay_Meal/component"
+import { useNutritionistPatient } from "@/context/modal.patient.context"
+import QN_Button from "../../QN_Button"
 
 interface QN_DietDisplay_DayProps {
     day: number
 }
 
 export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
-    const { diet, meals } = useDiet()
+    const { patient } = useNutritionistPatient()
+    const { diet } = useDiet()
     const { expandedDay, toggleExpandedDay } = useDietDisplay()
+
+    //render meals when diet is updated
+    const [renderedContent, setRenderedContent] = useState(<></>)
+    useEffect(() => {
+        setRenderedContent(
+            <>
+                {
+                    diet?.meals?.map((meal, index) => {
+                        if (meal.daysOfWeek.includes(daysOfWeekEN[day] as DayOfWeek))
+                            return (
+                                <MealContextProvider key={meal._id} refDay={day} mealIndex={index}>
+                                    <DietDisplay_Meal_Provider>
+                                        <MealDisplay_Component />
+                                    </DietDisplay_Meal_Provider>
+                                </MealContextProvider>
+
+                            )
+                    })
+                }
+            </>)
+    }, [patient, diet])
 
     return (
         <>
@@ -24,7 +49,6 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                     padding: (expandedDay === day || expandedDay == null) ? '15px' : '0px',
                     borderRadius: '15px',
                     justifyContent: 'start',
-                    overflow: expandedDay === day ? 'auto' : 'hidden',
                     alignItems: 'center',
 
                     //NÃO MEXER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -36,20 +60,6 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 }}
-            // style={{
-            //     display: 'flex',
-            //     overflow: 'hidden',
-            //     flexDirection: 'column',
-            //     justifyContent: 'start',
-            //     alignItems: 'center',
-            //     width: '100%',
-            //     minWidth: expandedDay === day ? '100%' : '0px',
-            //     padding: (expandedDay === day || expandedDay == null) ? '20px 10px' : '0px',
-
-            //     borderRadius: '15px',
-            //     gap: '10px',
-            //     
-            // }}
             >
 
 
@@ -58,6 +68,8 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                         <div style={{
                             display: 'flex',
                             justifyContent: expandedDay == day ? 'space-between' : 'center',
+                            overflow: 'hidden',
+
                             width: '100%'
                         }}>
                             {expandedDay == day && (
@@ -74,7 +86,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                                     fontWeight: '500',
                                     fontSize: '15px',
                                     cursor: 'pointer',
-                                    paddingBottom: '100px',
+                                    paddingBottom: '15px',
                                 }}
                                 onClick={() => toggleExpandedDay(day)}
                             >
@@ -89,28 +101,26 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                                 />
                             )}
                         </div>
+                        {expandedDay == day && (
+                            <div
+                                style={{ width: '100%', paddingBottom: '20px' }}
+                            >
+                                <QN_Button colorStyle='white' width='150px' height='30px' noShadow>Nova Refeição</QN_Button>
+                            </div>
+                        )}
 
                         <div style={{
-                            display: 'flex',
+                            display: expandedDay == day ? 'grid' : 'flex',
                             flexDirection: 'column',
-
-
+                            overflowY: 'auto',
                             gap: '10px',//DISTÂNCIA ENTRE OS CARDS
-
                             width: '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM 100% DA LARGURA
-                            height: '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM PROPORCIONALMENTE A ALTURA
+                            height: expandedDay == day ? 'auto' : '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM PROPORCIONALMENTE A ALTURA
+                            scrollbarWidth: 'thin', // Para Firefox
+                            scrollbarColor: ' #f1f1f1 #55B7FE', // Para Firefox: cor da barra e do fundo
+                            paddingRight: '5px'
                         }}>
-                            {
-                                diet?.meals?.map((meal, index) => {
-                                    if (meal.daysOfWeek.includes(daysOfWeekEN[day] as DayOfWeek))
-                                        return (
-                                            <MealContextProvider key={meal._id} mealIndex={index}>
-                                                <QN_DietDisplay_Meal key={`${meal._id}`} />
-                                            </MealContextProvider>
-
-                                        )
-                                })
-                            }
+                            {renderedContent}
                         </div>
                     </>
                 )}

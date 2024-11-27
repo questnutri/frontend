@@ -2,35 +2,55 @@
 import { Textarea } from "@nextui-org/react"
 
 interface QN_TextAreaProps {
-    label?: string,
     value: string,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+
+    label?: string,
     minRows?: number,
     maxRows?: number,
     disabled?: boolean
     readOnly?: boolean
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     placeholder?: string,
-    fontSizeLabel?: string,
-    fontColorLabel?: string,
-    fontWeightLabel?: string,
     isSelected?: boolean
+    removeStyle?: boolean
+    cursor?: string
+    height?: string
+    textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent',
+
+    fontSizeLabel?: string
+    fontColorLabel?: string
+    fontWeightLabel?: string
+
+    labelBtn?: React.ReactNode,
+
+    onClick?: () => void
     setIsSelected?: (value: boolean) => void
 }
 
 export default function QN_TextArea({
+    value,
+    onChange,
+
     label,
     minRows = 3,
     maxRows = 3,
-    value,
     disabled,
     readOnly,
-    onChange,
     placeholder,
     isSelected = false,
-    setIsSelected,
+    removeStyle,
+    cursor = 'auto',
+    textAlign = 'start',
+    height,
+
     fontSizeLabel = '15px',
     fontColorLabel = 'black',
-    fontWeightLabel = '500'
+    fontWeightLabel = '500',
+
+    labelBtn,
+
+    onClick,
+    setIsSelected,
 }: QN_TextAreaProps) {
 
     return (
@@ -40,24 +60,29 @@ export default function QN_TextArea({
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 width: `100%`,
-                gap: '3px',
-                padding: "4px",
                 borderRadius: "5px",
                 resize: "none",
                 transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                 height: '100%'
             }}
         >
-            <span
-                style={{
-                    fontSize: `${fontSizeLabel}`,
-                    marginLeft: '8px',
-                    color: `${fontColorLabel}`,
-                    fontWeight: `${fontWeightLabel}`,
-                }}
-            >
-                {label}
-            </span>
+
+
+            <div style={{height: '100%', display: 'flex', flexDirection: "row", justifyContent: 'space-between', width: '100%'}}>
+                <span
+                    style={{
+                        fontSize: fontSizeLabel,
+                        color: `${fontColorLabel}`,
+                        fontWeight: `${fontWeightLabel}`,
+                        marginLeft: '8px',
+                        width: '100%',
+                    }}
+                >
+                    {label}
+                </span>
+                {labelBtn}
+            </div>
+
 
             <Textarea
                 placeholder={placeholder}
@@ -68,12 +93,32 @@ export default function QN_TextArea({
                 value={value}
                 isDisabled={disabled}
                 isReadOnly={readOnly}
-                classNames={{
-                    inputWrapper: ['bg-white border-black border hover:border-black focus:border-black'],
-                    input: ['text-black']
+                onClick={onClick}
+                style={removeStyle ? {
+                    color: '#55b7fe',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: 'none',
+                    cursor,
+                    caretColor: 'white',
+                    textAlign,
+                    height,
+                } : {
+                    border: 'none',
+                    height,
+                    textAlign
                 }}
-                onFocus={() => setIsSelected?.(true)}
-                onBlur={() => setIsSelected?.(false)}
+                onMouseOver={(e) => e.currentTarget.style.border = 'none'} // hover:border-0
+                classNames={
+                    removeStyle ? {
+                        inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black`]
+                    } : {
+                        inputWrapper: ['bg-white'],
+                        input: ['text-black']
+                    }
+                }
             />
         </div>
     );

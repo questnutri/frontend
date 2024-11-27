@@ -1,6 +1,6 @@
 'use client'
 import { use, useEffect, useState } from "react"
-import QN_Tabs from "../QN_Tabs"
+import QN_Tabs from "@/components/QN_Components/QN_Tabs"
 import QN_CardHealthCondition from "./QN_CardHealthCondition"
 
 interface QN_ContainerHealthConditionsProps {

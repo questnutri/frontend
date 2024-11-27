@@ -22,16 +22,18 @@ export default function PatientsPage() {
         setModalPatient(id)
     }
 
+    const refreshList = async () => {
+        const data = await fetchPatients()
+        setPatients(data)
+    }
+
     useEffect(() => {
-        const getPatients = async () => {
-            const data = await fetchPatients()
-            setPatients(data)
-        }
-        getPatients()
-    }, [patients])
+        refreshList()
+    }, [])
+
 
     return (
-        <ListPatientsContext.Provider value={{ patients, setPatients }}>
+        <ListPatientsContext.Provider value={{patients, setPatients, refreshList}}>
             <div
                 style={{
                     display: 'flex',
@@ -53,23 +55,8 @@ export default function PatientsPage() {
                         Novo Paciente
                     </QN_Button>
                 </span>
-
-
-
                 <ListPatientsPage />
             </div>
-            {/* <h1 style={{ padding: '30px' }}>
-                Patients Page
-            </h1>
-            <QN_Table
-                columns={[
-                    { key: 'firstName', label: 'Nome' },
-                    { key: 'email', label: 'E-mail' }
-                ]}
-                rows={patients}
-                onRowClick={handleRowClick}
-            />
-            <QN_PatientModal /> */}
             <QN_Modal isOpen={modalNewPatient} setOpen={setModalNewPatient} height="75%" width="75%">
                 <QN_NewPatient isOpen={modalNewPatient} setOpen={setModalNewPatient} />
             </QN_Modal>

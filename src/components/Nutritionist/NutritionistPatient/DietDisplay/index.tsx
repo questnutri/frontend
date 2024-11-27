@@ -1,4 +1,4 @@
-import QN_DietDisplay_Day from "@/components/QN_Components/QN_DietDisplay_Day"
+import QN_DietDisplay_Day from "@/components/QN_Components/QN_DietDisplay/QN_DietDisplay_Day"
 import { DietDisplayContext } from "./contex"
 import { useEffect, useState } from "react"
 import { DietContext } from "@/context/diet.context"
@@ -12,7 +12,7 @@ export default function QN_NutritionistPatient_DietPage() {
     const {patient} = useNutritionistPatient()
     const [diet, setDiet] = useState<IDiet | null>(null)
     const [expandedDay, setExpandedDay] = useState<number | null>(null)
-    const [meals, setMeals] = useState<IMeal[] | null>()
+    const [meals, setMeals] = useState<IMeal[] | null>([])
 
     const toggleExpandedDay = (day: number) => {
         if (day == expandedDay) {
@@ -22,9 +22,16 @@ export default function QN_NutritionistPatient_DietPage() {
         }
     }
 
+    //Updates diet when modalPatient is load
     useEffect(() => {
         setDiet(patient?.diets?.at(0))
-        setMeals(patient?.diets?.at(0)?.meals)
+        console.log('Diet updated.')
+    }, [patient])
+
+    //Updates meals array when diet is load
+    useEffect(() => {
+        setMeals(patient?.diets?.at(0)?.meals || [])
+        console.log('Meals updated.')
     }, [diet])
 
     return (
@@ -46,7 +53,7 @@ export default function QN_NutritionistPatient_DietPage() {
                 }}
             >
 
-                <DietContext.Provider value={{diet, setDiet, meals}}>
+                <DietContext.Provider value={{diet, setDiet, meals, setMeals}}>
                     <DietDisplayContext.Provider value={{ expandedDay, toggleExpandedDay }}>
                         <QN_DietDisplay_Day day={0} />
                         <QN_DietDisplay_Day day={1} />

@@ -1,5 +1,6 @@
 import { IPatient } from "@/models/Patient/Patient.interface"
 import { fetchWithAuth } from "./fetchWithAuth"
+import { IMeal } from "@/models/Patient/Diet/Diet.interface"
 
 export const fetchPatients = async (): Promise<IPatient[]> => {
     try {
@@ -55,5 +56,19 @@ export const updateOnePatient = async (id: string, data: Partial<IPatient>) => {
 
     } catch (error) {
 
+    }
+}
+
+export const updatePatientMeal = async (idPatient: string, idDiet: string, idMeal: string, data: Partial<IMeal>) => {
+    try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}`, {
+            method: 'PATCH',
+            body: JSON.stringify(data)
+        })
+
+        console.log(await response.json())
+
+    } catch (error) {
+        
     }
 }

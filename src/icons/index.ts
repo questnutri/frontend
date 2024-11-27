@@ -16,6 +16,10 @@ import { FaEdit } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { GiMedicalThermometer, GiMedicines  } from "react-icons/gi";
+import { LuActivity } from "react-icons/lu";
+
+
 
 export {
     RiHome2Fill,
@@ -40,5 +44,9 @@ export {
     FaEdit,
     FaPlus,
     FaSearch,
-    IoClose
+    IoClose,
+    GiMedicalThermometer,
+    GiMedicines,
+    LuActivity,
+
 }

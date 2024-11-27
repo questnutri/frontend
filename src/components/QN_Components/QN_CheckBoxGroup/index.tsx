@@ -1,24 +1,34 @@
-import { CheckboxGroup, Checkbox } from "@nextui-org/react"
+import { CheckboxGroup, Checkbox, Divider } from "@nextui-org/react"
 
 interface QN_CheckBoxGroupProps {
     label: string
-    items: string[]
-    values?: string[]
+    items: { value: string; label?: string }[]
+    border?: string
     direction?: 'horizontal' | 'vertical'
+    itemLabelPosition?: 'side' | 'above'
+    itemLabelMarginLeft?: string
     disabled?: boolean
     readyOnly?: boolean
     customStyle?: boolean
+    justifyContent?: string
+    alignItems?: string
+    value?: string[]
     onChange: (selectedValues: string[]) => void
 }
 
 export default function QN_CheckBoxGroup({
     label,
     items,
-    values,
-    direction = 'vertical',
+    border,
+    itemLabelPosition = 'side',
+    itemLabelMarginLeft,
+    direction = 'horizontal',
     disabled,
     readyOnly,
     customStyle = false,
+    justifyContent = 'start',
+    alignItems = 'start',
+    value,
     onChange,
 }: QN_CheckBoxGroupProps) {
 
@@ -27,59 +37,75 @@ export default function QN_CheckBoxGroup({
     }
 
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
             <span
                 style={{
                     fontSize: '15px',
-                    marginLeft: '8px',
                     color: 'black',
                     fontWeight: '500',
                 }}
             >
                 {label}
             </span>
+
             <div
                 style={{
-                    border: '2px solid lightGray',
+                    border,
                     borderRadius: '10px',
-                    padding: '10px',
-                    width: 'fit-content',
+                    width: '100%',
                 }}
             >
+
                 <CheckboxGroup
-                    value={values}
+                    value={value}
                     orientation={direction}
                     onChange={handleChange}
                     isDisabled={disabled}
                     isReadOnly={readyOnly}
-                    style={{ backgroundColor: 'white', width: 'fit-content', padding: '5px' }}
+                    style={{ backgroundColor: 'white', padding: '5px', width: '100%' }}
                     classNames={
                         customStyle
                             ? {
-                                base: "gap-3",
+                                base: "gap-20",
                             }
                             : undefined
                     }
                 >
-                    {items.map((item, index) => (
-                        <Checkbox
-                            value={item}
-                            key={index}
-                            size="sm"
-                            classNames={
-                                customStyle
-                                    ? {
-                                        base: "bg-white",
-                                        wrapper: "!border-black !bg-white group-data-[selected=true]:!border-blue-500",
-                                        icon: "text-red-600 font-bold",
-                                        label: "text-black",
+                    <div style={{ display: 'flex', width: '100%', justifyContent, alignItems}}>
+                        {items.map((item, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: itemLabelPosition === 'above' ? 'column' : 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {itemLabelPosition === 'above' && (
+                                    <div style={{ marginLeft: itemLabelMarginLeft }}>
+                                        {item.label || item.value}
+                                    </div>
+                                )}
+                                <Checkbox
+                                    value={item.value}
+                                    size="sm"
+                                    classNames={
+                                        customStyle
+                                            ? {
+                                                base: "bg-white",
+                                                wrapper: "!border-black !bg-white group-data-[selected=true]:!border-blue-500",
+                                                icon: "text-red-600 font-bold",
+                                                label: "text-black",
+                                            }
+                                            : undefined
                                     }
-                                    : undefined
-                            }
-                        >
-                            {item}
-                        </Checkbox>
-                    ))}
+                                >
+                                    {itemLabelPosition === 'side' && (item.label || item.value)}
+                                </Checkbox>
+                            </div>
+                        ))}
+                    </div>
+
                 </CheckboxGroup>
             </div>
         </div>

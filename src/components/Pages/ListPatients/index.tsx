@@ -3,14 +3,14 @@ import QN_PatientModal from "@/components/QN_Components/QN_PatientModal";
 import QN_Table from "@/components/QN_Components/QN_Table";
 import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useListPatients } from "./context";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { IPatient } from "@/models/Patient/Patient.interface";
 import QN_DropDown from "@/components/QN_Components/QN_DropDown";
 import QN_Input from "@/components/QN_Components/QN_Input";
 
 export default function ListPatientsPage() {
-    const { patients, setPatients } = useListPatients()
-    const { setModalPatient } = useNutritionistPatient()
+    const { patients, refreshList } = useListPatients()
+    const { patient, setModalPatient } = useNutritionistPatient()
 
     const handleRowClick = async (id: string | null) => {
         setModalPatient(id)
@@ -74,6 +74,10 @@ export default function ListPatientsPage() {
         )
     }, [patients, filter, filterType])
 
+    useEffect(() => {
+        refreshList()
+    }, [patient])
+
     return (
         <>
             <div style={{ display: 'flex', width: '100%' }}>
@@ -97,7 +101,7 @@ export default function ListPatientsPage() {
                 columns={[
                     { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
                     { key: 'email', label: searchTypes[1].label },
-                    { key: 'details.birth', label: searchTypes[2].label },
+                    { key: 'details.birth', label: searchTypes[2].label, render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
                     { key: 'details.cpf', label: searchTypes[3].label },
                     { key: 'details.phone', label: searchTypes[4].label },
                 ]}

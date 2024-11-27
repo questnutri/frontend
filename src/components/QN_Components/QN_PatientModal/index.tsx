@@ -5,12 +5,13 @@ import QN_Modal from "../QN_Modal"
 import QN_NutritionistPatient_Navbar from "../../Nutritionist/NutritionistPatient/Navbar"
 import QN_NutritionistPatient_ProfilePage from "../../Nutritionist/NutritionistPatient/Profile"
 import { FaUser, FaAppleAlt, FaHeartPulse } from '../../../icons'
-import QN_NutritionistPatient_DietPage from "../../Nutritionist/NutritionistPatient/DietDisplay"
 import QN_NutritionistPatient_HealthPage from "../../Nutritionist/NutritionistPatient/Health"
+import QN_NutritionistPatient_DietPage from "@/components/Nutritionist/NutritionistPatient/DietDisplay"
 
 export default function QN_PatientModal() {
     const { patient, setModalPatient } = useNutritionistPatient()
     const [isModalOpen, setModalOpen] = useState(false)
+    
 
     useEffect(() => {
         if (patient) {
@@ -20,11 +21,6 @@ export default function QN_PatientModal() {
             setModalOpen(false)
         }
     }, [patient])
-
-    const handleCloseModal = () => {
-        setModalPatient(null)
-        setModalOpen(false)
-    }
 
     const profilePage = () => {
         return (
@@ -45,6 +41,11 @@ export default function QN_PatientModal() {
     }
 
     const [currentPage, setCurrentPage] = useState(profilePage)
+    const handleCloseModal = () => {
+        setModalPatient(null)
+        setModalOpen(false)
+        setCurrentPage(profilePage)
+    }
 
     return (
         <QN_Modal isOpen={isModalOpen} setOpen={handleCloseModal}>

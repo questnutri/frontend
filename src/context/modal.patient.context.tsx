@@ -6,6 +6,7 @@ import { createContext, ReactNode, useContext, useState } from "react"
 interface NutritionistPatientContextType {
     patient: IPatient | null
     setModalPatient: (id: string | null) => void
+    fetchPatient: () => Promise<void>
 }
 
 export const NutritionistPatientContext = createContext<NutritionistPatientContextType | undefined>(undefined)
@@ -18,12 +19,11 @@ export function useNutritionistPatient() {
     return context
 }
 
-
-
 export function QN_NutritionistPatientProvider({ children }: { children: ReactNode }) {
-    const [patient, setPatient] = useState(null)
+    const [patient, setPatient] = useState<IPatient | null>(null)
 
     const setModalPatient = async (id: string | null) => {
+        console.log('Patient setted')
         if (!id) {
             setPatient(null)
             return
@@ -36,8 +36,12 @@ export function QN_NutritionistPatientProvider({ children }: { children: ReactNo
         }
     }
 
+    const fetchPatient = async () => {
+        await setModalPatient(patient!._id)
+    }
+
     return (
-        <NutritionistPatientContext.Provider value={{ patient, setModalPatient }}>
+        <NutritionistPatientContext.Provider value={{ patient, setModalPatient, fetchPatient}}>
             {children}
         </NutritionistPatientContext.Provider >
     )

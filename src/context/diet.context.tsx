@@ -1,12 +1,13 @@
 'use client'
 import { IDiet, IMeal } from "@/models/Patient/Diet/Diet.interface"
-import { createContext, Dispatch, SetStateAction, useContext } from "react"
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { useNutritionistPatient } from "./modal.patient.context"
 
 type DietContextType = {
     diet: IDiet | null
     setDiet: Dispatch<SetStateAction<IDiet | null>>
-    meals?: IMeal[] | null
-    setMeals?: Dispatch<SetStateAction<IMeal[] | null>>
+    meals: IMeal[] | null
+    setMeals: Dispatch<SetStateAction<IMeal[] | null>>
 }
 
 export const DietContext = createContext<DietContextType | undefined>(undefined)
@@ -20,6 +21,9 @@ export const useDiet = () => {
 type MealContextType = {
     meal: IMeal | null
     changeMeal: () => void
+    refDay: number
+    mealDatabaseStateHolder?: IMeal | null
+
 }
 
 export const MealContext = createContext<MealContextType | undefined>(undefined)
@@ -30,12 +34,10 @@ export const useMeal = () => {
     return context
 }
 
-export function MealContextProvider({mealIndex, children}: {mealIndex: number, children: React.ReactNode}) {
-    const {meals, setMeals} = useDiet()
-    let meal = null
-    if(meals && meals.length > 0) {
-        meal = meals[mealIndex] 
-    }
+export function MealContextProvider({refDay, mealIndex, children}: {refDay: number, mealIndex: number, children: React.ReactNode}) {
+    const {patient} = useNutritionistPatient()
+    const {diet, meals, setMeals} = useDiet()
+    const [meal, setMeal] = useState<IMeal | null>(diet?.meals!.at(mealIndex) || null)
 
     const changeMeal = () => {
         if (meals && setMeals && meal) {
@@ -47,8 +49,14 @@ export function MealContextProvider({mealIndex, children}: {mealIndex: number, c
         }
     }
 
+    //re-renders meal when diets is updated
+    useEffect(() => {
+        setMeal(diet!.meals!.at(mealIndex) || null)
+        console.log('Single meal Updated')
+    }, [diet])
+
     return (
-        <MealContext.Provider value={{meal, changeMeal}}>
+        <MealContext.Provider value={{meal, changeMeal, refDay}}>
             {children}
         </MealContext.Provider>
     )
