@@ -37,6 +37,7 @@ export default function QN_NavbarComponent({ header, footer, items}: QN_NavbarPr
             height: '100%',
             padding: '30px 0px',
             gap: '20px',
+            boxShadow: '0 0px 20px rgba(0, 0, 0, 0.4)',
         }}>
             {header && (
                 <div style={{

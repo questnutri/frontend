@@ -81,7 +81,7 @@ export default function QN_Button({
                     boxShadow: !noShadow ? '0 3px 4px rgba(0, 0, 0, 0.4)' : '',
                     fontWeight: '600',
                     fontSize,
-                    width: `${width}`,
+                    width,
                     height,
                     borderRadius
                 }}

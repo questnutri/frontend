@@ -1,4 +1,5 @@
 import { IAddress } from "../Address.interface"
+import IMedicine from "./Health/Medicine.interface"
 import { IWeight } from "./Weight/Weight.interface"
 
 export interface IPatient {
@@ -39,11 +40,7 @@ export interface IPatient {
 				diagnosedAt?: Date
 				treatment?: string
 			}[]
-			currentMedications?: {
-				name: string
-				dosage?: string
-				frequency?: string
-			}[]
+			currentMedications?: IMedicine[]
 			obs?: string
 		},
 		address: IAddress

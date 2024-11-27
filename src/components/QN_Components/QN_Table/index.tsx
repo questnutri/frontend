@@ -7,6 +7,7 @@ export interface QN_TableProps {
         render?: (value: any, row: any) => React.ReactNode
     }>
     rows: any[]
+    height?: any
     onRowClick?: (id: string) => void
 }
 
@@ -14,7 +15,7 @@ const getKeyValue = (obj: any, key: string) => {
     return key.split('.').reduce((acc, curr) => acc && acc[curr], obj)
 }
 
-export default function QN_Table({ columns, rows, onRowClick }: QN_TableProps) {
+export default function QN_Table({ columns, rows, height, onRowClick }: QN_TableProps) {
     const handleRowClick = (item: any) => {
         if (onRowClick) {
             onRowClick(item._id)
@@ -22,7 +23,7 @@ export default function QN_Table({ columns, rows, onRowClick }: QN_TableProps) {
     }
 
     return (
-        <Table aria-label="Table">
+        <Table aria-label="Table" style={{height}}>
             <TableHeader columns={columns}>
                 {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
             </TableHeader>

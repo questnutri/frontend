@@ -240,7 +240,6 @@ export default function QN_Input({
                         flexDirection: "column",
                         alignItems: "flex-start",
                         width: `${width}`,
-                        gap: '5px'
                     }}
                 >
                     <span

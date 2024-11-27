@@ -60,7 +60,6 @@ export default function QN_HealthCards({
                 flex: isSelected ? '100%' : '1',
                 transition: 'all 0.4s ease-out',
                 opacity: isCompact ? 0.7 : 1,
-                border: '1px solid'
             }}
             onClick={() => !anyCardSelected && handleTextAreaClick()}
         >

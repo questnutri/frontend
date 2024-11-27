@@ -93,7 +93,9 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                         value={newPatient.gender}
                         items={genderOptions}
                         onChange={(e) => setNewPatient({ ...newPatient, gender: e })}
-                        widthButton="100%"
+                        buttonConfig={{
+                            width: '100%'
+                        }}
                     />
                 </QN_FormRow>
                 <QN_FormRow>

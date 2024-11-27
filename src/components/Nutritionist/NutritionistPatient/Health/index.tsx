@@ -29,13 +29,6 @@ export default function QN_NutritionistPatient_HealthPage() {
 
     const cards = [
         {
-            id: "goals",
-            name: "Objetivos",
-            value: personalCharacteristic.goals,
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setPersonalCharacteristic({ ...personalCharacteristic, goals: e.target.value })
-        },
-        {
             id: "routine",
             name: "Rotina",
             value: personalCharacteristic.routine,
@@ -74,10 +67,7 @@ export default function QN_NutritionistPatient_HealthPage() {
                     width: '100%',
                     alignItems: 'start',
                     flexDirection: anyCardSelected ? "row" : 'column',
-                    border: '1px solid',
                     margin: '3px',
-                    borderRadius: '5px',
-                    overflowY: 'auto',
                     justifyContent: 'start',
                     gap: anyCardSelected ? '15px' : '50px'
                 }}

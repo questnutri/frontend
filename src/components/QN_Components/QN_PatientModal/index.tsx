@@ -7,6 +7,7 @@ import QN_NutritionistPatient_ProfilePage from "../../Nutritionist/NutritionistP
 import { FaUser, FaAppleAlt, FaHeartPulse } from '../../../icons'
 import QN_NutritionistPatient_HealthPage from "../../Nutritionist/NutritionistPatient/Health"
 import QN_NutritionistPatient_DietPage from "@/components/Nutritionist/NutritionistPatient/DietDisplay"
+import HealthPage2 from "@/components/Nutritionist/NutritionistPatient/Health/index.2"
 
 export default function QN_PatientModal() {
     const { patient, setModalPatient } = useNutritionistPatient()
@@ -40,6 +41,12 @@ export default function QN_PatientModal() {
         )
     }
 
+    const healthPage2 = () => {
+        return (
+            <HealthPage2 />
+        )
+    }
+
     const [currentPage, setCurrentPage] = useState(profilePage)
     const handleCloseModal = () => {
         setModalPatient(null)
@@ -69,6 +76,13 @@ export default function QN_PatientModal() {
                             icon: <FaHeartPulse color='#23a3ff' size={30} />,
                             onClick() {
                                 setCurrentPage(healthPage)
+                            },
+                        },
+                        {
+                            name: 'Saúde2',
+                            icon: <FaHeartPulse color='#23a3ff' size={30} />,
+                            onClick() {
+                                setCurrentPage(healthPage2)
                             },
                         },
                         {

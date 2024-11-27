@@ -26,10 +26,6 @@ export default function ListPatientsPage() {
             value: 'email'
         },
         {
-            label: 'Data de nascimento',
-            value: 'birth'
-        },
-        {
             label: 'CPF',
             value: 'cpf'
         },
@@ -57,16 +53,12 @@ export default function ListPatientsPage() {
                         return email.includes(searchValue)
                     }
                     case searchTypes[2].value: {
-                        const birth = patient.details?.birth?.toDateString().toLocaleLowerCase() ?? ''
-                        return birth.includes(searchValue)
-                    }
-                    case searchTypes[3].value: {
-                        const cpf = patient.details?.cpf?.toLocaleLowerCase() ?? ''
+                        const cpf = patient.details?.cpf?.toLocaleLowerCase().replace(/\D/g, '') ?? ''
                         return cpf.includes(searchValue)
                     }
 
-                    case searchTypes[4].value: {
-                        const phone = patient.details?.phone?.toLocaleLowerCase() ?? ''
+                    case searchTypes[3].value: {
+                        const phone = patient.details?.phone?.toLocaleLowerCase().replace(/\D/g, '') ?? ''
                         return phone.includes(searchValue)
                     }
                 }
@@ -85,7 +77,9 @@ export default function ListPatientsPage() {
                     value={filterType}
                     onChange={setFilterType}
                     items={searchTypes}
-                    widthButton='25%'
+                    buttonConfig={{
+                        width: '25%'
+                    }}
                     label="Pesquisar Por"
                 />
                 <QN_Input
@@ -101,9 +95,9 @@ export default function ListPatientsPage() {
                 columns={[
                     { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
                     { key: 'email', label: searchTypes[1].label },
-                    { key: 'details.birth', label: searchTypes[2].label, render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
-                    { key: 'details.cpf', label: searchTypes[3].label },
-                    { key: 'details.phone', label: searchTypes[4].label },
+                    { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
+                    { key: 'details.cpf', label: searchTypes[2].label },
+                    { key: 'details.phone', label: searchTypes[3].label },
                 ]}
                 rows={filteredPatients}
                 onRowClick={handleRowClick}

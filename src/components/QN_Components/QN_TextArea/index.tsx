@@ -22,6 +22,7 @@ interface QN_TextAreaProps {
     fontWeightLabel?: string
 
     labelBtn?: React.ReactNode,
+    labelMargin?: string
 
     onClick?: () => void
     setIsSelected?: (value: boolean) => void
@@ -48,6 +49,7 @@ export default function QN_TextArea({
     fontWeightLabel = '500',
 
     labelBtn,
+    labelMargin,
 
     onClick,
     setIsSelected,

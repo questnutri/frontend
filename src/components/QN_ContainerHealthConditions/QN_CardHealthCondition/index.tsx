@@ -75,7 +75,7 @@ export default function QN_CardHealthCondition({
         <div className="gap-1 grid grid-cols-2 sm:grid-cols-1 h-fit">
             <Card
                 key={key}
-                className="flex flex-col justify-center cursor-pointer border-solid border-1 border-black w-32 h-32"
+                className="flex flex-col justify-center cursor-pointer border-solid border-1 w-32 h-32"
                 onClick={handleCardClick}
             >
                 {isAddCard ? renderAddCard() : renderHealthConditionCard()}

@@ -18,6 +18,8 @@ import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { GiMedicalThermometer, GiMedicines  } from "react-icons/gi";
 import { LuActivity } from "react-icons/lu";
+import { TbDotsVertical } from "react-icons/tb";
+
 
 
 
@@ -48,5 +50,5 @@ export {
     GiMedicalThermometer,
     GiMedicines,
     LuActivity,
-
+    TbDotsVertical,
 }

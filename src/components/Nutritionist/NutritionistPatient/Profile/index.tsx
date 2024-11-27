@@ -183,7 +183,6 @@ export default function QN_NutritionistPatient_ProfilePage() {
                 overflowY: 'auto'
             }}
         >
-            <h1>Profile Page</h1>
             <QN_Form title="Informações Pessoais" actionButton={
                 updatePatientBtn({
                     firstName: personalForm.firstName,
@@ -281,7 +280,10 @@ export default function QN_NutritionistPatient_ProfilePage() {
                                 gender: selected
                             })
                         }
-                        widthButton="100%"
+                        buttonConfig={{
+                            textAlignX: 'start',
+                            width: '100%'
+                        }}
                     />
                     <QN_Input
                         label='Tempo de acompanhamento'
@@ -315,7 +317,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
                         colorStyle='blue'
                         width='100%'
                         height='40px'
-                        marginTop='27px'
+                        marginTop='22px'
                         noShadow
                     >
                         Enviar redefinição de senha
@@ -412,7 +414,9 @@ export default function QN_NutritionistPatient_ProfilePage() {
                             })
                         }
                         disabled={isValidCep}
-                        widthButton="100%"
+                        buttonConfig={{
+                            width: '100%'
+                        }}
                         onTab={(e) => nameInputRef.current?.focus()}
                     />
                 </QN_FormRow>

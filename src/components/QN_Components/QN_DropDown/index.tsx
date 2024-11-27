@@ -6,14 +6,23 @@ type QN_DropDownItem = {
 }
 
 interface QN_DropDownProps {
+    buttonConfig?: {
+        width?: string
+        backgroundColor?: string
+        textColor?: string
+        textAlignX?: 'start' | 'center' | 'end'
+        borderRadius?: string
+    }
+
+    optionsConfig?: {
+        width?: string
+        backgroundColor?: string
+        textColor?: string
+    }
+
     items: QN_DropDownItem[]
+    replaceButtonToDots?: boolean
     label?: string
-    widthButton?: string
-    widthOptions?: string
-    bgColorOption?: string
-    bgColorButton?: string
-    colorFontButton?: string
-    colorFontOptions?: string
     value: string
     onChange: (value: string) => void
     disabled?: boolean
@@ -24,12 +33,9 @@ interface QN_DropDownProps {
 export default function QN_DropDown({
     items,
     label,
-    widthButton = 'fit-content',
-    widthOptions = 'fit-content',
-    bgColorButton = 'white',
-    bgColorOption = 'white',
-    colorFontButton = 'black',
-    colorFontOptions = 'black',
+    replaceButtonToDots = false,
+    buttonConfig,
+    optionsConfig,
     value,
     disabled,
     readyOnly,
@@ -51,7 +57,6 @@ export default function QN_DropDown({
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 width: `100%`,
-                gap: '3px',
             }}
         >
             <span
@@ -66,23 +71,41 @@ export default function QN_DropDown({
             </span>
             <Dropdown isDisabled={disabled}>
                 <DropdownTrigger>
-                    <Button
-                        variant="bordered"
-                        style={{
-                            width: `${widthButton}`,
-                            backgroundColor: `${bgColorButton}`,
-                            color: `${colorFontButton}`,
-                        }}
-                        onKeyDown={handleKeyDown}
-                    >
-                        {items.find(item => item.value === value)?.label || 'Selecione'}
-                    </Button>
+                    {replaceButtonToDots ? (
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            style={{
+                                width: buttonConfig?.width || 'fit-content',
+                                backgroundColor: buttonConfig?.backgroundColor,
+                                color: buttonConfig?.textColor,
+                                borderColor: '#E4E4E7'
+                            }}
+                        >
+                            <VerticalDotsIcon />
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="bordered"
+                            style={{
+                                width: buttonConfig?.width || 'fit-content',
+                                backgroundColor: buttonConfig?.backgroundColor,
+                                color: buttonConfig?.textColor,
+                                justifyContent: buttonConfig?.textAlignX || 'center',
+                                borderRadius: buttonConfig?.borderRadius || '8px',
+                                borderColor: '#E4E4E7'
+                            }}
+                            onKeyDown={handleKeyDown}
+                        >
+                            {items.find(item => item.value === value)?.label || 'Selecione'}
+                        </Button>
+                    )}
                 </DropdownTrigger>
                 <DropdownMenu
                     style={{
-                        width: `${widthOptions}`,
-                        backgroundColor: `${bgColorOption}`,
-                        color: `${colorFontOptions}`,
+                        width: optionsConfig?.width || 'fit-content',
+                        backgroundColor: optionsConfig?.backgroundColor,
+                        color: optionsConfig?.textColor
                     }}
                 >
                     {items.map((item, index) => (
@@ -98,3 +121,24 @@ export default function QN_DropDown({
         </div>
     )
 }
+
+interface VerticalDotsIconProps {
+    size?: number
+}
+
+const VerticalDotsIcon = ({ size = 24 }: VerticalDotsIconProps) => (
+    <svg
+        aria-hidden="true"
+        fill="none"
+        focusable="false"
+        height={size}
+        role="presentation"
+        viewBox="0 0 24 24"
+        width={size}
+    >
+        <path
+            d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+            fill="currentColor"
+        />
+    </svg>
+)
