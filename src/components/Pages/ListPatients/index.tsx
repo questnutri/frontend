@@ -7,6 +7,7 @@ import { use, useEffect, useState } from "react";
 import { IPatient } from "@/models/Patient/Patient.interface";
 import QN_DropDown from "@/components/QN_Components/QN_DropDown";
 import QN_Input from "@/components/QN_Components/QN_Input";
+import QN_SectionDivider from "@/components/QN_Components/QN_SectionDivider";
 
 export default function ListPatientsPage() {
     const { patients, refreshList } = useListPatients()
@@ -91,17 +92,20 @@ export default function ListPatientsPage() {
                 />
             </div>
 
-            <QN_Table
-                columns={[
-                    { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
-                    { key: 'email', label: searchTypes[1].label },
-                    { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
-                    { key: 'details.cpf', label: searchTypes[2].label },
-                    { key: 'details.phone', label: searchTypes[3].label },
-                ]}
-                rows={filteredPatients}
-                onRowClick={handleRowClick}
-            />
+            <QN_SectionDivider title='Registros'>
+                <QN_Table
+                    columns={[
+                        { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
+                        { key: 'email', label: searchTypes[1].label },
+                        { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
+                        { key: 'details.cpf', label: searchTypes[2].label },
+                        { key: 'details.phone', label: searchTypes[3].label },
+                    ]}
+                    rows={filteredPatients}
+                    onRowClick={handleRowClick}
+                />
+            </QN_SectionDivider>
+
             <QN_PatientModal />
         </>
     )

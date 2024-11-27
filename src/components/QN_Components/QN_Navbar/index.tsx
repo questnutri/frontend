@@ -40,12 +40,12 @@ export default function QN_Navbar({
         selectedItem: {
             textColor: 'white',
             iconColor: 'white',
-            backgroudColor: '#676767',
+            backgroundColor: '#676767',
         },
         hoverItem: {
             textColor: 'white',
             iconColor: 'white',
-            backgroudColor: '#55B7FE'
+            backgroundColor: '#55B7FE'
         },
         ...styleConfig,
     }

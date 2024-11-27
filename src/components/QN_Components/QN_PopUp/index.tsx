@@ -1,69 +1,52 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import QN_PopUpComponent from './popup.component'
 import { PopUpConfigType, PopUpContext } from './popup.context'
+import QN_PopUp_StyleContextProvider, { QN_PopUp_StyleContextType } from './popup.style.context'
 
 interface PopUpProps {
     isPopUpOpen: boolean
     setPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>
-    config?: PopUpConfigType
+    styleConfig?: QN_PopUp_StyleContextType
 }
 
-export function QN_PopUp({ config, isPopUpOpen, setPopUpOpen}: PopUpProps) {
+export function QN_PopUp({ isPopUpOpen, setPopUpOpen, styleConfig}: PopUpProps) {
     const closePopUp = () => setPopUpOpen(false)
 
-    const [popUpConfig, setPopUpConfig] = useState<PopUpConfigType>({
-        message: null,
-        closeButton: false,
-        okButton: false,
-        customButtons: [],
-        width: 'auto',
-        height: 'auto',
-        userInput: '',
-        padding: '8px',
-        textAlign: 'center',
-        buttonAlign: 'center',
-        title: '',
-        titleColor: '#000000',
-        titleTextAlign: 'center',
-        blockOutsideClose: false,
-    })
-
-    useEffect(() => {
-        const showPopUp = () => {
-            if (isPopUpOpen) {
-                setPopUpConfig({
-                    message: config?.message || null,
-                    closeButton: config?.closeButton || false,
-                    okButton: config?.okButton || false,
-                    customButtons: config?.customButtons || [],
-                    width: config?.width || 'auto',
-                    height: config?.height || 'auto',
-                    userInput: '',
-                    padding: config?.padding || '8px',
-                    textAlign: config?.textAlign || 'center',
-                    buttonAlign: config?.buttonAlign || 'center',
-                    gapBetweenTextAndButtons: config?.gapBetweenTextAndButtons || '0px',
-                    title: config?.title || '',
-                    titleColor: config?.titleColor || '#000000',
-                    titleTextAlign: config?.titleTextAlign || 'center',
-                    blockOutsideClose: config?.blockOutsideClose || false,
-                })
-                setPopUpOpen(true)
-
-                if (config?.autoCloseAfterSeconds) {
-                    setTimeout(() => {
-                        setPopUpOpen(false)
-                    }, config.autoCloseAfterSeconds * 1000)
-                }
-            }
-        }
-
-        showPopUp()
-    }, [isPopUpOpen, config])
+    styleConfig = {
+        customButtons: {
+            items: [],
+        },
+        titleConfig: {
+            title: null,
+            textColor: '',
+            textAlign: 'center',
+            fontWeight: '600'
+        },
+        windowConfig: {
+            width: 'auto',
+            height: 'auto',
+            padding: '8px',
+            gapBetweenTextAndButtons: '0px',
+            blockOutsideClose: false
+        },
+        bodyConfig: {
+            content: null,
+            textAlign: 'center'
+        },
+        defaultButtons: {
+            closeButton: false,
+            okButton: false,
+            buttonAlign: 'center'
+        },
+        ...styleConfig,
+    }
 
     return (
-        <PopUpContext.Provider value={{ closePopUp, popUpConfig, setPopUpConfig }}>
-            <QN_PopUpComponent isOpen={isPopUpOpen} setOpen={setPopUpOpen} />
+        <PopUpContext.Provider value={{ closePopUp }}>
+            <QN_PopUp_StyleContextProvider styleConfig={{...styleConfig}}>
+                <QN_PopUpComponent isOpen={isPopUpOpen} setOpen={setPopUpOpen} />
+            </QN_PopUp_StyleContextProvider>
+
         </PopUpContext.Provider>
     )
 }

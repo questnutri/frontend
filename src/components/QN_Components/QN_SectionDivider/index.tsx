@@ -4,6 +4,10 @@ interface QN_SectionDividerProps {
     title?: string
     endLine?: boolean
     sectionPadding?: string
+    styleConfig?: {
+        
+    }
+
     children: React.ReactNode
 }
 

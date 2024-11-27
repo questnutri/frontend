@@ -1,20 +1,20 @@
 import { createContext, useContext } from "react"
 
 export type QN_NavbarComponent_StyleContextType = {
-    textColor?: string
-    backgroundColor?: string
+    textColor?: string //Common items
+    backgroundColor?: string //Navbar
     fontWeight?: string
     selectedItem?: {
         textColor?: string
         iconColor?: string
-        backgroudColor?: string
+        backgroundColor?: string
         fontWeight?: string
         fontSize?: string
     }
     hoverItem?: {
         textColor?: string
         iconColor?: string
-        backgroudColor?: string
+        backgroundColor?: string
     }
 }
 

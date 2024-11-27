@@ -28,7 +28,7 @@ export default function NavbarItem({ name, icon, isSelected = false, onClick }: 
             className={`w-full h-fit p-[5px_20px] flex justify-start items-center gap-[15px] transition-transform transition-colors duration-500`}
             style={{
                 backgroundColor: isSelected
-                    ? selectedItem?.backgroudColor
+                    ? selectedItem?.backgroundColor
                     : '',
                 cursor: 'pointer',
                 boxShadow: isSelected ? '0 4px 6px rgba(0, 0, 0, 0.3)' : '',
@@ -37,8 +37,8 @@ export default function NavbarItem({ name, icon, isSelected = false, onClick }: 
             onMouseEnter={(e) => {
                 if (!isSelected) {
                     const element = e.currentTarget
-                    if (hoverItem?.backgroudColor) {
-                        element.style.backgroundColor = hoverItem.backgroudColor
+                    if (hoverItem?.backgroundColor) {
+                        element.style.backgroundColor = hoverItem.backgroundColor
                     }
                     if (hoverItem?.iconColor && clonedIcon?.props) {
                         const icon = element.querySelector('svg') as SVGElement
@@ -70,7 +70,7 @@ export default function NavbarItem({ name, icon, isSelected = false, onClick }: 
                     }
                 } else {
                     const element = e.currentTarget
-                    element.style.backgroundColor = selectedItem?.backgroudColor || ''
+                    element.style.backgroundColor = selectedItem?.backgroundColor || ''
                     const icon = element.querySelector('svg') as SVGElement
                     if (icon) {
                         icon.style.color = selectedItem?.iconColor || ''

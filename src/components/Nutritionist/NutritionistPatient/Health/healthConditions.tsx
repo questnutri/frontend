@@ -57,13 +57,13 @@ export default function HealthConditions() {
                     backgroundColor: "#55B7FE",
                     selectedItem: {
                         textColor: '#55B7FE',
-                        backgroudColor: 'white',
+                        backgroundColor: 'white',
                         iconColor: '#55B7FE',
                         fontWeight: '600'
                     },
                     hoverItem: {
                         textColor: 'white',
-                        backgroudColor: '#676767',
+                        backgroundColor: '#676767',
                         iconColor: 'white',
                     }
                 }}

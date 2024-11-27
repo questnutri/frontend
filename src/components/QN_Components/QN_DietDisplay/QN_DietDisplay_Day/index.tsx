@@ -14,8 +14,8 @@ interface QN_DietDisplay_DayProps {
 }
 
 export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
-    const { patient } = useNutritionistPatient()
-    const { diet } = useDiet()
+    const { patient, fetchPatient } = useNutritionistPatient()
+    const { diet, meals } = useDiet()
     const { expandedDay, toggleExpandedDay } = useDietDisplay()
 
     //render meals when diet is updated
@@ -37,7 +37,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                     })
                 }
             </>)
-    }, [patient, diet])
+    }, [patient, diet, meals])
 
     return (
         <>
@@ -69,6 +69,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                             display: 'flex',
                             justifyContent: expandedDay == day ? 'space-between' : 'center',
                             overflow: 'hidden',
+                            boxSizing: 'border-box',
 
                             width: '100%'
                         }}>
@@ -103,7 +104,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                         </div>
                         {expandedDay == day && (
                             <div
-                                style={{ width: '100%', paddingBottom: '20px' }}
+                                style={{ width: '100%', paddingBottom: '20px', boxSizing: 'border-box', overflow: 'hidden', }}
                             >
                                 <QN_Button colorStyle='white' width='150px' height='30px' noShadow>Nova Refeição</QN_Button>
                             </div>
@@ -118,7 +119,8 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                             height: expandedDay == day ? 'auto' : '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM PROPORCIONALMENTE A ALTURA
                             scrollbarWidth: 'thin', // Para Firefox
                             scrollbarColor: ' #f1f1f1 #55B7FE', // Para Firefox: cor da barra e do fundo
-                            paddingRight: '5px'
+                            paddingRight: '5px',
+                            boxSizing: 'border-box'
                         }}>
                             {renderedContent}
                         </div>

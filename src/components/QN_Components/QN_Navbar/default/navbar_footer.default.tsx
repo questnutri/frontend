@@ -6,7 +6,7 @@ import { logout } from "@/lib/logout";
 import { useRouter } from "next/navigation";
 
 export default function QN_NavbarFooter_Default() {
-    const { setUser, role, setRole} = useUser()
+    const { setUser, role, setRole } = useUser()
     const router = useRouter()
     const { showPopUp } = usePopUpGlobal()
 
@@ -19,10 +19,17 @@ export default function QN_NavbarFooter_Default() {
             document.cookie = 'role=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
             localStorage.removeItem('user')
             showPopUp({
-                title: 'Você foi desconectado',
-                padding: '15px',
-                okButton: true,
-                blockOutsideClose: true,
+                titleConfig: {
+                    title: 'Você foi desconectado',
+                },
+                windowConfig: {
+                    padding: '15px',
+                    blockOutsideClose: true
+                },
+                defaultButtons: {
+                    okButton: true
+                }
+
             })
             setTimeout(() => {
                 router.push('/home')

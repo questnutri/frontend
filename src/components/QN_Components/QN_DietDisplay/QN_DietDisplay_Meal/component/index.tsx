@@ -1,11 +1,12 @@
 'use client'
 import { useDietDisplay } from "@/components/Nutritionist/NutritionistPatient/DietDisplay/contex"
 import { useMealDisplay } from "../context"
-import DietDisplay_Meal_Header_Expanded, { MealDisplay_DaysOfWeek } from "./header"
+import DietDisplay_Meal_Header_Expanded from "./header"
 import { useEffect, useState } from "react"
 import { useMeal } from "@/context/diet.context"
 import QN_TextArea from "@/components/QN_Components/QN_TextArea"
 import MealDisplay_FoodComponent from "@/components/QN_Components/MealDisplay_Food"
+import { MealDisplay_DaysOfWeek } from "./dayOfWeek"
 
 
 export default function MealDisplay_Component() {

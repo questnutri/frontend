@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react"
 import { PopUpConfigType } from "./popup.context"
+import { QN_PopUp_StyleContextType } from "./popup.style.context"
 
 interface PopUpContextType {
-    showPopUp: (config: PopUpConfigType) => void
+    showPopUp: (styleConfig?: QN_PopUp_StyleContextType) => void
 }
 
 export const PopUpContextGlobal = createContext<PopUpContextType | undefined>(undefined)

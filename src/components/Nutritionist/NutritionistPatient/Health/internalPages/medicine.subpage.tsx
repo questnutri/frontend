@@ -5,7 +5,6 @@ import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import QN_Table from "@/components/QN_Components/QN_Table"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useEffect, useState } from "react"
-import { TbDotsVertical } from '@/icons'
 import QN_Button from "@/components/QN_Components/QN_Button"
 import MedicineEditablePopUp from "./medicine"
 import IMedicine from "@/models/Patient/Health/Medicine.interface"
@@ -26,7 +25,7 @@ export default function MedicineSubpage() {
     }, [medicineOpened])
 
     useEffect(() => {
-        if(!isMedicineOpened) {
+        if (!isMedicineOpened) {
             setMedicineOpened(null)
         }
     }, [isMedicineOpened])
@@ -93,28 +92,36 @@ export default function MedicineSubpage() {
             <QN_PopUp
                 isPopUpOpen={isMedicineOpened}
                 setPopUpOpen={setIsMedicineOpened}
-                config={{
-                    message: (
-                        <>
-                            <MedicineEditablePopUp medicineRecord={medicineOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <MedicineEditablePopUp medicineRecord={medicineOpened} />
+                            </>
+                        )
+                    }
                 }}
             />
 
             <QN_PopUp
                 isPopUpOpen={newMedicinePopUp}
                 setPopUpOpen={setNewMedicinePopUp}
-                config={{
-                    message: (
-                        <>
-                            <MedicineEditablePopUp medicineRecord={medicineOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <MedicineEditablePopUp medicineRecord={medicineOpened} />
+                            </>
+                        )
+                    }
                 }}
             />
         </div>

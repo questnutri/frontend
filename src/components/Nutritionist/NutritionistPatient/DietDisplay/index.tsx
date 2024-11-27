@@ -9,7 +9,7 @@ export const daysOfWeekBR = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta
 export const daysOfWeekEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 export default function QN_NutritionistPatient_DietPage() {
-    const {patient} = useNutritionistPatient()
+    const { patient } = useNutritionistPatient()
     const [diet, setDiet] = useState<IDiet | null>(null)
     const [expandedDay, setExpandedDay] = useState<number | null>(null)
     const [meals, setMeals] = useState<IMeal[] | null>([])
@@ -52,8 +52,7 @@ export default function QN_NutritionistPatient_DietPage() {
                     padding: '20px' //PADDING DOS DIAS DA SEMANA!!
                 }}
             >
-
-                <DietContext.Provider value={{diet, setDiet, meals, setMeals}}>
+                <DietContext.Provider value={{ diet, setDiet, meals, setMeals }}>
                     <DietDisplayContext.Provider value={{ expandedDay, toggleExpandedDay }}>
                         <QN_DietDisplay_Day day={0} />
                         <QN_DietDisplay_Day day={1} />

@@ -14,46 +14,22 @@ import { updatePatientMeal } from "@/lib/fetchPatients"
 import QN_SectionDivider from "@/components/QN_Components/QN_SectionDivider"
 import QN_CheckBoxGroup from "@/components/QN_Components/QN_CheckBoxGroup"
 import { useMealDisplay } from '../context'
-import { DayOfWeek } from '@/models/Patient/Diet/Diet.interface'
+import { DayOfWeek, IMeal } from '@/models/Patient/Diet/Diet.interface'
 import { duplicatePatientMeal } from '@/lib/Diet/diet.api'
 import { useModal } from '@/components/QN_Components/QN_Modal/modal.context'
 import QN_Modal from '@/components/QN_Components/QN_Modal'
 import { Divider } from '@nextui-org/react'
+import { title } from 'process'
 
 export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputSize?: string }) {
     const { role } = useUser()
 
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet } = useDiet()
-    const { meal } = useMeal()
+    const { meal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges } = useMeal()
 
     const { isOpened, setIsOpened, toggleOpened, isEditable, setIsEditable, toggleEditable } = useMealDisplay()
     const { showPopUp } = usePopUpGlobal()
-
-
-    const [mealInput, setMealInput] = useState(meal?.name || 'Refeição')
-    const [hourInput, setHourInput] = useState(meal?.hour || '00:00')
-
-    const handleSave = async () => {
-        updatePatientMeal(patient!._id, diet!._id, meal!._id, {
-            name: mealInput,
-            hour: hourInput,
-            daysOfWeek: meal?.daysOfWeek
-        })
-        toggleEditable()
-        if (meal) {
-            meal.name = mealInput as string
-            meal.hour = hourInput as string
-        }
-
-        await fetchPatient()
-    }
-
-    const handleCancel = () => {
-        toggleEditable()
-        setMealInput(meal?.name || '')
-        setHourInput(meal?.hour || '00:00')
-    }
 
 
     function Duplicate() {
@@ -93,28 +69,42 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                 })
                                 await fetchPatient()
                                 closeModal()
-                                showPopUp({
-                                    message: 'Refeição duplicada!',
-                                    width: '300px',
-                                    okButton: true,
-                                })
+                                showPopUp(
+                                    {
+                                        bodyConfig: {
+                                            content: 'Refeição duplicada!',
+                                        },
+                                        windowConfig: {
+                                            width: '300px',
+                                        },
+                                        defaultButtons: {
+                                            okButton: true
+                                        }
+
+                                    }
+                                )
                             }}
                     >Duplicar</QN_Button>
                 </div>
             </div>
         )
     }
+
     const handleDuplicate = async () => {
-        showPopUp({
-            title: 'Duplicar refeição nos dias:',
-            message: (
-                <>
-                    <Duplicate />
-                </>
-            ),
-        })
-
-
+        showPopUp(
+            {
+                titleConfig: {
+                    title: 'Duplicar refeição nos dias:'
+                },
+                bodyConfig: {
+                    content: (
+                        <>
+                            <Duplicate />
+                        </>
+                    )
+                }
+            }
+        )
     }
 
     return (
@@ -147,8 +137,8 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
 
             <div style={{ flex: 1, maxWidth: inputSize || '70%', cursor: 'pointer' }} onClick={() => { if (!isEditable) toggleOpened() }}>
                 <QN_Input
-                    value={mealInput}
-                    onChange={(e) => setMealInput(e.target.value)}
+                    value={mealChanges?.name || ''}
+                    onChange={(e) => handleMealChange('name', e.target.value)}
                     removeStyle={!isEditable}
                     fontSize='text-lg'
                     fontWeight='font-bold'
@@ -163,15 +153,17 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                 padding: '0px 8px 0px 0px',
             }}>
                 <QN_Input
-                    width='120px'
+                    value={mealChanges?.hour || '00:00'}
+                    onChange={(e) => handleMealChange('hour', e.target.value)}
+
+                    width='130px'
                     height='100%'
                     removeStyle={!isEditable}
-                    value={hourInput}
                     fontSize='20px'
                     fontWeight='font-bold'
                     color='#55b7fe'
                     type='time'
-                    onChange={(e) => setHourInput(e.target.value)}
+
                     textAlign='center'
                     endContent={
                         !isEditable && (
@@ -193,14 +185,17 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     }
                 />
             </div>
-            <Divider orientation='vertical'/>
+            <Divider orientation='vertical' />
             <QN_ConditionalRender
                 nutritionist={
                     <>
                         {isEditable ? (
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <QN_Button
-                                    onClick={handleSave}
+                                    onClick={async () => {
+                                        await acceptMealChanges()
+                                        toggleEditable()
+                                    }}
                                     height='25px'
                                     width='10px'
                                     borderRadius='4px'
@@ -209,7 +204,9 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                     Salvar
                                 </QN_Button>
                                 <QN_Button
-                                    onClick={handleCancel}
+                                    onClick={async () => {
+                                        denyMealChanges(toggleEditable)
+                                    }}
                                     colorStyle='red'
                                     height='25px'
                                     width='10px'
@@ -263,18 +260,25 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                             onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
                             onClick={() => {
                                 showPopUp({
-                                    title: 'Você deseja mesmo excluir essa refeição?',
-                                    width: '300px',
-                                    customButtons: [
-                                        {
-                                            text: 'Excluir',
-                                            colorStyle: 'red',
-                                        },
-                                        {
-                                            text: 'Não excluir',
-                                            colorStyle: 'blue'
-                                        }
-                                    ]
+                                    titleConfig: {
+                                        title: 'Você deseja mesmo excluir essa refeição?',
+                                    },
+                                    windowConfig: {
+                                        width: '300px',
+                                    },
+                                    customButtons: {
+                                        items: [
+                                            {
+                                                text: 'Excluir',
+                                                colorStyle: 'red',
+                                                confirmationTextRequired: 'EXCLUIR'
+                                            },
+                                            {
+                                                text: 'Não excluir',
+                                                colorStyle: 'blue'
+                                            }
+                                        ]
+                                    }
                                 })
                             }}
                         />
@@ -286,40 +290,3 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
     )
 }
 
-export function MealDisplay_DaysOfWeek() {
-    const { isEditable } = useMealDisplay()
-    const { meal } = useMeal()
-    const [selectedValues, setSelectedValues] = useState(meal?.daysOfWeek)
-
-    const daysOfWeek = [
-        { value: 'Sunday', label: 'D' },
-        { value: 'Monday', label: 'S' },
-        { value: 'Tuesday', label: 'T' },
-        { value: 'Wednesday', label: 'Q' },
-        { value: 'Thursday', label: 'Q' },
-        { value: 'Friday', label: 'S' },
-        { value: 'Saturday', label: 'S' }
-    ]
-
-    return (
-        <QN_SectionDivider title='Dias da semana' sectionPadding='0px 20px' endLine>
-            <div style={{ padding: '0px 30px' }}>
-                <QN_CheckBoxGroup
-                    label={""}
-                    value={selectedValues}
-                    items={daysOfWeek}
-                    onChange={(selected) => {
-                        setSelectedValues(selected as DayOfWeek[])
-                        if (meal) {
-                            meal!.daysOfWeek = selected as DayOfWeek[]
-                        }
-                    }}
-                    itemLabelPosition='above'
-                    itemLabelMarginLeft='-8px'
-                    disabled={!isEditable}
-                    justifyContent='space-between'
-                />
-            </div>
-        </QN_SectionDivider>
-    )
-}
