@@ -57,6 +57,7 @@ export default function QN_DropDown({
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 width: `100%`,
+                gap: '5px',
             }}
         >
             <span

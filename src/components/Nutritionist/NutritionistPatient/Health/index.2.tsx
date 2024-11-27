@@ -27,8 +27,8 @@ export default function HealthPage2() {
                     label={'Rotina'}
                     value={routine}
                     onChange={(e) => setRoutine(e.target.value)}
-                    maxRows={10}
-                    minRows={10}
+                    maxRows={8}
+                    minRows={8}
                     height='200px'
                     labelBtn={
                         <div style={{ paddingRight: '3px' }}>
@@ -48,21 +48,21 @@ export default function HealthPage2() {
                     label={'Preferência alimentar'}
                     value={foodPreference}
                     onChange={(e) => setFoodPreference(e.target.value)}
-                    maxRows={10}
-                    minRows={10}
+                    maxRows={8}
+                    minRows={8}
                     height='200px'
-                    labelBtn= {
+                    labelBtn={
                         <div style={{ paddingRight: '3px' }}>
-                        <QN_Button
-                            width='50px'
-                            height='20px'
-                            borderRadius='5px'
-                            fontSize='12px'
-                            noShadow
-                        >
-                            Salvar
-                        </QN_Button>
-                    </div>
+                            <QN_Button
+                                width='50px'
+                                height='20px'
+                                borderRadius='5px'
+                                fontSize='12px'
+                                noShadow
+                            >
+                                Salvar
+                            </QN_Button>
+                        </div>
                     }
                 />
 

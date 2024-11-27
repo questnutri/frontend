@@ -7,7 +7,7 @@ export interface IPatient {
 	firstName: string
 	lastName?: string
 	email: string
-	password: string
+	password?: string
 	details?: {
 		rg?: string
 		cpf?: string

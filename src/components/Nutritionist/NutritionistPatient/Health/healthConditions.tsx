@@ -3,6 +3,8 @@ import QN_Navbar from "@/components/QN_Components/QN_Navbar";
 import { GiMedicalThermometer, GiMedicines, LuActivity } from '@/icons'
 import { useState } from "react";
 import MedicineSubpage from "./internalPages/medicine.subpage";
+import AllergiesSubpage from "./internalPages/allergies/allergies.subpage";
+import ChronicDiseasesSubPage from "./internalPages/chronicDiseases/chronicDiseases.subpage";
 
 export default function HealthConditions() {
 
@@ -10,6 +12,13 @@ export default function HealthConditions() {
         return <MedicineSubpage />
     }
 
+    const allergiesSubPage = () => {
+        return <AllergiesSubpage />
+    }
+
+    const chronicDiseasesSubPage = () => {
+        return <ChronicDiseasesSubPage />
+    }
 
     const [renderedContent, setRenderedContent] = useState(medicineSubPage)
 
@@ -24,28 +33,28 @@ export default function HealthConditions() {
             borderColor: '#E4E4E7',
             overflow: 'hidden',
         }}>
-            <QN_Navbar 
+            <QN_Navbar
                 items={
                     [
                         {
                             name: 'Medicamentos',
-                            icon: <GiMedicines size={'25px'} color="white"/>,
+                            icon: <GiMedicines size={'25px'} color="white" />,
                             onClick: () => {
                                 setRenderedContent(medicineSubPage)
                             }
                         },
                         {
                             name: 'Alergias',
-                            icon: <GiMedicalThermometer size={'25px'} color="white"/>,
+                            icon: <GiMedicalThermometer size={'25px'} color="white" />,
                             onClick: () => {
-                                setRenderedContent(<>Alergias</>)
+                                setRenderedContent(allergiesSubPage)
                             }
                         },
                         {
                             name: 'Doenças crônicas',
-                            icon: <LuActivity size={'25px'} color="white"/>,
+                            icon: <LuActivity size={'25px'} color="white" />,
                             onClick: () => {
-                                setRenderedContent(<>Doenças</>)
+                                setRenderedContent(chronicDiseasesSubPage)
                             }
                         }
                     ]
