@@ -1,4 +1,5 @@
 import { Button } from '@nextui-org/react'
+import { ReactNode } from 'react'
 
 export interface QN_ButtonProps {
     ref?: React.Ref<HTMLButtonElement>
@@ -16,6 +17,7 @@ export interface QN_ButtonProps {
     onClick?: () => void
     onTab?: () => void
     onEnter?: () => void
+    startContent?: ReactNode
 }
 
 export default function QN_Button({
@@ -30,10 +32,11 @@ export default function QN_Button({
     fontSize,
     children,
     marginTop,
-    noShadow=false,
+    noShadow = false,
     onClick,
     onTab,
-    onEnter
+    onEnter,
+    startContent
 }: QN_ButtonProps) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (e.key === 'Tab' && onTab) {
@@ -75,7 +78,7 @@ export default function QN_Button({
                 style={{
                     backgroundColor: colorStyle === 'blue' ? '#23a3ff' : colorStyle === 'red' ? '#FF0000' : 'white',
                     color: colorStyle === 'white' ? '#23a3ff' : 'white',
-                    boxShadow: !noShadow ? '0 3px 4px rgba(0, 0, 0, 0.4)': '',
+                    boxShadow: !noShadow ? '0 3px 4px rgba(0, 0, 0, 0.4)' : '',
                     fontWeight: '600',
                     fontSize,
                     width: `${width}`,
@@ -83,6 +86,7 @@ export default function QN_Button({
                     borderRadius
                 }}
                 isDisabled={blocked}
+                startContent={startContent}
             >
                 {children}
             </Button>

@@ -29,7 +29,7 @@ export const fetchOnePatient = async (id: string): Promise<any> => {
             method: 'GET',
         })
 
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             throw new Error('Could not fetch patient data')
         }
 
@@ -37,7 +37,7 @@ export const fetchOnePatient = async (id: string): Promise<any> => {
             status: response.status,
             data: await response.json()
         }
-        
+
     } catch (error) {
         console.error(error)
         throw new Error('Could not fetch patient')
@@ -54,6 +54,6 @@ export const updateOnePatient = async (id: string, data: Partial<IPatient>) => {
         console.log(await response.json())
 
     } catch (error) {
-        
+
     }
 }

@@ -77,8 +77,20 @@ export default function ListPatientsPage() {
     return (
         <>
             <div style={{ display: 'flex', width: '100%' }}>
-                <QN_DropDown value={filterType} onChange={setFilterType} items={searchTypes} widthButton='25%' />
-                <QN_Input version={2} value={filter} onChange={(e) => setFilter(e.target.value)} clearable />
+                <QN_DropDown
+                    value={filterType}
+                    onChange={setFilterType}
+                    items={searchTypes}
+                    widthButton='25%'
+                    label="Pesquisar Por"
+                />
+                <QN_Input
+                    version={2}
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    clearable
+                    label="Termos de Pesquisa"
+                />
             </div>
 
             <QN_Table
