@@ -2,6 +2,7 @@
 import { useContext, useEffect } from "react"
 import { NavbarItemType, NavbarItemContext } from "./navbar.context"
 import NavbarItem from "../QN_NavbarItem"
+import { useNavbarStyle } from "./navbar.styles.context"
 
 interface QN_NavbarProps {
     padding?: {
@@ -15,19 +16,21 @@ interface QN_NavbarProps {
     items?: NavbarItemType[]
 }
 
-export default function QN_NavbarComponent({ header, footer, items }: QN_NavbarProps) {
+export default function QN_NavbarComponent({ header, footer, items}: QN_NavbarProps) {
     const navbarContext = useContext(NavbarItemContext)
     const navbarItems = navbarContext?.navbarItems
     useEffect(() => {
         navbarContext?.setNavbarItems(items as NavbarItemType[])
     }, [navbarContext, items])
 
+    const {backgroundColor} = useNavbarStyle()
+
     return (
         <div style={{
             width: '250px',
             maxWidth: '250px',
             minWidth: '250px',
-            backgroundColor: '#D9D9D9',
+            backgroundColor,
             color: 'black',
             display: 'flex',
             flexDirection: 'column',
