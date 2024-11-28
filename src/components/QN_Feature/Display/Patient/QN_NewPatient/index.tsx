@@ -1,24 +1,19 @@
+import QN_Button from "@/components/QN_Components/QN_Button";
+import QN_DropDown from "@/components/QN_Components/QN_DropDown";
+import QN_Form from "@/components/QN_Components/QN_Form";
+import QN_FormRow from "@/components/QN_Components/QN_FormRow";
+import QN_Input from "@/components/QN_Components/QN_Input";
+import { useModal } from "@/components/QN_Components/QN_Modal/modal.context";
 import { useState } from "react";
-import QN_Form from "../QN_Form";
-import QN_FormRow from "../QN_FormRow";
-import QN_Input from "../QN_Input";
-import QN_DropDown from "../QN_DropDown";
-import QN_Button from "../QN_Button";
 
-interface QN_NewPatientProps {
-    isOpen: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
-
-    const closeModal = () => setOpen(false)
+export default function QN_NewPatient() {
+    const {closeModal} = useModal()
 
     const [isLoading, setIsLoading] = useState(false)
     const [newPatient, setNewPatient] = useState({
         firstName: '',
         lastName: '',
-        birth: new Date().toISOString().split('T')[0],
+        birth: '',
         email: '',
         rg: '',
         cpf: '',
@@ -32,37 +27,39 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
         { label: 'Outros', value: 'others' },
     ];
 
-    const handleSave = () => {
+    const handleCreate = () => {
         setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 4000)
     }
 
     return (
         <div
             style={{
                 display: 'flex',
-                flexDirection: 'column',
-                width: '100%',
-                height: '100vh',
+                height: 'fit-content',
                 justifyContent: 'start',
                 alignItems: 'center',
-                padding: '30px',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                padding: '10px'
             }}
         >
-            <QN_Form title="Cadastrar Novo Paciente">
+            <QN_Form
+                title="Cadastrar Novo Paciente"
+                formConfig={{
+                    border: 'none'
+                }}
+            >
                 <QN_FormRow >
                     <QN_Input
                         label="Nome"
                         value={newPatient.firstName}
                         onChange={(e) => setNewPatient({ ...newPatient, firstName: e.target.value })}
+                        required
                     />
                     <QN_Input
                         label="Sobrenome"
                         value={newPatient.lastName}
                         onChange={(e) => setNewPatient({ ...newPatient, lastName: e.target.value })}
+                        required
                     />
                     <QN_Input
                         label="Data de nascimento"
@@ -72,6 +69,7 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                             birth: e.target.value
                         })}
                         type="date"
+                        required
                     />
 
                 </QN_FormRow>
@@ -80,13 +78,15 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                         label="RG"
                         value={newPatient.rg}
                         onChange={(e) => setNewPatient({ ...newPatient, rg: e.target.value })}
-                    // mask="##.###.###-#"
+                        mask="##.###.###-#"
+                        required
                     />
                     <QN_Input
                         label="CPF"
                         value={newPatient.cpf}
                         onChange={(e) => setNewPatient({ ...newPatient, cpf: e.target.value })}
-                    // mask="###.###.###-##"
+                        mask="###.###.###-##"
+                        required
                     />
                     <QN_DropDown
                         label="Gênero"
@@ -96,6 +96,7 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                         buttonConfig={{
                             width: '100%'
                         }}
+                        required
                     />
                 </QN_FormRow>
                 <QN_FormRow>
@@ -103,18 +104,20 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                         label="E-mail"
                         value={newPatient.email}
                         onChange={(e) => setNewPatient({ ...newPatient, email: e.target.value })}
+                        required
                     />
                     <QN_Input
                         label="Telefone"
                         value={newPatient.phone}
                         onChange={(e) => setNewPatient({ ...newPatient, phone: e.target.value })}
-                    // mask="(##) #####-####"
+                        required
+                        mask="(##) #####-####"
                     />
                 </QN_FormRow>
                 <QN_FormRow >
                     <QN_Button
                         colorStyle="red"
-                        width="50%"
+                        width="70%"
                         marginTop="5%"
                         onClick={closeModal}
                     >
@@ -122,27 +125,15 @@ export default function QN_NewPatient({ setOpen, isOpen }: QN_NewPatientProps) {
                     </QN_Button>
                     <QN_Button
                         colorStyle="blue"
-                        width="50%"
+                        width="70%"
                         marginTop="5%"
                         isLoading={isLoading}
-                        onClick={handleSave}
+                        onClick={handleCreate}
                     >
-                        Salvar
+                        Criar
                     </QN_Button>
                 </QN_FormRow>
             </QN_Form>
-            <div
-                style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '20px',
-                    height: '100%',
-                    padding: '0% 30%'
-                }}
-            >
-            </div>
         </div>
     )
 }

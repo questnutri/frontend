@@ -45,6 +45,7 @@ export const fetchOnePatient = async (id: string): Promise<any> => {
     }
 }
 
+
 export const updateOnePatient = async (id: string, data: Partial<IPatient>) => {
     try {
         const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${id}`, {

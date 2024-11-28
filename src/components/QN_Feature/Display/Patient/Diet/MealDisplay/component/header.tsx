@@ -5,21 +5,18 @@ import { useUser } from "@/context/user.context"
 import { MdEdit } from "react-icons/md"
 import { FaTrash } from "react-icons/fa6"
 import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
-import { use, useEffect, useState } from "react"
+import { useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { useDiet, useMeal } from "@/context/diet.context"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
-import { updatePatientMeal } from "@/lib/fetchPatients"
-import QN_SectionDivider from "@/components/QN_Components/QN_SectionDivider"
 import QN_CheckBoxGroup from "@/components/QN_Components/QN_CheckBoxGroup"
 import { useMealDisplay } from '../context'
-import { DayOfWeek, IMeal } from '@/models/Patient/Diet/Diet.interface'
-import { duplicatePatientMeal } from '@/lib/Diet/diet.api'
+import { DayOfWeek } from '@/models/Patient/Diet/Diet.interface'
+import { createPatientMeal, deletePatientMeal } from '@/lib/Diet/diet.api'
 import { useModal } from '@/components/QN_Components/QN_Modal/modal.context'
-import QN_Modal from '@/components/QN_Components/QN_Modal'
 import { Divider } from '@nextui-org/react'
-import { title } from 'process'
+
 
 export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputSize?: string }) {
     const { role } = useUser()
@@ -62,7 +59,7 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     <QN_Button
                         onClick={
                             async () => {
-                                await duplicatePatientMeal(patient!._id, diet!._id, {
+                                await createPatientMeal(patient!._id, diet!._id, {
                                     name: meal?.name,
                                     hour: meal?.hour,
                                     daysOfWeek: selectedValues,
@@ -272,11 +269,67 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                             {
                                                 text: 'Excluir',
                                                 colorStyle: 'red',
-                                                confirmationTextRequired: 'EXCLUIR'
+                                                confirmationTextRequired: 'EXCLUIR',
+                                                width: '120px',
+                                                onClick: async () => {
+                                                    if (patient && diet && meal) {
+                                                        const res = await deletePatientMeal(patient!._id, diet!._id, meal!._id)
+                                                        if (res.status == 200) {
+                                                            showPopUp({
+                                                                windowConfig: {
+                                                                    width: '200px',
+                                                                },
+                                                                titleConfig: {
+                                                                    title: 'Refeição excluída',
+                                                                },
+                                                                defaultButtons: {
+                                                                    okButton: true
+                                                                }
+                                                            })
+                                                            await fetchPatient()
+                                                        } else {
+                                                            showPopUp({
+                                                                windowConfig: {
+                                                                    width: '200px',
+                                                                },
+                                                                titleConfig: {
+                                                                    title: 'Erro!'
+                                                                },
+                                                                bodyConfig: {
+                                                                    content: 'Houve um erro ao tentar excluir a refeição, tente novamente.'
+                                                                },
+                                                                defaultButtons: {
+                                                                    okButton: true
+                                                                }
+                                                            })
+                                                            await fetchPatient()
+                                                        }
+
+                                                    } else {
+                                                        showPopUp({
+                                                            windowConfig: {
+                                                                width: '200px',
+                                                            },
+                                                            titleConfig: {
+                                                                title: 'Erro!'
+                                                            },
+                                                            bodyConfig: {
+                                                                content: 'Houve um erro ao tentar excluir a refeição, tente novamente.'
+                                                            },
+                                                            defaultButtons: {
+                                                                okButton: true
+                                                            }
+                                                        })
+                                                        await fetchPatient()
+                                                    }
+
+
+                                                }
                                             },
                                             {
                                                 text: 'Não excluir',
-                                                colorStyle: 'blue'
+                                                colorStyle: 'blue',
+                                                width: '120px'
                                             }
                                         ]
                                     }

@@ -9,8 +9,6 @@ import QN_DropDown from '@/components/QN_Components/QN_DropDown'
 import { fetchCep } from '@/lib/fetchCep'
 import { updateOnePatient } from '@/lib/fetchPatients'
 
-
-
 export default function QN_NutritionistPatient_ProfilePage() {
     const { patient, setModalPatient } = useNutritionistPatient()
 
@@ -180,7 +178,9 @@ export default function QN_NutritionistPatient_ProfilePage() {
                 padding: "20px",
                 gap: '20px',
                 height: '100%',
-                overflowY: 'auto'
+                overflowY: 'auto',
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#676767 #ffffff ',
             }}
         >
             <QN_Form title="Informações Pessoais" actionButton={

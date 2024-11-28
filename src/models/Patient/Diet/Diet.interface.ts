@@ -23,8 +23,8 @@ export interface IFood {
     _id: string
     createdAt?: string
     updatedAt?: string
-    aliment?: string
-    quantity: number
+    aliment?: IAliment | null
+    quantity: number | string
     unit: string
     obs?: string
 }

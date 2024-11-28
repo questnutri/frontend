@@ -11,7 +11,7 @@ import ListPatientsPage from "@/components/Pages/ListPatients"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import QN_Modal from "@/components/QN_Components/QN_Modal"
 import { FaPlus } from '@/icons/index'
-import QN_NewPatient from "@/components/QN_Components/QN_NewPatient"
+import QN_NewPatient from "@/components/QN_Feature/Display/Patient/QN_NewPatient"
 
 export default function PatientsPage() {
     const [patients, setPatients] = useState<IPatient[]>([])
@@ -57,8 +57,8 @@ export default function PatientsPage() {
                 </span>
                 <ListPatientsPage />
             </div>
-            <QN_Modal isOpen={modalNewPatient} setOpen={setModalNewPatient} height="75%" width="75%">
-                <QN_NewPatient isOpen={modalNewPatient} setOpen={setModalNewPatient} />
+            <QN_Modal isOpen={modalNewPatient} setOpen={setModalNewPatient} height="fit-content" width="1000px">
+                <QN_NewPatient />
             </QN_Modal>
         </ListPatientsContext.Provider>
     )

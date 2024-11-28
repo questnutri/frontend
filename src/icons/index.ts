@@ -20,6 +20,8 @@ import { GiMedicalThermometer, GiMedicines } from "react-icons/gi";
 import { LuActivity } from "react-icons/lu";
 import { TbDotsVertical } from "react-icons/tb";
 import { FaSave } from "react-icons/fa";
+import { GiMeat } from "react-icons/gi";
+
 
 export {
     RiHome2Fill,
@@ -50,4 +52,5 @@ export {
     LuActivity,
     TbDotsVertical,
     FaSave,
+    GiMeat,
 }

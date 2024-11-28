@@ -1,7 +1,8 @@
 'use client'
+import { createPatientDiet } from "@/lib/Diet/diet.api"
 import { fetchOnePatient } from "@/lib/fetchPatients"
 import { IPatient } from "@/models/Patient/Patient.interface"
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 interface NutritionistPatientContextType {
     patient: IPatient | null
@@ -23,7 +24,6 @@ export function QN_NutritionistPatientProvider({ children }: { children: ReactNo
     const [patient, setPatient] = useState<IPatient | null>(null)
 
     const setModalPatient = async (id: string | null) => {
-        console.log('Patient setted')
         if (!id) {
             setPatient(null)
             return

@@ -9,6 +9,9 @@ import MealDisplay_Component from "../MealDisplay/component"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { daysOfWeekBR, daysOfWeekEN } from '@/components/QN_Feature/Display/Patient/Diet/DietDisplay'
+import { createPatientMeal } from '@/lib/Diet/diet.api'
+import QN_ConditionalRender from '@/components/QN_Components/QN_ConditionalRender'
+import { usePopUpGlobal } from '@/components/QN_Components/QN_PopUp/popup.global.context'
 
 interface QN_DietDisplay_DayProps {
     day: number
@@ -18,6 +21,49 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet, meals } = useDiet()
     const { expandedDay, toggleExpandedDay } = useDietDisplay()
+    const { showPopUp } = usePopUpGlobal()
+
+    const handleCreateMeal = async () => {
+
+        const data = await createPatientMeal(patient!._id, diet!._id, {
+            name: 'Refeição',
+            hour: '00:00',
+            daysOfWeek: [daysOfWeekEN[day] as DayOfWeek]
+        })
+        if (data.status == 201) {
+            showPopUp({
+                windowConfig: {
+                    width: '250px'
+                },
+                titleConfig: {
+                    title: 'Sucesso!'
+                },
+                bodyConfig: {
+                    content: 'Nova refeição criada'
+                },
+                defaultButtons: {
+                    okButton: true
+                }
+            })
+            await fetchPatient()
+        } else {
+            showPopUp({
+                windowConfig: {
+                    width: '250px'
+                },
+                titleConfig: {
+                    title: 'Erro'
+                },
+                bodyConfig: {
+                    content: 'Houve um erro ao tentar criar sua refeição. Tente novamente.'
+                },
+                defaultButtons: {
+                    okButton: true
+                }
+            })
+        }
+
+    }
 
     //render meals when diet is updated
     const [renderedContent, setRenderedContent] = useState(<></>)
@@ -66,7 +112,6 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                 }}
             >
 
-
                 {(expandedDay == null || expandedDay === day) && (
                     <>
                         <div style={{
@@ -107,11 +152,24 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                             )}
                         </div>
                         {expandedDay == day && (
-                            <div
-                                style={{ width: '100%', paddingBottom: '20px', }}
-                            >
-                                <QN_Button colorStyle='white' width='150px' height='30px' noShadow>Nova Refeição</QN_Button>
-                            </div>
+                            <QN_ConditionalRender
+                                nutritionist={
+                                    <div
+                                        style={{ width: '100%', paddingBottom: '25px', }}
+                                    >
+                                        <QN_Button
+                                            colorStyle='white'
+                                            width='150px'
+                                            height='30px'
+                                            onClick={handleCreateMeal}
+                                            noShadow
+                                        >
+                                            Nova Refeição
+                                        </QN_Button>
+                                    </div>
+                                }
+                            />
+
                         )}
 
                         <div style={{

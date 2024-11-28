@@ -5,6 +5,7 @@ import { useNutritionistPatient } from "./modal.patient.context"
 import { updatePatientMeal } from "@/lib/fetchPatients"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context"
+import { createFood } from "@/lib/Diet/diet.api"
 
 type DietContextType = {
     diet: IDiet | null
@@ -30,6 +31,7 @@ type MealContextType = {
     denyMealChanges: (afterAction?: () => void) => void
 
     foods: IFood[]
+    handleFoodCreation: () => Promise<void>
 }
 
 export const MealContext = createContext<MealContextType | undefined>(undefined)
@@ -48,13 +50,6 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
 
     const [meal, setMeal] = useState<IMeal | null>(diet?.meals!.at(mealIndex) || null)
 
-    const [foods, setFoods] = useState<IFood[]>([])
-
-    useEffect(() => {
-        setFoods(meal?.foods || [])
-        console.log('Foods updated')
-    }, [meal])
-
     //re-renders meal when diets is updated
     useEffect(() => {
         setMeal(diet!.meals!.at(mealIndex) || null)
@@ -67,6 +62,12 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
     useEffect(() => {
         if (meal) setMealChanges(meal)
     }, [meal])
+
+
+    const [foods, setFoods] = useState<IFood[]>(meal?.foods || [])
+    useEffect(() => {
+        setFoods(meal?.foods || [])
+    }, [meals, meal])
 
 
     //Updates mealChanges
@@ -86,6 +87,19 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
         })
 
         await fetchPatient() //resync
+    }
+
+    const handleFoodCreation = async () => {
+        const res = await createFood(patient!._id, diet!._id, meal!._id, {
+            aliment: null,
+            quantity: 0,
+            unit: 'gramas',
+            obs: ''
+        })
+        if (res.status == 201) {
+            await fetchPatient()
+        }
+
     }
 
     const denyMealChanges = (afterAction?: () => void): void => {
@@ -144,7 +158,17 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
 
 
     return (
-        <MealContext.Provider value={{ refDay, meal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges, foods }}>
+        <MealContext.Provider
+            value={{
+                refDay,
+                meal,
+                mealChanges,
+                handleMealChange,
+                acceptMealChanges,
+                denyMealChanges,
+                foods,
+                handleFoodCreation
+            }}>
             {children}
         </MealContext.Provider>
     )

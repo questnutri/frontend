@@ -25,13 +25,11 @@ export default function QN_NutritionistPatient_DietPage() {
     //Updates diet when modalPatient is load
     useEffect(() => {
         setDiet(patient?.diets?.at(0))
-        console.log('Diet updated.')
     }, [patient])
 
     //Updates meals array when diet is load
     useEffect(() => {
         setMeals(patient?.diets?.at(0)?.meals || [])
-        console.log('Meals updated.')
     }, [diet])
 
     return (

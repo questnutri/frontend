@@ -12,6 +12,10 @@ interface QN_DropDownProps {
         textColor?: string
         textAlignX?: 'start' | 'center' | 'end'
         borderRadius?: string
+        border?: {
+            disabled?: boolean
+            color?: string
+        }
     }
 
     optionsConfig?: {
@@ -22,6 +26,8 @@ interface QN_DropDownProps {
 
     items: QN_DropDownItem[]
     replaceButtonToDots?: boolean
+
+    required?: boolean
     label?: string
     value: string
     onChange: (value: string) => void
@@ -31,6 +37,7 @@ interface QN_DropDownProps {
 }
 
 export default function QN_DropDown({
+    required,
     items,
     label,
     replaceButtonToDots = false,
@@ -68,7 +75,7 @@ export default function QN_DropDown({
                     fontWeight: '500',
                 }}
             >
-                {label}
+                {label}{required && <span style={{ color: 'red', paddingLeft: '1px' }}>*</span>}
             </span>
             <Dropdown isDisabled={disabled}>
                 <DropdownTrigger>
@@ -80,21 +87,21 @@ export default function QN_DropDown({
                                 width: buttonConfig?.width || 'fit-content',
                                 backgroundColor: buttonConfig?.backgroundColor,
                                 color: buttonConfig?.textColor,
-                                borderColor: '#E4E4E7'
+                                borderColor: buttonConfig?.border?.disabled ? '' : '#E4E4E7'
                             }}
                         >
                             <VerticalDotsIcon />
                         </Button>
                     ) : (
                         <Button
-                            variant="bordered"
+                            variant="light"
                             style={{
                                 width: buttonConfig?.width || 'fit-content',
-                                backgroundColor: buttonConfig?.backgroundColor,
+                                backgroundColor: buttonConfig?.backgroundColor || '',
                                 color: buttonConfig?.textColor,
                                 justifyContent: buttonConfig?.textAlignX || 'center',
                                 borderRadius: buttonConfig?.borderRadius || '8px',
-                                borderColor: '#E4E4E7'
+                                borderColor: buttonConfig?.border?.disabled ? '' : '#E4E4E7'
                             }}
                             onKeyDown={handleKeyDown}
                         >

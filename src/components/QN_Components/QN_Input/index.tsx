@@ -19,6 +19,7 @@ interface QN_InputProps {
     width?: string
     height?: string
     padding?: string
+    backgroundColor?: string
 
     //Text
     fontSize?: string
@@ -34,8 +35,9 @@ interface QN_InputProps {
     disabled?: boolean
     placeHolder?: string
     removeStyle?: boolean
-    cursor?: boolean,
+    cursor?: string,
     withBorder?: boolean
+
 
     //Attachments
     label?: string
@@ -67,6 +69,7 @@ export default function QN_Input({
     width = "100%",
     height,
     padding,
+    backgroundColor,
 
     //Text
     fontSize,
@@ -82,7 +85,7 @@ export default function QN_Input({
     disabled,
     placeHolder,
     removeStyle = false,
-    cursor,
+    cursor='auto',
     withBorder = false,
 
     //Attachments
@@ -258,7 +261,7 @@ export default function QN_Input({
                             fontWeight: "500",
                         }}
                     >
-                        {label}
+                        {label}{required && <span style={{color: 'red', paddingLeft: '1px'}}>*</span>}
                     </span>
                     <Input
                         value={value}
@@ -272,7 +275,7 @@ export default function QN_Input({
                             height,
                             textAlign,
                             backgroundColor: 'white',
-                            cursor: removeStyle ? 'default' : 'auto',
+                            cursor,
                             fontSize,
                         }}
 
@@ -289,7 +292,7 @@ export default function QN_Input({
                         classNames={
                             removeStyle ? {
                                 input: [`bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
-                                inputWrapper: [`bg-white !bg-white shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`],
+                                inputWrapper: [`shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`],
                             } : withBorder ? {
                                 input: ['bg-neutral-50 text-black'],
                                 inputWrapper: ['bg-neutral-50 border-solid border-gray-400 border']
