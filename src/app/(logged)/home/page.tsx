@@ -1,5 +1,6 @@
 'use client'
 
+import PatientsPage from "@/components/Pages/PatientsPage"
 import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
 import LoadingScreen from "@/components/QN_Components/QN_Video"
 import QN_NutritionistPatient_DietPage from "@/components/QN_Feature/Display/Patient/Diet/DietDisplay"
@@ -12,11 +13,13 @@ export default function HomePage() {
 
     return (
         <QN_ConditionalRender
-            nutritionist={<></>}
+            nutritionist={
+                <>
+                    <PatientsPage />
+                </>}
             patient={<>
 
                 <QN_NutritionistPatient_DietPage />
-
 
             </>}
         />

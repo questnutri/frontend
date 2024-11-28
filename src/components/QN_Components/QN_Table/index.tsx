@@ -26,7 +26,7 @@ export default function QN_Table({ columns, rows, height, onRowClick }: QN_Table
         <Table
             isHeaderSticky
             aria-label="Table"
-            style={{ height: 'auto' }}
+            style={{ height: '300%'}}
         >
             <TableHeader columns={columns}>
                 {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -35,7 +35,7 @@ export default function QN_Table({ columns, rows, height, onRowClick }: QN_Table
                 items={rows} 
                 emptyContent="Sem registros."
                 style={{
-                    height: '200px',
+                    height: '150px',
                     overflowY: 'auto',
                 }}
                 >

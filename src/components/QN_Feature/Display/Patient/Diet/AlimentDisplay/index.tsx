@@ -1,10 +1,186 @@
-import { useFood } from "../FoodDisplay/context"
+import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
+import QN_DropDown from "@/components/QN_Components/QN_DropDown"
+import QN_Input from "@/components/QN_Components/QN_Input"
+import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
+import QN_Table from "@/components/QN_Components/QN_Table"
+import { FaSearch } from '@/icons'
+import { useState } from "react"
 
-export default function AlimentDisplay() {
-    const { food } = useFood()
+export default function AlimentoPrincipal() {
+    const { showPopUp } = usePopUpGlobal()
+
+    const [alimento, setAlimento] = useState("")
+    const [quantidade, setQuantidade] = useState<number | null>(null)
+    const [unidade, setUnidade] = useState("")
+    const [observacoes, setObservacoes] = useState("")
+
+    const handleSave = () => {
+        console.log("Salvar informações", { alimento, quantidade, unidade, observacoes })
+    }
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: "#ee0000", width: '100%', height: "100%", minHeight: '100%'}}>
-            <h1>Alimento Principal</h1>
+        <div style={{ padding: "20px", width: '100%', margin: "0 auto" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                }}
+            >
+                <h1 style={{ fontSize: "24px" }}>Alimento Principal</h1>
+            </div>
+
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                    marginBottom: "20px",
+                }}
+            >
+                <QN_Input
+                    type="text"
+                    value={alimento}
+                    onChange={(e) => setAlimento(e.target.value)}
+                    startContent={
+                        <QN_ConditionalRender
+                            nutritionist={
+                                <div style={{ marginRight: '10px' }}>
+                                    <FaSearch
+                                        color="#23a3ff"
+                                        size={20}
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={() => {
+                                            showPopUp({
+                                                windowConfig: {
+                                                    width: '500px',
+                                                    height: '700px'
+                                                },
+                                                bodyConfig: {
+                                                    content: (
+                                                        <>
+                                                            <QN_Table
+                                                                rows={[]}
+                                                                columns={[
+                                                                    { key: 'name', label: 'Nome' },
+                                                                    { key: 'kcal', label: 'Calorias' },
+                                                                    { key: 'carb', label: 'Carboidratos' },
+                                                                    { key: 'protein', label: 'Proteínas' },
+                                                                    { key: 'fat', label: 'Gordura' }
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    )
+                                                }
+                                            })
+                                        }}
+                                    />
+                                </div>
+
+                            }
+                        />
+
+                    }
+                />
+                <QN_Input
+                    type="number"
+                    value={`${quantidade}` || ''}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        if (Number(value) < 0) setQuantidade(0)
+                        else setQuantidade(Number(e.target.value))
+                    }}
+                />
+                <QN_DropDown
+                    items={[{
+                        label: 'g',
+                        value: 'grams'
+                    }]}
+                    value={'grams'}
+                    onChange={() => { }}
+                />
+                <button
+                    onClick={handleSave}
+                    style={{
+                        padding: "10px 20px",
+                        background: "#008CBA",
+                        color: "white",
+                        borderRadius: "4px",
+                        border: "none",
+                        cursor: "pointer",
+                    }}
+                >
+                    SALVAR
+                </button>
+            </div>
+
+            <div style={{ marginBottom: "20px", border: "1px solid #ccc", borderRadius: "4px", padding: "10px" }}>
+                <h3 style={{ marginBottom: "10px" }}>Informações Nutricionais:</h3>
+                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+                    <thead>
+                        <tr>
+                            <th style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>Porção de 100g</th>
+                            <th style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>(quantidade) {unidade}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {["Valor energético", "Carboidratos", "Proteínas", "Gorduras Totais", "Gorduras Saturadas", "Fibra Alimentar", "Sódio"].map(
+                            (item) => (
+                                <tr key={item}>
+                                    <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>{item}</td>
+                                    <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>0g</td>
+                                </tr>
+                            )
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h3>Observações do Alimento:</h3>
+                <textarea
+                    value={observacoes}
+                    onChange={(e) => setObservacoes(e.target.value)}
+                    style={{
+                        width: "100%",
+                        height: "80px",
+                        padding: "10px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                    }}
+                />
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+                {["Proporção Nutricional na Refeição", "Proporção Nutricional na Dieta Inteira"].map((title) => (
+                    <div
+                        key={title}
+                        style={{
+                            flex: 1,
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            padding: "10px",
+                        }}
+                    >
+                        <h3 style={{ marginBottom: "10px" }}>{title}:</h3>
+                        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+                            <tbody>
+                                {["Valor energético", "Carboidratos", "Proteínas", "Gorduras Totais", "Gorduras Saturadas", "Fibra Alimentar", "Sódio"].map(
+                                    (item) => (
+                                        <tr key={item}>
+                                            <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>{item}</td>
+                                            <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>0g + (0g)</td>
+                                        </tr>
+                                    )
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

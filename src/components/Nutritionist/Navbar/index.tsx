@@ -9,7 +9,7 @@ export default function NutritionistNavbar() {
     const router = useRouter()
     const pathName = usePathname()
 
-    const routesPathName = ['/home', '/patients']
+    const routesPathName = ['/home']
     
     return (
         <QN_Navbar
@@ -19,18 +19,10 @@ export default function NutritionistNavbar() {
             items={
                 [
                     {
-                        name: 'Home',
-                        icon: <RiHome2Fill color='#23a3ff' size={30} />,
-                        isSelected: false,
-                        onClick: () => {
-                            router.push(routesPathName[0])
-                        }
-                    },
-                    {
                         name: 'Pacientes',
                         icon: <FaUsers color='#23a3ff' size={30} />,
                         onClick: () => {
-                            router.push(routesPathName[1])
+                            router.push(routesPathName[0])
                         }
                     },
                 ]

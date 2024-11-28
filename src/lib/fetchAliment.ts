@@ -7,8 +7,12 @@ export const fetchAliments = async (): Promise<IAliment[]> => {
             method: 'GET',
         })
 
+        console.log(await response.json())
+
+
+        const data = await response.json()
         if (response.ok) {
-            return await response.json()
+            return data
         }
 
         return []
