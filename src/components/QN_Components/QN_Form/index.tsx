@@ -6,21 +6,25 @@ interface QN_FormProps {
     title?: string
     actionButton?: React.ReactNode
     children: React.ReactNode
+    formConfig?: {
+        width?: string,
+        border?: string,
+    }
 }
 
-export default function QN_Form({ children, actionButton, title }: QN_FormProps): JSX.Element {
+export default function QN_Form({ children, actionButton, title, formConfig }: QN_FormProps): JSX.Element {
 
     return (
         <div
             style={{
-                width: "100%",
+                width: formConfig?.width || "100%",
                 height: 'fit-content',
                 backgroundColor: 'white',
                 padding: '15px 25px 25px 15px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'start',
-                border: '1px solid black',
+                border: formConfig?.border || '1px solid black',
                 borderRadius: '10px',
                 color: 'black',
                 gap: '20px',

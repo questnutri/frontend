@@ -94,29 +94,29 @@ export default function AllergiesSubpage() {
             <QN_PopUp
                 isPopUpOpen={isAllergiesOpened}
                 setPopUpOpen={setIsAllergiesOpened}
-                config={{
-                    message: (
-                        <>
-                            <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
-                }}
+            // config={{
+            //     message: (
+            //         <>
+            //             <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
+            //         </>
+            //     ),
+            //     width: '500px',
+            //     height: 'fit-content'
+            // }}
             />
 
             <QN_PopUp
                 isPopUpOpen={newAllergiesPopUp}
                 setPopUpOpen={setNewAllergiesPopUp}
-                config={{
-                    message: (
-                        <>
-                            <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
-                }}
+            // config={{
+            //     message: (
+            //         <>
+            //             <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
+            //         </>
+            //     ),
+            //     width: '500px',
+            //     height: 'fit-content'
+            // }}
             />
         </div>
     )

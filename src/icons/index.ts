@@ -16,12 +16,10 @@ import { FaEdit } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { GiMedicalThermometer, GiMedicines  } from "react-icons/gi";
+import { GiMedicalThermometer, GiMedicines } from "react-icons/gi";
 import { LuActivity } from "react-icons/lu";
 import { TbDotsVertical } from "react-icons/tb";
-
-
-
+import { FaSave } from "react-icons/fa";
 
 export {
     RiHome2Fill,
@@ -51,4 +49,5 @@ export {
     GiMedicines,
     LuActivity,
     TbDotsVertical,
+    FaSave,
 }

@@ -5,16 +5,15 @@ import QN_HeaderAlimentInfo from "./QN_HeaderAlimentInfo";
 import QN_NutritionalTable from "./QN_NutritionalTable";
 import { IoClose } from '../../../icons/index'
 import { useState } from "react";
+import { IAliment } from "@/models/Aliment.interface";
+import { usePopUp } from "../QN_PopUp/popup.context";
 
 interface QN_AlimentInfoProps {
-	name: string,
-	isOpen: boolean
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>
+	aliment: IAliment | null,
 }
 
-export default function QN_AlimentInfo({ name, isOpen, setOpen }: QN_AlimentInfoProps) {
-	const closeModal = () => setOpen(false)
-
+export default function QN_AlimentInfo({ aliment }: QN_AlimentInfoProps) {
+	const { closePopUp } = usePopUp()
 	const [nutritionalInfo, setNutritionalInfo] = useState([
 		{ label: "Valor energético", portion: "-", quantity: "01" },
 		{ label: "Carboidratos", portion: "-", quantity: "02" },
@@ -24,6 +23,7 @@ export default function QN_AlimentInfo({ name, isOpen, setOpen }: QN_AlimentInfo
 		{ label: "Fibra Alimentar", portion: "-", quantity: "06" },
 		{ label: "Sódio", portion: "-", quantity: "07" },
 	])
+	console.log(aliment);
 
 	return (
 		<div
@@ -47,7 +47,7 @@ export default function QN_AlimentInfo({ name, isOpen, setOpen }: QN_AlimentInfo
 					gap: '5px',
 				}}
 			>
-				<QN_HeaderAlimentInfo name={name} />
+				<QN_HeaderAlimentInfo name={aliment?.name || ''} />
 				<QN_NutritionalTable
 					bgColor='#55b7fe'
 					values={nutritionalInfo}
@@ -85,7 +85,7 @@ export default function QN_AlimentInfo({ name, isOpen, setOpen }: QN_AlimentInfo
 						height: '5%'
 					}}
 				>
-					<IoClose size={35} cursor={'pointer'} onClick={closeModal} />
+					<IoClose size={35} cursor={'pointer'} onClick={closePopUp} />
 				</div>
 
 				<div

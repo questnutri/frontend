@@ -1,0 +1,30 @@
+export interface IAliment {
+    name: string
+    alimentGroup: string
+    kcal: string
+    kJ: string
+    carb: string
+    protein: string
+    fat: string
+    humidity: string
+    dietaryFiber: string
+    cholesterol: string
+    sodium: string
+    calcium: string
+    magnesium: string
+    manganese: string
+    phosphorus: string
+    iron: string
+    potassium: string
+    copper: string
+    zinc: string
+    retinol: string
+    RE: string
+    RAE: string
+    thiamine: string
+    riboflavin: string
+    pyridoxine: string
+    niacin: string
+    vitaminC: string
+    ash: string
+}

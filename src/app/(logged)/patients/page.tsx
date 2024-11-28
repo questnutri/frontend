@@ -40,7 +40,7 @@ export default function PatientsPage() {
                     width: '100%',
                     justifyContent: 'center',
                     alignItems: 'start',
-                    gap: '20px',
+                    gap: '30px',
                     flexDirection: 'column',
                     padding: '20px 10px'
                 }}

@@ -1,3 +1,4 @@
+'use client'
 import { FaTrash, FaSearch } from "../../../../icons/index"
 import QN_Button from "../../QN_Button"
 import QN_Input from "../../QN_Input"

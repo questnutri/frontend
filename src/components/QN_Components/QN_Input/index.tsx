@@ -199,7 +199,15 @@ export default function QN_Input({
     switch (inputVersion) {
         case 1:
             return (
-                <div style={{ boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)', backgroundColor: !isInvalid ? '#57b5fb' : '#FEE7EF', borderRadius: '15px', width: '100%', color: 'black' }}>
+                <div
+                    style={{
+                        // boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
+                        backgroundColor: !isInvalid ? '#57b5fb' : '#FEE7EF',
+                        borderRadius: '15px',
+                        width: '100%',
+                        color: 'black'
+                    }}
+                >
                     <Input
                         ref={ref}
                         label={label}

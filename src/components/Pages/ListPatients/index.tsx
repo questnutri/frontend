@@ -7,7 +7,7 @@ import { use, useEffect, useState } from "react";
 import { IPatient } from "@/models/Patient/Patient.interface";
 import QN_DropDown from "@/components/QN_Components/QN_DropDown";
 import QN_Input from "@/components/QN_Components/QN_Input";
-import QN_SectionDivider from "@/components/QN_Components/QN_SectionDivider";
+import { FaSearch } from "@/icons/index"
 
 export default function ListPatientsPage() {
     const { patients, refreshList } = useListPatients()
@@ -73,39 +73,48 @@ export default function ListPatientsPage() {
 
     return (
         <>
-            <div style={{ display: 'flex', width: '100%' }}>
-                <QN_DropDown
-                    value={filterType}
-                    onChange={setFilterType}
-                    items={searchTypes}
-                    buttonConfig={{
-                        width: '25%'
+            <div style={{ display: 'flex', width: '100%', gap: '20px' }}>
+                <span
+                    style={{
+                        width: '20%'
                     }}
-                    label="Pesquisar Por"
-                />
-                <QN_Input
-                    version={2}
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    clearable
-                    label="Termos de Pesquisa"
-                />
+                >
+                    <QN_DropDown
+                        value={filterType}
+                        onChange={setFilterType}
+                        items={searchTypes}
+                        buttonConfig={{
+                            width: '100%'
+                        }}
+                        label="Pesquisar Por"
+                    />
+                </span>
+                <span
+                    style={{
+                        width: '80%',
+                    }}
+                >
+                    <QN_Input
+                        version={2}
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        clearable
+                        label="Termos de Pesquisa"
+                        startContent={<FaSearch />}
+                    />
+                </span>
             </div>
-
-            <QN_SectionDivider title='Registros'>
-                <QN_Table
-                    columns={[
-                        { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
-                        { key: 'email', label: searchTypes[1].label },
-                        { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
-                        { key: 'details.cpf', label: searchTypes[2].label },
-                        { key: 'details.phone', label: searchTypes[3].label },
-                    ]}
-                    rows={filteredPatients}
-                    onRowClick={handleRowClick}
-                />
-            </QN_SectionDivider>
-
+            <QN_Table
+                columns={[
+                    { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
+                    { key: 'email', label: searchTypes[1].label },
+                    { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
+                    { key: 'details.cpf', label: searchTypes[2].label },
+                    { key: 'details.phone', label: searchTypes[3].label },
+                ]}
+                rows={filteredPatients}
+                onRowClick={handleRowClick}
+            />
             <QN_PatientModal />
         </>
     )

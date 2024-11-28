@@ -92,29 +92,29 @@ export default function ChronicDiseasesSubPage() {
             <QN_PopUp
                 isPopUpOpen={isChronicDiseasesOpened}
                 setPopUpOpen={setIsAllergiesOpened}
-                config={{
-                    message: (
-                        <>
-                            <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
-                }}
+            // config={{
+            //     message: (
+            //         <>
+            //             <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
+            //         </>
+            //     ),
+            //     width: '500px',
+            //     height: 'fit-content'
+            // }}
             />
 
             <QN_PopUp
                 isPopUpOpen={newChronicDiseasesPopUp}
                 setPopUpOpen={setNewChronicDiseasesPopUp}
-                config={{
-                    message: (
-                        <>
-                            <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
-                        </>
-                    ),
-                    width: '500px',
-                    height: 'fit-content'
-                }}
+            // config={{
+            //     message: (
+            //         <>
+            //             <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
+            //         </>
+            //     ),
+            //     width: '500px',
+            //     height: 'fit-content'
+            // }}
             />
         </div>
     )
