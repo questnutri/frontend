@@ -98,3 +98,23 @@ export const deleteFood = async (idPatient: string, idDiet: string, idMeal: stri
         }
     }
 }
+
+export const updateFood = async (idPatient: string, idDiet: string, idMeal: string, idFood: string ,data: Partial<IFood>) => {
+    try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}/food/${idFood}`, {
+            method: 'PATCH',
+            body: JSON.stringify(data)
+        })
+        return {
+            status: response.status,
+            data: await response.json(),
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: {
+                message: 'Application error'
+            },
+        }
+    }
+}

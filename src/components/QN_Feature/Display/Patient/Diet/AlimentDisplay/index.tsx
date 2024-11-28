@@ -3,11 +3,19 @@ import QN_DropDown from "@/components/QN_Components/QN_DropDown"
 import QN_Input from "@/components/QN_Components/QN_Input"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import QN_Table from "@/components/QN_Components/QN_Table"
+import AlimentPage from "@/components/QN_Feature/Pages/AlimentPage"
 import { FaSearch } from '@/icons'
 import { useState } from "react"
+import AlimentTable from "./aliment.table"
+import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
+import { useFood } from "../FoodDisplay/context"
 
 export default function AlimentoPrincipal() {
     const { showPopUp } = usePopUpGlobal()
+    const {food} = useFood()
+
+
+    const [openPopUp, setOpenPopUp] = useState(false)
 
     const [alimento, setAlimento] = useState("")
     const [quantidade, setQuantidade] = useState<number | null>(null)
@@ -41,8 +49,8 @@ export default function AlimentoPrincipal() {
             >
                 <QN_Input
                     type="text"
-                    value={alimento}
-                    onChange={(e) => setAlimento(e.target.value)}
+                    value={food?.aliment?.name || 'Nenhum selecionado'}
+                    onChange={() => {}}
                     startContent={
                         <QN_ConditionalRender
                             nutritionist={
@@ -54,28 +62,7 @@ export default function AlimentoPrincipal() {
                                             cursor: 'pointer'
                                         }}
                                         onClick={() => {
-                                            showPopUp({
-                                                windowConfig: {
-                                                    width: '500px',
-                                                    height: '700px'
-                                                },
-                                                bodyConfig: {
-                                                    content: (
-                                                        <>
-                                                            <QN_Table
-                                                                rows={[]}
-                                                                columns={[
-                                                                    { key: 'name', label: 'Nome' },
-                                                                    { key: 'kcal', label: 'Calorias' },
-                                                                    { key: 'carb', label: 'Carboidratos' },
-                                                                    { key: 'protein', label: 'Proteínas' },
-                                                                    { key: 'fat', label: 'Gordura' }
-                                                                ]}
-                                                            />
-                                                        </>
-                                                    )
-                                                }
-                                            })
+                                            setOpenPopUp(true)
                                         }}
                                     />
                                 </div>
@@ -87,7 +74,7 @@ export default function AlimentoPrincipal() {
                 />
                 <QN_Input
                     type="number"
-                    value={`${quantidade}` || ''}
+                    value={`${food?.quantity}` || '0'}
                     onChange={(e) => {
                         let value = e.target.value
                         if (Number(value) < 0) setQuantidade(0)
@@ -99,7 +86,7 @@ export default function AlimentoPrincipal() {
                         label: 'g',
                         value: 'grams'
                     }]}
-                    value={'grams'}
+                    value={food?.unit || 'grams'}
                     onChange={() => { }}
                 />
                 <button
@@ -180,7 +167,25 @@ export default function AlimentoPrincipal() {
                         </table>
                     </div>
                 ))}
+
             </div>
+            <QN_PopUp
+                isPopUpOpen={openPopUp}
+                setPopUpOpen={setOpenPopUp}
+                styleConfig={{
+                    windowConfig: {
+                        width: '90%',
+                        height: '90%',
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <AlimentPage />
+                            </>
+                        )
+                    }
+                }}
+            />
         </div>
     )
 }

@@ -1,31 +1,29 @@
 'use client'
 
-import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
-import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import QN_Table from "@/components/QN_Components/QN_Table"
-import { fetchAliments, fetchOneAliment } from "@/lib/fetchAliment"
+import { fetchAliments } from "@/lib/fetchAliment"
 import { IAliment } from "@/models/Aliment.interface"
 import { useEffect, useState } from "react"
-import QN_AlimentInfo from "@/components/QN_Feature/Display/Patient/Diet/QN_AlimentInfo"
+import QN_Input from "@/components/QN_Components/QN_Input"
+import { FaSearch } from "@/icons/index"
+import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
+import { useFood } from "../Display/Patient/Diet/FoodDisplay/context"
+import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context"
+import { updateFood } from "@/lib/Diet/diet.api"
+import { useNutritionistPatient } from "@/context/modal.patient.context"
+import { useDiet, useMeal } from "@/context/diet.context"
 
 export default function AlimentPage() {
+    const {showPopUp} = usePopUpGlobal()
+    const {closePopUp} = usePopUp()
+    const {food} = useFood()
+    const {patient, fetchPatient} = useNutritionistPatient()
+    const {diet} = useDiet()
+    const {meal} = useMeal()
+
     const [aliments, setAliments] = useState<IAliment[]>([])
-    const [isPopUpOpened, setIsPopUpOpened] = useState(false)
-    const [selectedAliment, setSelectedAliment] = useState<IAliment | null>(null)
-
-    const handleRowClick = async (id: string | null) => {
-        if (id) {
-            const data = await fetchOneAliment(id)
-            setSelectedAliment(data)
-        }
-
-    }
-
-    useEffect(() => {
-        if (selectedAliment) {
-            setIsPopUpOpened(true)
-        }
-    }, [selectedAliment])
+    const [filter, setFilter] = useState('') // Estado para o filtro
+    const [filteredAliments, setFilteredAliments] = useState<IAliment[]>([])
 
     useEffect(() => {
         const getAliments = async () => {
@@ -35,6 +33,43 @@ export default function AlimentPage() {
         getAliments()
     }, [])
 
+    useEffect(() => {
+        setFilteredAliments(
+            aliments.filter((aliment) => {
+                const searchValue = filter.toLocaleLowerCase()
+                return aliment.name.toLocaleLowerCase().includes(searchValue) // Filtro por nome
+            })
+        )
+    }, [aliments, filter])
+
+    const handleRowClick = (row: any) => {
+        showPopUp({
+            titleConfig: {
+                title: 'Você deseja selecionar o alimento',
+            }, 
+            customButtons: {
+                items: [
+                    {
+                        text: 'Não', 
+                        colorStyle: 'red',
+                        onClick: () => {}
+                    }, 
+                    {
+                        text: 'Sim',
+                        onClick: async () => {
+                            await updateFood(patient!._id, diet!._id, meal!._id, food!._id, {
+                                aliment: row
+                            })
+
+                            await fetchPatient()
+                            
+                            closePopUp()
+                        }
+                    }
+                ]
+            }
+        })
+    }
 
     return (
         <div
@@ -48,9 +83,25 @@ export default function AlimentPage() {
                 height: '100%'
             }}
         >
-            <h1 style={{ padding: '30px' }}>
-                Home Page
-            </h1>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '15px',
+                    marginBottom: '20px',
+                    width: '100%'
+                }}
+            >
+                <QN_Input
+                    version={2}
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    clearable
+                    label="Pesquisar Alimento"
+                    startContent={<FaSearch style={{marginRight: '20px'}} />}
+                />
+            </div>
+
             <div
                 style={{
                     height: '80%',
@@ -66,26 +117,10 @@ export default function AlimentPage() {
                         { key: 'protein', label: 'Proteína' },
                         { key: 'fat', label: 'Gordura' },
                     ]}
-                    rows={aliments}
+                    rows={filteredAliments}
                     onRowClick={handleRowClick}
                 />
             </div>
-            <QN_PopUp
-                styleConfig={{
-                    bodyConfig: {
-                        content: <QN_AlimentInfo aliment={selectedAliment} />
-                    },
-                    windowConfig: {
-                        padding: '0px',
-                        width: '90%',
-                        height: '90%',
-
-                    }
-
-                }}
-                isPopUpOpen={isPopUpOpened}
-                setPopUpOpen={setIsPopUpOpened}
-            />
         </div>
     )
 }

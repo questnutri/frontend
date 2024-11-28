@@ -19,14 +19,14 @@ export default function AlimentTable() {
     return (
         <div>
             <QN_Table
-                rows={[...aliments]}
+                rows={aliments}
                 columns={[
                     { key: 'name', label: 'Nome' },
                     { key: 'kcal', label: 'Calorias' },
-                    { key: 'carb', label: 'Carboidratos' },
-                    { key: 'protein', label: 'Proteínas' },
-                    { key: 'fat', label: 'Gordura' }
+                    // {key}
                 ]}
+
+                onRowClick={handleRowClick}
             />
         </div>
 
