@@ -26,7 +26,7 @@ interface QN_DropDownProps {
 
     items: QN_DropDownItem[]
     replaceButtonToDots?: boolean
-
+    gapLabel?: string
     required?: boolean
     label?: string
     value: string
@@ -48,6 +48,7 @@ export default function QN_DropDown({
     readyOnly,
     onChange,
     onTab,
+    gapLabel = '0px',
 }: QN_DropDownProps) {
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -57,14 +58,22 @@ export default function QN_DropDown({
         }
     }
 
+    const dropdownStyles = {
+        base: "max-h-40 overflow-y-auto", // Limita altura máxima
+        trigger: "h-8 min-h-8 py-0", // Reduz altura do botão trigger
+        content: "min-w-[120px]", // Reduz largura mínima do menu
+        item: "text-sm py-1" // Reduz padding e tamanho do texto dos items
+    };
+
     return (
         <div
             style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                width: `100%`,
-                gap: '5px',
+                width: `${buttonConfig?.width}`,
+                gap: `${gapLabel}`,
+                marginBottom: '5px'
             }}
         >
             <span
@@ -77,7 +86,9 @@ export default function QN_DropDown({
             >
                 {label}{required && <span style={{ color: 'red', paddingLeft: '1px' }}>*</span>}
             </span>
-            <Dropdown isDisabled={disabled}>
+            <Dropdown isDisabled={disabled}
+
+            >
                 <DropdownTrigger>
                     {replaceButtonToDots ? (
                         <Button
@@ -87,8 +98,9 @@ export default function QN_DropDown({
                                 width: buttonConfig?.width || 'fit-content',
                                 backgroundColor: buttonConfig?.backgroundColor,
                                 color: buttonConfig?.textColor,
-                                borderColor: buttonConfig?.border?.disabled ? '' : '#E4E4E7'
+                                borderColor: buttonConfig?.border?.disabled ? '' : '#E4E4E7',
                             }}
+                            className={dropdownStyles.trigger}
                         >
                             <VerticalDotsIcon />
                         </Button>
@@ -97,7 +109,7 @@ export default function QN_DropDown({
                             variant="light"
                             style={{
                                 width: buttonConfig?.width || 'fit-content',
-                                backgroundColor: buttonConfig?.backgroundColor || '',
+                                backgroundColor: buttonConfig?.backgroundColor || 'white',
                                 color: buttonConfig?.textColor,
                                 justifyContent: buttonConfig?.textAlignX || 'center',
                                 borderRadius: buttonConfig?.borderRadius || '8px',
@@ -120,6 +132,12 @@ export default function QN_DropDown({
                         <DropdownItem
                             key={index}
                             onClick={() => !readyOnly && onChange(item.value)}
+                            style={{
+                                color: 'black',
+                                fontWeight: '900',
+                                width: 'fit-content',
+                                alignSelf: 'center'
+                            }}
                         >
                             {item.label}
                         </DropdownItem>

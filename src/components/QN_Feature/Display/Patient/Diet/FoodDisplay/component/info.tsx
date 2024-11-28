@@ -11,40 +11,72 @@ export default function FoodDisplay_Info() {
     const [quantity, setQuantity] = useState(food?.quantity)
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <div style={{ marginTop: '10px' }}>
-                <QN_Input
-                    value={`${quantity}`}
-                    onChange={(e) => {
-                        setQuantity(Number(e.target.value))
-                    }}
-                    cursor='default'
-                    backgroundColor={isFoodEditable ? '#fff' :'#EAEAEA'}
-                    removeStyle={!isFoodEditable}
-                    width='70px'
-                    type="number"
-                />
-            </div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0px', marginRight: isFoodEditable ? '40px' : '' }}>
+            {isFoodEditable ? (
+                <>
+                    <div style={{ marginTop: '10px' }}>
+                        <QN_Input
+                            value={`${quantity}`}
+                            onChange={(e) => {
+                                setQuantity(Number(e.target.value))
+                            }}
+                            cursor='default'
+                            backgroundColor={isFoodEditable ? '#fff' : '#EAEAEA'}
+                            removeStyle={!isFoodEditable}
+                            width='fit-content'
+                            type="number"
+                            version={2}
+                            unity={true}
+                        />
+                    </div>
 
-            <div style={{marginBottom: '8px'}}>
-                <QN_DropDown
-                    items={[{
-                        label: 'g',
-                        value: 'grams',
-                    }]}
-                    value={selectedUnit}
-                    onChange={(selected) => setSelectedUnit(selected)}
-                    disabled={!isFoodEditable}
-                    buttonConfig={{
-                        width: '10px',
-                        textAlignX: 'start',
-                    }}
-                    optionsConfig={{
-                        width: '50%',
-                    }}
-                />
-            </div>
+                    <div style={{
+                        marginBottom: '8px'
+                    }}>
+                        <QN_DropDown
+                            items={
+                                [{
+                                    value: 'g',
+                                    label: 'grams',
+                                },
+                                {
+                                    value: 'Kg',
+                                    label: 'Kilograms'
+                                }]
+                            }
+                            value={selectedUnit}
+                            onChange={(selected) => setSelectedUnit(selected)}
+                            disabled={!isFoodEditable}
+                            buttonConfig={{
+                                width: '10px',
+                                textAlignX: 'center',
+                                backgroundColor: isFoodEditable ? 'white' : ''
+                            }}
+                            optionsConfig={{
+                                width: '20px',
 
-        </div>
+                            }}
+                            gapLabel="15px"
+                        />
+                    </div>
+                </>
+            ) : (
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '5px',
+                        fontSize: '13px',
+                        fontWeight: '400',
+                        color: 'black',
+                        width: 'fit-content'
+                    }}
+                >
+                    <h1>{quantity}</h1>
+                    <h1>{selectedUnit}</h1>
+                </div>
+            )}
+
+
+        </div >
     )
 }

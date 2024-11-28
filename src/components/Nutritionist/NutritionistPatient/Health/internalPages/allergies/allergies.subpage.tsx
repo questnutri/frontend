@@ -5,9 +5,7 @@ import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import QN_Table from "@/components/QN_Components/QN_Table"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useEffect, useState } from "react"
-import { TbDotsVertical } from '@/icons'
 import QN_Button from "@/components/QN_Components/QN_Button"
-import MedicineEditablePopUp from "../medicine"
 import IAllergies from "@/models/Patient/Health/Allergies.interface"
 import AllergiesEditablePopUp from "./allergies.popup"
 
@@ -33,6 +31,7 @@ export default function AllergiesSubpage() {
     }, [isAllergiesOpened])
 
     const [newAllergiesPopUp, setNewAllergiesPopUp] = useState(false)
+    console.log(newAllergiesPopUp);
 
     return (
         <div style={{ width: '100%', padding: '15px' }}>
@@ -92,31 +91,39 @@ export default function AllergiesSubpage() {
 
             {/* PRECISA TER DOIS POP UPS SENÃO BUGA O CADASTRO DE UM NOVO!!!!!!!!!!!!! */}
             <QN_PopUp
-                isPopUpOpen={isAllergiesOpened}
-                setPopUpOpen={setIsAllergiesOpened}
-            // config={{
-            //     message: (
-            //         <>
-            //             <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
-            //         </>
-            //     ),
-            //     width: '500px',
-            //     height: 'fit-content'
-            // }}
+                isPopUpOpen={newAllergiesPopUp}
+                setPopUpOpen={setNewAllergiesPopUp}
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
+                            </>
+                        )
+                    }
+                }}
             />
 
             <QN_PopUp
-                isPopUpOpen={newAllergiesPopUp}
-                setPopUpOpen={setNewAllergiesPopUp}
-            // config={{
-            //     message: (
-            //         <>
-            //             <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
-            //         </>
-            //     ),
-            //     width: '500px',
-            //     height: 'fit-content'
-            // }}
+                isPopUpOpen={isAllergiesOpened}
+                setPopUpOpen={setIsAllergiesOpened}
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <AllergiesEditablePopUp allergieRecord={allergiesOpened} />
+                            </>
+                        )
+                    }
+                }}
             />
         </div>
     )

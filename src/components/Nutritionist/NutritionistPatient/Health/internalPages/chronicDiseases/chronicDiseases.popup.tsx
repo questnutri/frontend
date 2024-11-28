@@ -20,7 +20,7 @@ export default function ChronicDiseasesEditablePopUp({ chronicDiseasesRecord }: 
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', padding: '20px' }}>
-            <h1 style={{ fontWeight: '600' }}>Registrar novo medicamento</h1>
+            <h1 style={{ fontWeight: '600' }}>Registrar novo doença crônica</h1>
             <div>
                 <QN_Input
                     value={chronicDiseases?.name || ''}
@@ -33,9 +33,10 @@ export default function ChronicDiseasesEditablePopUp({ chronicDiseasesRecord }: 
                     label='Tratamento'
                 />
                 <QN_Input
-                    value={`${chronicDiseases?.diagnosedAt?.toDateString}` || ''}
+                    value={`${chronicDiseases?.diagnosedAt?.toDateString()}` || ''}
                     onChange={(e) => handleChange('diagnosedAt', e.target.value)}
                     label='Data diaginostico'
+                    type="date"
                 />
             </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>

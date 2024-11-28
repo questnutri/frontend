@@ -18,7 +18,7 @@ export default function FoodDisplay_Component() {
                 height: "55px",
                 borderRadius: "10px",
                 padding: "10px 20px",
-                alignItems: 'center'
+                alignItems: 'center',
             }}
         >
             <h1
