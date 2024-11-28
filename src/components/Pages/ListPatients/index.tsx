@@ -1,5 +1,5 @@
 'use client'
-import QN_PatientModal from "@/components/QN_Components/QN_PatientModal";
+import QN_PatientModal from "@/components/QN_Feature/Display/Patient/QN_PatientModal";
 import QN_Table from "@/components/QN_Components/QN_Table";
 import { useNutritionistPatient } from "@/context/modal.patient.context";
 import { useListPatients } from "./context";
@@ -8,6 +8,7 @@ import { IPatient } from "@/models/Patient/Patient.interface";
 import QN_DropDown from "@/components/QN_Components/QN_DropDown";
 import QN_Input from "@/components/QN_Components/QN_Input";
 import { FaSearch } from "@/icons/index"
+import QN_SectionDivider from "@/components/QN_Components/QN_SectionDivider";
 
 export default function ListPatientsPage() {
     const { patients, refreshList } = useListPatients()
@@ -104,17 +105,33 @@ export default function ListPatientsPage() {
                     />
                 </span>
             </div>
-            <QN_Table
-                columns={[
-                    { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
-                    { key: 'email', label: searchTypes[1].label },
-                    { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
-                    { key: 'details.cpf', label: searchTypes[2].label },
-                    { key: 'details.phone', label: searchTypes[3].label },
-                ]}
-                rows={filteredPatients}
-                onRowClick={handleRowClick}
-            />
+
+            <QN_SectionDivider
+                title='Registros'
+                styleConfig={{
+                    lineConfig: {
+                        paddingHorizontal: '30px',
+                        dontPadAtCenter: true
+                    },
+                    titleConfig: {
+                        fontSize: '15px',
+                        fontWeight: '600'
+                    }
+                }}
+            >
+                <QN_Table
+                    columns={[
+                        { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
+                        { key: 'email', label: searchTypes[1].label },
+                        { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
+                        { key: 'details.cpf', label: searchTypes[2].label },
+                        { key: 'details.phone', label: searchTypes[3].label },
+                    ]}
+                    rows={filteredPatients}
+                    onRowClick={handleRowClick}
+                />
+            </QN_SectionDivider>
+
             <QN_PatientModal />
         </>
     )

@@ -1,7 +1,8 @@
 'use client'
-import { FaTrash, FaSearch } from "../../../../icons/index"
-import QN_Button from "../../QN_Button"
-import QN_Input from "../../QN_Input"
+import QN_Button from "@/components/QN_Components/QN_Button";
+import QN_Input from "@/components/QN_Components/QN_Input";
+import { FaTrash, FaSearch } from "@/icons/"
+
 
 interface QN_HeaderAlimentInfoProps {
 	name: string

@@ -1,153 +1,74 @@
-'use client'
-import QN_HealthCards from "@/components/QN_Components/QN_HealthCards";
-import QN_Tabs from "@/components/QN_Components/QN_Tabs";
-import { useNutritionistPatient } from "@/context/modal.patient.context";
-import { useState } from "react";
-import QN_ContainerHealthConditions from "@/components/QN_Components/QN_ContainerHealthConditions";
-import QN_Input from "@/components/QN_Components/QN_Input";
-import QN_Table from "@/components/QN_Components/QN_Table";
+import QN_Input from "@/components/QN_Components/QN_Input"
+import QN_Navbar from "@/components/QN_Components/QN_Navbar"
+import QN_TextArea from "@/components/QN_Components/QN_TextArea"
+import { useState } from "react"
+import HealthConditions from "./healthConditions"
+import QN_Button from "@/components/QN_Components/QN_Button"
 
 export default function QN_NutritionistPatient_HealthPage() {
-    const { patient } = useNutritionistPatient();
-
-    const [personalCharacteristic, setPersonalCharacteristic] = useState({
-        goals: patient?.details?.goals || '',
-        routine: patient?.details?.routine || '',
-        foodPreferences: patient?.details?.foodPreferences || ''
-    });
-
-    const [healthCondition, setHealthCondition] = useState({
-        allergies: patient?.details?.healthState?.allergies || '',
-        chronicDiseases: patient?.details?.healthState?.chronicDiseases || '',
-        currentMedications: patient?.details?.healthState?.currentMedications || ''
-    })
-
-    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-    const anyCardSelected = selectedCardId !== null;
-
-    const [dietObjective, setDietObjective] = useState('');
-
-    const cards = [
-        {
-            id: "routine",
-            name: "Rotina",
-            value: personalCharacteristic.routine,
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setPersonalCharacteristic({ ...personalCharacteristic, routine: e.target.value })
-        },
-        {
-            id: "foodPreferences",
-            name: "Preferência alimentar",
-            value: personalCharacteristic.foodPreferences,
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setPersonalCharacteristic({ ...personalCharacteristic, foodPreferences: e.target.value })
-        }
-    ];
-
-    const orderedCards = anyCardSelected
-        ? [
-            ...cards.filter(card => card.id === selectedCardId),
-            ...cards.filter(card => card.id !== selectedCardId)
-        ]
-        : cards;
+    const [goal, setGoal] = useState<string>('')
+    const [routine, setRoutine] = useState('')
+    const [foodPreference, setFoodPreference] = useState('')
 
     return (
-        <div
-            style={{
-                width: '100%',
-                height: '100%',
-                overflowY: 'auto'
-            }}
-        >
-            <div
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    padding: '20px',
-                    width: '100%',
-                    alignItems: 'start',
-                    flexDirection: anyCardSelected ? "row" : 'column',
-                    margin: '3px',
-                    justifyContent: 'start',
-                    gap: anyCardSelected ? '15px' : '50px'
-                }}
-            >
-                <h1 style={{
-                    width: '100%',
-                    textAlign: 'center',
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    color: '#55b7fe'
-                }}>Health Page</h1>
-                <div
-                    style={{
-                        display: 'flex',
-                        width: '100%'
-                    }}
-                >
-                    <h1 style={{
-                        color: 'Black',
-                        fontSize: '15px',
-                        fontWeight: 'bold',
-                        padding: '5px'
-                    }}>Objetivo da Dieta</h1>
-                    <QN_Input
-                        label=''
-                        value={dietObjective}
-                        onChange={e => setDietObjective(e.target.value)}
-                    />
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: anyCardSelected ? 'column' : 'row',
-                        gap: '5px',
-                        width: '100%',
-                        height: anyCardSelected ? '70%' : 'fit-content',
-                        transition: 'all 0.3s',
-                    }}
-                >
-                    {orderedCards.map(card => (
-                        <QN_HealthCards
-                            key={card.id}
-                            id={card.id}
-                            name={card.name}
-                            value={card.value}
-                            onChange={card.onChange}
-                            isSelected={selectedCardId === card.id}
-                            onSelect={(selected) => {
-                                setSelectedCardId(selected ? card.id : null);
-                            }}
-                            anyCardSelected={anyCardSelected}
-                        />
-                    ))}
-                </div>
-                <div
-                    style={{
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'start',
-                        justifyContent: 'start',
-                        marginTop: '10px'
-                    }}
-                >
-                    <QN_ContainerHealthConditions healthCondition={healthCondition} onChange={setHealthCondition} />
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: "100%",
-                        justifyContent: "start",
-                        padding: "10px",
-                        color: "#55b7fe",
-                        gap: "8px",
-                        alignItems: 'center'
-                    }}
-                >
-                </div>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '30px',
+            gap: '30px',
+            height: '100%',
+        }}>
+            <div style={{}}>
+                <QN_Input label={'Objetivo da dieta'} value={goal} onChange={(e) => setGoal(e.target.value)} />
             </div>
+
+            <div style={{ display: 'flex', gap: '15px' }}>
+                <QN_TextArea
+                    label={'Rotina'}
+                    value={routine}
+                    onChange={(e) => setRoutine(e.target.value)}
+                    maxRows={8}
+                    minRows={8}
+                    height='200px'
+                    labelBtn={
+                        <div style={{ paddingRight: '3px' }}>
+                            <QN_Button
+                                width='50px'
+                                height='20px'
+                                borderRadius='5px'
+                                fontSize='12px'
+                                noShadow
+                            >
+                                Salvar
+                            </QN_Button>
+                        </div>
+                    }
+                />
+                <QN_TextArea
+                    label={'Preferência alimentar'}
+                    value={foodPreference}
+                    onChange={(e) => setFoodPreference(e.target.value)}
+                    maxRows={8}
+                    minRows={8}
+                    height='200px'
+                    labelBtn={
+                        <div style={{ paddingRight: '3px' }}>
+                            <QN_Button
+                                width='50px'
+                                height='20px'
+                                borderRadius='5px'
+                                fontSize='12px'
+                                noShadow
+                            >
+                                Salvar
+                            </QN_Button>
+                        </div>
+                    }
+                />
+
+            </div>
+            <HealthConditions />
+
         </div>
-    );
+    )
 }

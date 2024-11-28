@@ -1,3 +1,5 @@
+import { IAliment } from "@/models/Aliment.interface"
+
 export interface IDiet {
     _id: string
     createdAt?: string
@@ -15,4 +17,14 @@ export interface IMeal {
     hour: string
     daysOfWeek: DayOfWeek[]
     foods?: any[]
+}
+
+export interface IFood {
+    _id: string
+    createdAt?: string
+    updatedAt?: string
+    aliment?: string
+    quantity: number
+    unit: string
+    obs?: string
 }

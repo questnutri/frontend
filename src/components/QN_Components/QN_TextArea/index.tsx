@@ -96,6 +96,7 @@ export default function QN_TextArea({
                 isDisabled={disabled}
                 isReadOnly={readOnly}
                 onClick={onClick}
+                spellCheck={false}
                 style={removeStyle ? {
                     color: '#55b7fe',
                     fontSize: '14px',

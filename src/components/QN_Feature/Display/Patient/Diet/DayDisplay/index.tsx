@@ -1,13 +1,14 @@
-import { daysOfWeekBR, daysOfWeekEN } from "../../../Nutritionist/NutritionistPatient/DietDisplay"
-import { useDietDisplay } from "../../../Nutritionist/NutritionistPatient/DietDisplay/contex"
-import { BiSolidLeftArrow, BiSolidRightArrow } from '../../../../icons'
+
+import { useDietDisplay } from '@/context/display/diet.display.context'
+import { BiSolidLeftArrow, BiSolidRightArrow } from '@/icons'
 import { MealContextProvider, useDiet } from "@/context/diet.context"
 import { DayOfWeek } from "@/models/Patient/Diet/Diet.interface"
 import { useEffect, useState } from "react"
-import DietDisplay_Meal_Provider from "../QN_DietDisplay_Meal/context"
-import MealDisplay_Component from "../QN_DietDisplay_Meal/component"
+import DietDisplay_Meal_Provider from "../MealDisplay/context"
+import MealDisplay_Component from "../MealDisplay/component"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
-import QN_Button from "../../QN_Button"
+import QN_Button from "@/components/QN_Components/QN_Button"
+import { daysOfWeekBR, daysOfWeekEN } from '@/components/QN_Feature/Display/Patient/Diet/DietDisplay'
 
 interface QN_DietDisplay_DayProps {
     day: number
@@ -50,6 +51,9 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                     borderRadius: '15px',
                     justifyContent: 'start',
                     alignItems: 'center',
+                    height: '100%',
+                    boxSizing: 'border-box',
+                    overflow: 'hidden',
 
                     //NÃO MEXER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     width: '100%', //FAZ OS DIAS DA SEMANA OCUPAREM PROPORCIONALMENTE OS DIAS DA SEMANA
@@ -68,7 +72,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                         <div style={{
                             display: 'flex',
                             justifyContent: expandedDay == day ? 'space-between' : 'center',
-                            overflow: 'hidden',
+                            overflow: 'none',
                             boxSizing: 'border-box',
 
                             width: '100%'
@@ -104,7 +108,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                         </div>
                         {expandedDay == day && (
                             <div
-                                style={{ width: '100%', paddingBottom: '20px', boxSizing: 'border-box', overflow: 'hidden', }}
+                                style={{ width: '100%', paddingBottom: '20px', }}
                             >
                                 <QN_Button colorStyle='white' width='150px' height='30px' noShadow>Nova Refeição</QN_Button>
                             </div>
@@ -116,11 +120,11 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                             overflowY: 'auto',
                             gap: '10px',//DISTÂNCIA ENTRE OS CARDS
                             width: '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM 100% DA LARGURA
-                            height: expandedDay == day ? 'auto' : '100%', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM PROPORCIONALMENTE A ALTURA
+                            height: 'auto', //FAZ OS CARDS DAS REFEIÇÕES OCUPAREM PROPORCIONALMENTE A ALTURA
                             scrollbarWidth: 'thin', // Para Firefox
                             scrollbarColor: ' #f1f1f1 #55B7FE', // Para Firefox: cor da barra e do fundo
-                            paddingRight: '5px',
-                            boxSizing: 'border-box'
+                            padding: '0px 5px',
+                            boxSizing: 'border-box',
                         }}>
                             {renderedContent}
                         </div>

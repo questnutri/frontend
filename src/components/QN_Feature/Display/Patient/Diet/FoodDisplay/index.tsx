@@ -1,14 +1,12 @@
 import { SetStateAction, use, useEffect, useState } from "react";
-import { FaEdit } from "../../../icons/index";
+import { FaEdit } from "@/icons/index";
 import QN_MealGeneralInfo from "./QN_AlimentGeneralInfo";
-import QN_Modal from "../QN_Modal";
-import QN_AlimentInfo from "../QN_AlimentInfo";
-import { useModal } from "../QN_Modal/modal.context";
-import QN_Button from "../QN_Button";
-import { QN_PopUp } from "../QN_PopUp";
+import { useModal } from "@/components/QN_Components/QN_Modal/modal.context";
+import QN_Button from "@/components/QN_Components/QN_Button";
 
 
-export default function MealDisplay_FoodComponent() {
+
+export default function FoodDisplay() {
 	const { setBlockModal } = useModal()
 	const [openModal, setOpenModal] = useState(false);
 
@@ -56,7 +54,7 @@ export default function MealDisplay_FoodComponent() {
 				</h1>
 			</div>
 			{<QN_MealGeneralInfo />}
-			<QN_PopUp
+			{/* <QN_PopUp
 				isPopUpOpen={openModal}
 				setPopUpOpen={setOpenModal}
 				styleConfig={{
@@ -67,7 +65,7 @@ export default function MealDisplay_FoodComponent() {
 						width: 'fit-content'
 					}
 				}}
-			/>
+			/> */}
 
 		</div>
 	)

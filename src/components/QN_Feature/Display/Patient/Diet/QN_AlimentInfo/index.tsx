@@ -1,12 +1,12 @@
 'use client'
-import QN_Table from "../QN_Table";
-import QN_TextArea from "../QN_TextArea";
+import QN_Table from "@/components/QN_Components/QN_Table";
+import QN_TextArea from "@/components/QN_Components/QN_TextArea";
 import QN_HeaderAlimentInfo from "./QN_HeaderAlimentInfo";
 import QN_NutritionalTable from "./QN_NutritionalTable";
-import { IoClose } from '../../../icons/index'
+import { IoClose } from '@/icons/'
 import { useState } from "react";
 import { IAliment } from "@/models/Aliment.interface";
-import { usePopUp } from "../QN_PopUp/popup.context";
+import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context";
 
 interface QN_AlimentInfoProps {
 	aliment: IAliment | null,

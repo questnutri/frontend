@@ -1,5 +1,5 @@
-import QN_DietDisplay_Day from "@/components/QN_Components/QN_DietDisplay/QN_DietDisplay_Day"
-import { DietDisplayContext } from "./contex"
+import QN_DietDisplay_Day from "@/components/QN_Feature/Display/Patient/Diet/DayDisplay"
+import { DietDisplayContext } from "@/context/display/diet.display.context"
 import { useEffect, useState } from "react"
 import { DietContext } from "@/context/diet.context"
 import { IDiet, IMeal } from "@/models/Patient/Diet/Diet.interface"

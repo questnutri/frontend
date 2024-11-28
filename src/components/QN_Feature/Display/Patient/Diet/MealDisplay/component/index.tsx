@@ -1,16 +1,16 @@
 'use client'
-import { useDietDisplay } from "@/components/Nutritionist/NutritionistPatient/DietDisplay/contex"
+import { useDietDisplay } from "@/context/display/diet.display.context"
 import { useMealDisplay } from "../context"
 import DietDisplay_Meal_Header_Expanded from "./header"
 import { useEffect, useState } from "react"
 import { useMeal } from "@/context/diet.context"
 import QN_TextArea from "@/components/QN_Components/QN_TextArea"
-import MealDisplay_FoodComponent from "@/components/QN_Components/MealDisplay_Food"
+import FoodDisplay from "@/components/QN_Feature/Display/Patient/Diet/FoodDisplay"
 import { MealDisplay_DaysOfWeek } from "./dayOfWeek"
 
 
 export default function MealDisplay_Component() {
-    const { meal, refDay } = useMeal()
+    const { meal, refDay, foods } = useMeal()
     const { expandedDay, toggleExpandedDay } = useDietDisplay()
     const { isOpened, setIsOpened, setIsEditable, toggleOpened } = useMealDisplay()
 
@@ -20,6 +20,20 @@ export default function MealDisplay_Component() {
             setIsEditable(false)
         }
     }, [expandedDay])
+
+    const [renderedContent, setRenderedContent] = useState(<></>)
+    useEffect(() => {
+        setRenderedContent(
+            <>
+                {
+                    foods?.map((food, index) => {
+                        return (
+                            <FoodDisplay />
+                        )
+                    })
+                }
+            </>)
+    }, [expandedDay, meal])
 
     return (
         <div
@@ -39,14 +53,14 @@ export default function MealDisplay_Component() {
             }}
         >
             {expandedDay != null ? (
-                <div style={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
+                <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                     <DietDisplay_Meal_Header_Expanded />
                     {
                         isOpened && (
                             <>
                                 <MealDisplay_DaysOfWeek />
-                                <div style={{padding: '20px'}}>
-                                    <MealDisplay_FoodComponent />
+                                <div style={{ padding: '20px' }}>
+                                    {renderedContent}
                                 </div>
 
                             </>

@@ -1,5 +1,5 @@
 'use client'
-import { IDiet, IMeal } from "@/models/Patient/Diet/Diet.interface"
+import { IDiet, IFood, IMeal } from "@/models/Patient/Diet/Diet.interface"
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 import { useNutritionistPatient } from "./modal.patient.context"
 import { updatePatientMeal } from "@/lib/fetchPatients"
@@ -23,12 +23,13 @@ export const useDiet = () => {
 
 type MealContextType = {
     meal: IMeal | null
-    changeMeal: () => void
     refDay: number
     mealChanges: IMeal | null
     handleMealChange: (field: keyof IMeal, value: any) => void
     acceptMealChanges: () => Promise<void>
     denyMealChanges: (afterAction?: () => void) => void
+
+    foods: IFood[]
 }
 
 export const MealContext = createContext<MealContextType | undefined>(undefined)
@@ -47,15 +48,12 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
 
     const [meal, setMeal] = useState<IMeal | null>(diet?.meals!.at(mealIndex) || null)
 
-    const changeMeal = () => {
-        if (meals && setMeals && meal) {
-            setMeals([
-                ...meals.slice(0, mealIndex),
-                meal,
-                ...meals.slice(mealIndex + 1),
-            ])
-        }
-    }
+    const [foods, setFoods] = useState<IFood[]>([])
+
+    useEffect(() => {
+        setFoods(meal?.foods || [])
+        console.log('Foods updated')
+    }, [meal])
 
     //re-renders meal when diets is updated
     useEffect(() => {
@@ -146,7 +144,7 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
 
 
     return (
-        <MealContext.Provider value={{ refDay, meal, changeMeal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges }}>
+        <MealContext.Provider value={{ refDay, meal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges, foods }}>
             {children}
         </MealContext.Provider>
     )

@@ -46,7 +46,7 @@ export default function QN_PopUpGlobalProvider({ children }: { children: React.R
     return (
         <PopUpContextGlobal.Provider value={{ showPopUp }}>
             {children}
-            {config && <QN_PopUp isPopUpOpen={isOpen} setPopUpOpen={setOpen} styleConfig={style} />}
+            {<QN_PopUp isPopUpOpen={isOpen} setPopUpOpen={setOpen} styleConfig={style} />}
         </PopUpContextGlobal.Provider>
     )
 }

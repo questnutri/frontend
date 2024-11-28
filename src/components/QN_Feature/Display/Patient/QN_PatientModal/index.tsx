@@ -1,13 +1,13 @@
 'use client'
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import React, { useEffect, useState } from "react"
-import QN_Modal from "../QN_Modal"
-import QN_NutritionistPatient_Navbar from "../../Nutritionist/NutritionistPatient/Navbar"
-import QN_NutritionistPatient_ProfilePage from "../../Nutritionist/NutritionistPatient/Profile"
-import { FaUser, FaAppleAlt, FaHeartPulse } from '../../../icons'
-import QN_NutritionistPatient_HealthPage from "../../Nutritionist/NutritionistPatient/Health"
-import QN_NutritionistPatient_DietPage from "@/components/Nutritionist/NutritionistPatient/DietDisplay"
-import HealthPage2 from "@/components/Nutritionist/NutritionistPatient/Health/index.2"
+import { FaAppleAlt, FaHeartPulse, FaUser } from "@/icons"
+
+import QN_NutritionistPatient_DietPage from "@/components/QN_Feature/Display/Patient/Diet/DietDisplay"
+import QN_NutritionistPatient_HealthPage from "@/components/Nutritionist/NutritionistPatient/Health"
+import QN_NutritionistPatient_ProfilePage from "@/components/Nutritionist/NutritionistPatient/Profile"
+import QN_NutritionistPatient_Navbar from "@/components/Nutritionist/NutritionistPatient/Navbar"
+import QN_Modal from "@/components/QN_Components/QN_Modal"
 
 export default function QN_PatientModal() {
     const { patient, setModalPatient } = useNutritionistPatient()
@@ -41,12 +41,6 @@ export default function QN_PatientModal() {
         )
     }
 
-    const healthPage2 = () => {
-        return (
-            <HealthPage2 />
-        )
-    }
-
     const [currentPage, setCurrentPage] = useState(profilePage)
     const handleCloseModal = () => {
         setModalPatient(null)
@@ -76,13 +70,6 @@ export default function QN_PatientModal() {
                             icon: <FaHeartPulse color='#23a3ff' size={30} />,
                             onClick() {
                                 setCurrentPage(healthPage)
-                            },
-                        },
-                        {
-                            name: 'Saúde2',
-                            icon: <FaHeartPulse color='#23a3ff' size={30} />,
-                            onClick() {
-                                setCurrentPage(healthPage2)
                             },
                         },
                         {

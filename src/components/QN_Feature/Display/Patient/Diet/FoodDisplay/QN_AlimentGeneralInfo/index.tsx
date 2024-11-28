@@ -1,4 +1,4 @@
-import { BsFire, FaTrash } from "../../../../icons/index";
+import { BsFire, FaTrash } from "@/icons";
 
 export default function QN_MealGeneralInfo() {
 	return (

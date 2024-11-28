@@ -116,7 +116,8 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                 alignItems: 'center',
                 height: '50px',
                 padding: '10px 15px',
-                gap: '15px'
+                gap: '15px',
+                boxSizing: 'border-box'
             }}
         >
             <div

@@ -6,7 +6,7 @@ import { useMeal } from "@/context/diet.context"
 
 export function MealDisplay_DaysOfWeek() {
     const { isEditable } = useMealDisplay()
-    const { mealChanges, handleMealChange} = useMeal()
+    const { mealChanges, handleMealChange } = useMeal()
 
     const daysOfWeek = [
         { value: 'Sunday', label: 'D' },
@@ -19,7 +19,19 @@ export function MealDisplay_DaysOfWeek() {
     ]
 
     return (
-        <QN_SectionDivider title='Dias da semana' sectionPadding='0px 20px' endLine>
+        <QN_SectionDivider
+            title='Dias da semana'
+            sectionPadding='0px 20px'
+            styleConfig={{
+                dividerConfig: {
+                    bottomDistance: '0px'
+                },
+                bottomLine: {
+                    active: true,
+                    topDistance: '18px'
+                }
+            }}
+        >
             <div style={{ padding: '0px 30px' }}>
                 <QN_CheckBoxGroup
                     label={""}
