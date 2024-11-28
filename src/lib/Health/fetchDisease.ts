@@ -21,7 +21,7 @@ export const createDisease = async (patientId: string, data: Partial<IDisease>) 
     }
 }
 
-export const updateMedication = async (patientId: string, diseaseId: string, data: Partial<IDisease>) => {
+export const updateChronic = async (patientId: string, diseaseId: string, data: Partial<IDisease>) => {
     try {
         const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/disease/${diseaseId}`, {
             method: 'PATCH',
@@ -41,7 +41,7 @@ export const updateMedication = async (patientId: string, diseaseId: string, dat
     }
 }
 
-export const deleteMedication = async (patientId: string, diseaseId: string) => {
+export const deleteChronic = async (patientId: string, diseaseId: string) => {
     try {
         const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/disease/${diseaseId}`, {
             method: 'DELETE',

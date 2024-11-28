@@ -25,7 +25,7 @@ export default function FoodDisplay_Info() {
                             removeStyle={!isFoodEditable}
                             width='fit-content'
                             type="number"
-                            version={2}
+                            version={3}
                             unity={true}
                         />
                     </div>
