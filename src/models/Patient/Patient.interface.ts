@@ -48,7 +48,10 @@ export interface IPatient {
 	nutri: string
 	activeDiet?: string
 	diets?: any[]
-	dailyMealRecord?: any[]
+	dailyMealRecord?: {
+		completedToday: string[],
+		checkingDay: 0 | 1 | 2 | 3 | 4 | 5 | 6
+	}
 	createdAt?: any
 	updatedAt?: any
 }

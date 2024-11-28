@@ -4,11 +4,13 @@ import { useEffect, useState } from "react"
 import { DietContext } from "@/context/diet.context"
 import { IDiet, IMeal } from "@/models/Patient/Diet/Diet.interface"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
+import { useUser } from "@/context/user.context"
 
 export const daysOfWeekBR = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
 export const daysOfWeekEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 export default function QN_NutritionistPatient_DietPage() {
+    const { role } = useUser()
     const { patient } = useNutritionistPatient()
     const [diet, setDiet] = useState<IDiet | null>(null)
     const [expandedDay, setExpandedDay] = useState<number | null>(null)
@@ -31,6 +33,14 @@ export default function QN_NutritionistPatient_DietPage() {
     useEffect(() => {
         setMeals(patient?.diets?.at(0)?.meals || [])
     }, [diet])
+
+
+    useEffect(() => {
+        if (role === 'patient') {
+            toggleExpandedDay(new Date().getDay())
+        }
+    }, [])
+
 
     return (
         <>

@@ -10,9 +10,11 @@ import { MealDisplay_DaysOfWeek } from "./dayOfWeek"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import FoodContextProvider from "../../FoodDisplay/context"
+import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
+import QN_CheckBoxGroup from "@/components/QN_Components/QN_CheckBoxGroup"
 
 
-export default function MealDisplay_Component() {
+export default function MealDisplay_Component({day}: {day: number}) {
     const { patient } = useNutritionistPatient()
     const { diet } = useDiet()
     const { meal, refDay, foods, handleFoodCreation } = useMeal()
@@ -55,36 +57,42 @@ export default function MealDisplay_Component() {
 
                 height: expandedDay != null ? (isOpened ? '500px' : '250px') : '100%',
                 maxHeight: expandedDay != null ? (isOpened ? '500px' : '55px') : '130px',
-                minHeight: '75px',
+                minHeight: '80px',
                 transition: 'height 0.3s ease, max-height 0.3s ease',
                 boxSizing: 'border-box',
                 overflow: 'hidden',
             }}
         >
             {expandedDay != null ? (
-                <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                    <DietDisplay_Meal_Header_Expanded />
+                <div style={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
+                    <DietDisplay_Meal_Header_Expanded day={day}/>
                     {
                         isOpened && (
                             <>
                                 <MealDisplay_DaysOfWeek />
-                                <div style={{ padding: '20px'}}>
-                                    <div style={{ paddingBottom: '20px' }}>
-                                        <QN_Button
-                                            width='200px'
-                                            onClick={handleFoodCreation}
-                                            noShadow
-                                        >
-                                            Adicionar alimento
-                                        </QN_Button>
-                                    </div>
+                                <div style={{ padding: '20px' }}>
+                                    <QN_ConditionalRender
+                                        nutritionist={
+                                            <div style={{ paddingBottom: '20px' }}>
+                                                <QN_Button
+                                                    width='200px'
+                                                    onClick={handleFoodCreation}
+                                                    noShadow
+                                                >
+                                                    Adicionar alimento
+                                                </QN_Button>
+                                            </div>
+                                        }
+
+                                    />
+
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'column',
                                         overflowY: 'auto',
                                         width: '100%',
                                         gap: '15px',
-                                        maxHeight: '265px',
+                                        maxHeight: '230px',
                                         height: '100%',
                                         scrollbarColor: '#676767 #fff',
                                         scrollbarWidth: 'thin'

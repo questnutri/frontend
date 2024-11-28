@@ -337,6 +337,7 @@ export default function QN_Input({
                         flexDirection: "column",
                         alignItems: "flex-start",
                         width: `${width}`,
+                        marginTop: '5px'
                     }}
                 >
                     <span

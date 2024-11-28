@@ -43,9 +43,7 @@ export default function ChronicDiseasesEditablePopUp({ diseasesRecord }: { disea
             }
             closePopUp()
         } else {
-            const res = await createDisease(patient!._id, {
-                ...chronicDiseases
-            })
+            const res = await createDisease(patient!._id, chronicDiseases)
             if (res.status == 201) {
                 await fetchPatient()
                 showPopUp({

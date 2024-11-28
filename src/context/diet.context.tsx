@@ -6,6 +6,7 @@ import { updatePatientMeal } from "@/lib/fetchPatients"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context"
 import { createFood, deletePatientMeal } from "@/lib/Diet/diet.api"
+import { useUser } from "./user.context"
 
 type DietContextType = {
     diet: IDiet | null
@@ -30,6 +31,8 @@ type MealContextType = {
     acceptMealChanges: () => Promise<void>
     denyMealChanges: (afterAction?: () => void) => void
 
+    isDone?: boolean
+
     foods: IFood[]
     handleFoodCreation: () => Promise<void>
 }
@@ -43,6 +46,7 @@ export const useMeal = () => {
 }
 
 export function MealContextProvider({ refDay, mealIndex, children }: { refDay: number, mealIndex: number, children: React.ReactNode }) {
+    const {role} = useUser()
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet, meals, setMeals } = useDiet()
 
@@ -53,7 +57,6 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
     //re-renders meal when diets is updated
     useEffect(() => {
         setMeal(diet!.meals!.at(mealIndex) || null)
-        console.log('Single meal Updated')
     }, [diet])
 
 

@@ -1,6 +1,6 @@
 'use client'
 import QN_Navbar from "@/components/QN_Components/QN_Navbar"
-import { RiHome2Fill } from '../../../icons'
+import { FaAppleAlt, RiHome2Fill } from '@/icons'
 import { usePathname, useRouter } from "next/navigation"
 import QN_NavbarFooter_Default from "@/components/QN_Components/QN_Navbar/default/navbar_footer.default"
 import QN_NavbarHeader_Default from "@/components/QN_Components/QN_Navbar/default/navbar_header.default"
@@ -19,8 +19,8 @@ export default function PatientNavbar() {
             items={
                 [
                     {
-                        name: 'Home',
-                        icon: <RiHome2Fill color='#23a3ff' size={30} />,
+                        name: 'Dieta',
+                        icon: <FaAppleAlt color='#23a3ff' size={30} />,
                         isSelected: false,
                         onClick: () => {
                             router.push(routesPathName[0])

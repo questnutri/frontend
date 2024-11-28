@@ -9,6 +9,7 @@ import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global
 import { SetStateAction, useState } from "react"
 import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import AlimentDisplay from "../../AlimentDisplay"
+import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
 
 export default function FoodDisplay_Component() {
     const { food, toggleFoodEditable, handleFoodDelete } = useFood()
@@ -45,36 +46,43 @@ export default function FoodDisplay_Component() {
             </h1>
             <FoodDisplay_Info />
             <FoodDisplay_Nutrients />
-            <Divider orientation='vertical' />
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                <MdEdit
-                    size={'23px'}
-                    color='#55b7fe'
-                    style={{
-                        cursor: 'pointer',
-                        transition: 'color 0.3s ease',
-                    }}
-                    title='Editar'
-                    className='hover-icon'
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
-                    onClick={toggleFoodEditable}
-                />
-                <FaTrash
-                    size={'20px'}
-                    color='#55b7fe'
-                    style={{
-                        cursor: 'pointer',
-                        transition: 'color 0.3s ease',
-                    }}
-                    title='Excluir'
-                    className='hover-icon'
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
-                    onClick={handleFoodDelete}
-                />
+            <QN_ConditionalRender
+                nutritionist={
+                    <>
+                        <Divider orientation='vertical' />
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                            <MdEdit
+                                size={'23px'}
+                                color='#55b7fe'
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'color 0.3s ease',
+                                }}
+                                title='Editar'
+                                className='hover-icon'
+                                onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
+                                onClick={toggleFoodEditable}
+                            />
+                            <FaTrash
+                                size={'20px'}
+                                color='#55b7fe'
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'color 0.3s ease',
+                                }}
+                                title='Excluir'
+                                className='hover-icon'
+                                onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
+                                onClick={handleFoodDelete}
+                            />
 
-            </div>
+                        </div>
+                    </>
+                }
+            />
+
             <QN_PopUp
                 isPopUpOpen={isAlimentPopUpOpen}
                 setPopUpOpen={setIsAlimentPopUpOpen}
@@ -88,6 +96,9 @@ export default function FoodDisplay_Component() {
                         content: (
                             <AlimentDisplay />
                         ),
+                    },
+                    titleConfig: {
+                        marginBottom: '0px'
                     }
                 }}
             />
