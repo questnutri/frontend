@@ -7,6 +7,7 @@ import { IoClose } from '@/icons/'
 import { useState } from "react";
 import { IAliment } from "@/models/Aliment.interface";
 import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context";
+import { useFood } from "../FoodDisplay/context";
 
 interface QN_AlimentInfoProps {
 	aliment: IAliment | null,
@@ -14,14 +15,15 @@ interface QN_AlimentInfoProps {
 
 export default function QN_AlimentInfo({ aliment }: QN_AlimentInfoProps) {
 	const { closePopUp } = usePopUp()
+
 	const [nutritionalInfo, setNutritionalInfo] = useState([
-		{ label: "Valor energético", portion: "-", quantity: "01" },
-		{ label: "Carboidratos", portion: "-", quantity: "02" },
-		{ label: "Proteínas", portion: "-", quantity: "03" },
-		{ label: "Gorduras Totais", portion: "-", quantity: "04" },
-		{ label: "Gorduras Saturadas", portion: "-", quantity: "05" },
-		{ label: "Fibra Alimentar", portion: "-", quantity: "06" },
-		{ label: "Sódio", portion: "-", quantity: "07" },
+		{ label: "Valor energético", portion: aliment?.kcal || '-', quantity: "" },
+		{ label: "Carboidratos", portion: aliment?.carb || '-', quantity: "02" },
+		{ label: "Proteínas", portion: aliment?.protein || '-', quantity: "03" },
+		{ label: "Gorduras Totais", portion: aliment?.fat || '-', quantity: "04" },
+		{ label: "Gorduras Saturadas", portion: aliment?.kcal || '-', quantity: "05" },
+		{ label: "Fibra Alimentar", portion: aliment?.dietaryFiber || '-', quantity: "06" },
+		{ label: "Sódio", portion: aliment?.sodium || '-', quantity: "07" },
 	])
 	console.log(aliment);
 

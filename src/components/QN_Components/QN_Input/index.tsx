@@ -13,7 +13,7 @@ interface QN_InputProps {
     //General HTML
     ref?: React.Ref<HTMLInputElement>
     type?: string
-    version?: 1 | 2
+    version?: 1 | 2 | 3
 
     //Internal Structure
     width?: string
@@ -42,6 +42,7 @@ interface QN_InputProps {
 
     //Attachments
     label?: string
+    labelBtn?: React.ReactNode
     errorMessage?: string //Interacts with external control IsInvalid
     startContent?: React.ReactNode
     endContent?: React.ReactNode
@@ -92,6 +93,7 @@ export default function QN_Input({
 
     //Attachments
     label,
+    labelBtn,
     errorMessage = "Campo inválido!",
     startContent,
     endContent,
@@ -207,7 +209,7 @@ export default function QN_Input({
                 <div
                     style={{
                         // boxShadow: '0 3px 4px rgba(0, 0, 0, 0.4)',
-                        // backgroundColor: !isInvalid ? '#57b5fb' : '#FEE7EF',
+                        backgroundColor: !isInvalid ? '#57b5fb' : '#FEE7EF',
                         borderRadius: '15px',
                         width: '100%',
                         color: 'black'
@@ -241,8 +243,91 @@ export default function QN_Input({
                                 </button>
                             )
                         }
+
                     />
                 </div>
+            )
+        case 3:
+            return (<div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    width: `${width}`,
+                }}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                    }}
+                >
+                    <span
+                        style={{
+                            fontSize: "15px",
+                            marginLeft: "8px",
+                            color: color,
+                            fontWeight: "500",
+                        }}
+                    >
+                        {label}{required && <span style={{ color: 'red', paddingLeft: '1px' }}>*</span>}
+                    </span>
+                    {labelBtn && (
+                        <div style={{ marginRight: '8px' }}>
+                            {labelBtn}
+                        </div>
+                    )}
+                </div>
+                <Input
+                    value={value}
+                    onChange={handleOnChange}
+
+                    ref={ref}
+                    type={type}
+
+                    style={{
+                        padding: '0px',
+                        height,
+                        textAlign,
+                        backgroundColor: 'white',
+                        cursor,
+                        fontSize,
+                    }}
+
+                    isInvalid={isInvalid || showErrorMessage}
+                    errorMessage={errorMessage}
+
+                    variant="bordered"
+                    radius="sm"
+
+                    isRequired={required}
+                    isReadOnly={isReadOnly}
+                    isDisabled={disabled}
+                    placeholder={placeHolder}
+                    classNames={
+                        removeStyle ? {
+                            input: [`w-fit bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
+                            inputWrapper: [`w-12 shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass} `],
+
+                        } : withBorder ? {
+                            input: ['bg-neutral-50 text-black'],
+                            inputWrapper: ['bg-neutral-50 border-solid border-gray-400 border']
+                        } : unity ? {
+                            input: 'bg-white w-10 p-2',
+                            innerWrapper: 'bg-white p-2 rounded-xl w-13',
+                            inputWrapper: 'bg-white p-1 rounded-xl w-fit',
+                            clearButton: 'hidden'
+                        } : undefined// Added this line
+                    }
+
+                    startContent={startContent}
+                    endContent={endContent}
+                    min={0}
+                    onKeyDown={handleKeyDown}
+                />
+            </div>
             )
         case 2: default:
             return (
@@ -292,23 +377,17 @@ export default function QN_Input({
                         placeholder={placeHolder}
                         classNames={
                             removeStyle ? {
-                                input: [`w-fit bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
-                                inputWrapper: [`w-12 shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass} `],
-
+                                input: [`bg-white !bg-white ${textColorClass} ${fontSize} ${fontWeight} ${cursorClass}`],
+                                inputWrapper: [`shadow-none border-0 hover:border-0 focus:border-0 text-black ${cursorClass}`],
                             } : withBorder ? {
                                 input: ['bg-neutral-50 text-black'],
                                 inputWrapper: ['bg-neutral-50 border-solid border-gray-400 border']
-                            } : unity ? {
-                                input: 'bg-white w-10 p-2',
-                                innerWrapper: 'bg-white p-2 rounded-xl w-13',
-                                inputWrapper: 'bg-white p-1 rounded-xl w-fit',
-                                clearButton: 'hidden'
-                            } : undefined// Added this line
+                            } : undefined
                         }
 
                         startContent={startContent}
                         endContent={endContent}
-                        min={0}
+
                         onKeyDown={handleKeyDown}
                     />
                 </div>

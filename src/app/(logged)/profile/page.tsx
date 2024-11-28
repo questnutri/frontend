@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { fetchNutritionist, updateNutritionist } from "@/lib/fetchNutritionist"
 import { INutritionist } from "@/models/Nutritionist.interface"
+import { Divider } from "@nextui-org/react"
 
 export default function ProfilePage() {
     const [nutritionist, setNutritionist] = useState<INutritionist | undefined>(undefined)
@@ -69,6 +70,10 @@ export default function ProfilePage() {
             })
         }
     }
+
+    const [currentPasswordInput, setCurrentPasswordInput] = useState('')
+    const [newPasswordInput1, setNewPasswordInput1] = useState('')
+    const [newPasswordInput2, setNewPasswordInput2] = useState('')
 
     return (
         <div
@@ -148,13 +153,17 @@ export default function ProfilePage() {
                         label="CPF"
                         mask="###.###.###-##"
                     />
-                    {/* <QN_DropDown
+                    <QN_DropDown
                         items={genderOptions}
                         value={nutritionist?.details?.gender || 'other'}
-                        onChange={e => handleNutritionistDetailsChange('gender', e.target.value)}
-                        buttonConfig={{ width: '100%', textAlignX: 'start' }}
+                        onChange={e => handleNutritionistDetailsChange('gender', e)}
+                        buttonConfig={{
+                            width: '100%',
+                            textAlignX: 'start',
+                        }}
                         label="Gênero"
-                    /> */}
+                        optionsConfig={{}}
+                    />
                 </QN_FormRow>
                 <QN_FormRow>
                     <QN_Input
@@ -184,7 +193,8 @@ export default function ProfilePage() {
                     />
                 </QN_FormRow>
             </QN_Form>
-            {/* <QN_Form
+            <Divider />
+            <QN_Form
                 title="Informações de Contato"
                 formConfig={{
                     border: 'none'
@@ -198,19 +208,67 @@ export default function ProfilePage() {
             >
                 <QN_FormRow>
                     <QN_Input
-                        value={contactForm.email}
-                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        value={nutritionist?.email || ''}
+                        onChange={e => handleNutritionistChange('email', e.target.value)}
                         label="E-mail"
                     />
                     <QN_Input
-                        value={contactForm.phone}
-                        onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                        value={nutritionist?.details?.phone || ''}
+                        onChange={e => handleNutritionistChange('email', e.target.value)}
                         label="Telefone"
                     />
                 </QN_FormRow>
-
             </QN_Form>
+            <Divider />
             <QN_Form
+                title="Trocar de senha"
+                formConfig={{
+                    border: 'none'
+                }}
+            >
+                <QN_FormRow>
+                    <QN_Input
+                        label="Senha atual"
+                        type='password'
+                        value={currentPasswordInput}
+                        onChange={e => setCurrentPasswordInput(e.target.value)}
+
+                    />
+                    <QN_Input
+                        label="Nova senha"
+                        type='password'
+                        value={newPasswordInput1}
+                        onChange={e => setNewPasswordInput1(e.target.value)}
+
+                    />
+                    <QN_Input
+                        label="Repita nova senha"
+                        type='password'
+                        value={newPasswordInput2}
+                        onChange={e => setNewPasswordInput2(e.target.value)}
+                        errorMessage={'As senhas devem ser iguais'}
+                        isInvalid={
+                            newPasswordInput2.length === newPasswordInput1.length &&
+                            newPasswordInput1.trim() !== newPasswordInput2.trim()
+                        }
+                    />
+                    <QN_Button
+                        width="100%"
+                        marginTop="20px"
+                        borderRadius="10px"
+                        blocked={
+                            currentPasswordInput.trim().length === 0 ||
+                            newPasswordInput1.trim() === '' ||
+                            newPasswordInput2.trim() === '' ||
+                            newPasswordInput1 !== newPasswordInput2
+                        }
+                        noShadow
+                    >
+                        Mudar senha
+                    </QN_Button>
+                </QN_FormRow>
+            </QN_Form>
+            {/* <QN_Form
                 title="Endereço"
                 formConfig={{
                     border: 'none'

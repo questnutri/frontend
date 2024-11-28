@@ -34,15 +34,11 @@ export default function QN_NutritionistPatient_DietPage() {
 
     return (
         <>
-            <div style={{ height: '5%' }}>
-                {diet?.name || 'Sem dieta'}
-            </div>
             <div
                 style={{ //CONTROLA A DISTÂNCIA ENTRE OS DIAS DA SEMANA!!!
-                    backgroundColor: 'red',
                     display: 'flex', //FAZ FICAR DO LADO
                     width: '100%',
-                    height: '95%',
+                    height: '100%',
                     gap: (expandedDay == null) ? '20px' : '0px', //DISTÂNCIA ENTRE OS DIAS DA SEMANA
                     transition: expandedDay == null
                         ? 'gap 0.3s ease-out'  // velocidade ao expandir

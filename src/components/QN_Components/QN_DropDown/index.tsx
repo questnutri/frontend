@@ -106,7 +106,7 @@ export default function QN_DropDown({
                         </Button>
                     ) : (
                         <Button
-                            variant="light"
+                            variant={buttonConfig?.border?.disabled ? 'light' : "bordered"}
                             style={{
                                 width: buttonConfig?.width || 'fit-content',
                                 backgroundColor: buttonConfig?.backgroundColor || 'white',

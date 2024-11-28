@@ -6,46 +6,46 @@ import QN_Table from "@/components/QN_Components/QN_Table"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
-import MedicineEditablePopUp from "./medicine"
-import IMedicine from "@/models/Patient/Health/Medicine.interface"
+import IChronicDiseases from "@/models/Patient/Health/Diseases.interface"
+import ChronicDiseasesPopUp from "./diseases.popup"
 
-export default function MedicineSubpage() {
+export default function ChronicDiseasesSubPage() {
     const { patient } = useNutritionistPatient()
-    const [isMedicineOpened, setIsMedicineOpened] = useState(false)
-    const [medicineOpened, setMedicineOpened] = useState<IMedicine | null>(null)
+    const [isChronicDiseasesOpened, setIsAllergiesOpened] = useState(false)
+    const [chronicDiseasesOpened, setChronicDiseasesOpened] = useState<IChronicDiseases | null>(null)
 
     const handleEditAction = (row: any) => {
-        setMedicineOpened(row)
+        setChronicDiseasesOpened(row)
     }
 
     useEffect(() => {
-        if (medicineOpened) {
-            setIsMedicineOpened(true)
+        if (chronicDiseasesOpened) {
+            setIsAllergiesOpened(true)
         }
-    }, [medicineOpened])
+    }, [chronicDiseasesOpened])
 
     useEffect(() => {
-        if (!isMedicineOpened) {
-            setMedicineOpened(null)
+        if (!isChronicDiseasesOpened) {
+            setChronicDiseasesOpened(null)
         }
-    }, [isMedicineOpened])
+    }, [isChronicDiseasesOpened])
 
-    const [newMedicinePopUp, setNewMedicinePopUp] = useState(false)
+    const [newChronicDiseasesPopUp, setNewChronicDiseasesPopUp] = useState(false)
 
     return (
-        <div style={{ width: '100%', padding: '30px' }}>
+        <div style={{ width: '100%', padding: '15px' }}>
             <div style={{ display: 'flex', padding: '0px 5px 15px', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1
                     style={{ color: '#55B7FE', fontWeight: '600', fontSize: '20px' }}
                 >
-                    Medicamentos
+                    Doenças Crônicas
                 </h1>
                 <div style={{}}>
                     <QN_Button
                         width='fit-content'
                         height='30px'
                         borderRadius='5px'
-                        onClick={() => setNewMedicinePopUp(true)}
+                        onClick={() => setNewChronicDiseasesPopUp(true)}
                     >
                         + Adicionar novo</QN_Button>
                 </div>
@@ -54,9 +54,9 @@ export default function MedicineSubpage() {
 
             <QN_Table
                 columns={[
-                    { key: 'name', label: 'Medicamento' },
-                    { key: 'dosage', label: 'Dosagem' },
-                    { key: 'frequency', label: 'Frequência' },
+                    { key: 'name', label: 'Doença' },
+                    { key: 'severity', label: 'Tratamento' },
+                    { key: 'obs', label: 'Data diaginostico' },
                     {
                         key: 'actions',
                         label: 'Ações',
@@ -85,13 +85,13 @@ export default function MedicineSubpage() {
                         ),
                     },
                 ]}
-                rows={patient?.details?.healthState?.currentMedications || []}
+                rows={patient?.details?.healthState?.chronicDiseases || []}
             />
 
             {/* PRECISA TER DOIS POP UPS SENÃO BUGA O CADASTRO DE UM NOVO!!!!!!!!!!!!! */}
             <QN_PopUp
-                isPopUpOpen={isMedicineOpened}
-                setPopUpOpen={setIsMedicineOpened}
+                isPopUpOpen={isChronicDiseasesOpened}
+                setPopUpOpen={setIsAllergiesOpened}
                 styleConfig={{
                     windowConfig: {
                         width: '500px',
@@ -100,7 +100,7 @@ export default function MedicineSubpage() {
                     bodyConfig: {
                         content: (
                             <>
-                                <MedicineEditablePopUp medicineRecord={medicineOpened} />
+                                <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
                             </>
                         )
                     }
@@ -108,8 +108,8 @@ export default function MedicineSubpage() {
             />
 
             <QN_PopUp
-                isPopUpOpen={newMedicinePopUp}
-                setPopUpOpen={setNewMedicinePopUp}
+                isPopUpOpen={newChronicDiseasesPopUp}
+                setPopUpOpen={setNewChronicDiseasesPopUp}
                 styleConfig={{
                     windowConfig: {
                         width: '500px',
@@ -118,7 +118,7 @@ export default function MedicineSubpage() {
                     bodyConfig: {
                         content: (
                             <>
-                                <MedicineEditablePopUp medicineRecord={medicineOpened} />
+                                <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
                             </>
                         )
                     }

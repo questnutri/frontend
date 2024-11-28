@@ -1,4 +1,4 @@
-export default interface IAllergies {
+export default interface IAllergy {
     name: string
     severity: "mild" | "moderate" | "severe"
     obs?: string

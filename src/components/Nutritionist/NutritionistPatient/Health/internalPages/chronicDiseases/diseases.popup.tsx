@@ -2,7 +2,7 @@
 import QN_Button from "@/components/QN_Components/QN_Button";
 import QN_Input from "@/components/QN_Components/QN_Input";
 import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context";
-import IChronicDiseases from "@/models/Patient/Health/chronicDiseases";
+import IChronicDiseases from "@/models/Patient/Health/Diseases.interface";
 import { useState } from "react";
 
 export default function ChronicDiseasesEditablePopUp({ chronicDiseasesRecord }: { chronicDiseasesRecord: IChronicDiseases | null }) {

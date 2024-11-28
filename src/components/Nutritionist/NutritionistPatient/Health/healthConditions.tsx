@@ -2,9 +2,9 @@
 import QN_Navbar from "@/components/QN_Components/QN_Navbar";
 import { GiMedicalThermometer, GiMedicines, LuActivity } from '@/icons'
 import { useState } from "react";
-import MedicineSubpage from "./internalPages/medicine.subpage";
+import MedicineSubpage from "./internalPages/medication.subpage";
 import AllergiesSubpage from "./internalPages/allergies/allergies.subpage";
-import ChronicDiseasesSubPage from "./internalPages/chronicDiseases/chronicDiseases.subpage";
+import ChronicDiseasesSubPage from "./internalPages/chronicDiseases/diseases.subpage";
 
 export default function HealthConditions() {
 

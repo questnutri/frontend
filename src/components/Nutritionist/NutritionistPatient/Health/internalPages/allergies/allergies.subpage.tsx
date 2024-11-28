@@ -6,6 +6,7 @@ import QN_Table from "@/components/QN_Components/QN_Table"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
+import MedicineEditablePopUp from "../medication.popup"
 import IAllergies from "@/models/Patient/Health/Allergies.interface"
 import AllergiesEditablePopUp from "./allergies.popup"
 

@@ -4,9 +4,18 @@ import { MdEdit } from "react-icons/md"
 import FoodDisplay_Nutrients from "./nutrients"
 import FoodDisplay_Info from "./info"
 import { Divider } from "@nextui-org/react"
+import QN_AlimentInfo from "../../QN_AlimentInfo"
+import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
+import { SetStateAction, useState } from "react"
+import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
+import AlimentDisplay from "../../AlimentDisplay"
 
 export default function FoodDisplay_Component() {
     const { food, toggleFoodEditable, handleFoodDelete } = useFood()
+    const { showPopUp } = usePopUpGlobal()
+
+
+    const [isAlimentPopUpOpen, setIsAlimentPopUpOpen] = useState(false)
     return (
         <div
             style={{
@@ -27,6 +36,9 @@ export default function FoodDisplay_Component() {
                     color: "#55b7fe",
                     fontSize: "14px",
                     fontWeight: "600",
+                }}
+                onClick={() => {
+                    setIsAlimentPopUpOpen(true)
                 }}
             >
                 {food?.aliment?.name || 'Nenhum alimento selecionado'}
@@ -61,7 +73,24 @@ export default function FoodDisplay_Component() {
                     onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
                     onClick={handleFoodDelete}
                 />
+
             </div>
+            <QN_PopUp
+                isPopUpOpen={isAlimentPopUpOpen}
+                setPopUpOpen={setIsAlimentPopUpOpen}
+                styleConfig={{
+                    windowConfig: {
+                        width: '80%',
+                        height: '90%',
+                        padding: '0px'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <AlimentDisplay />
+                        ),
+                    }
+                }}
+            />
         </div>
     )
 }
