@@ -1,23 +1,28 @@
 'use client'
 
+import PatientsPage from "@/components/Pages/PatientsPage"
+import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
 import LoadingScreen from "@/components/QN_Components/QN_Video"
+import QN_NutritionistPatient_DietPage from "@/components/QN_Feature/Display/Patient/Diet/DietDisplay"
+import { NutritionistPatientContext } from "@/context/modal.patient.context"
+import { fetchSelfPatient } from "@/lib/fetchPatients"
+import { IPatient } from "@/models/Patient/Patient.interface"
+import { useEffect, useState } from "react"
 
 export default function HomePage() {
+
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                overflowY: 'hidden',
-                boxSizing: 'border-box',
-                alignItems: 'start',
-                width: '100%',
-                height: '100%'
-            }}
-        >
-            <h1 style={{ padding: '30px' }}>
-                Home Page
-            </h1>
-        </div>
+        <QN_ConditionalRender
+            nutritionist={
+                <>
+                    <PatientsPage />
+                </>}
+            patient={<>
+
+                <QN_NutritionistPatient_DietPage />
+
+            </>}
+        />
+
     )
 }

@@ -7,13 +7,13 @@ export const fetchAliments = async (): Promise<IAliment[]> => {
             method: 'GET',
         })
 
+        const data = await response.json()
         if (response.ok) {
-            return await response.json()
+            return data
         }
 
         return []
     } catch (error) {
-        console.error('Error fetching patients:', error)
         return []
     }
 }

@@ -74,27 +74,28 @@ export default function ListPatientsPage() {
 
     return (
         <>
-            <div style={{ display: 'flex', width: '100%', gap: '20px' }}>
-                <span
-                    style={{
-                        width: '20%'
-                    }}
-                >
-                    <QN_DropDown
-                        value={filterType}
-                        onChange={setFilterType}
-                        items={searchTypes}
-                        buttonConfig={{
-                            width: '100%'
-                        }}
-                        label="Pesquisar Por"
-                    />
-                </span>
-                <span
-                    style={{
-                        width: '80%',
-                    }}
-                >
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                gap: '20px',
+                backgroundColor: 'white',
+                padding: '30px',
+                borderRadius: '15px'
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '15px' }}>
+                    <div style={{ width: '25%', marginTop: '5px' }}>
+                        <QN_DropDown
+                            value={filterType}
+                            onChange={setFilterType}
+                            items={searchTypes}
+                            buttonConfig={{
+                                width: '100%'
+                            }}
+                            label="Pesquisar Por"
+                        />
+                    </div>
+
                     <QN_Input
                         version={2}
                         value={filter}
@@ -103,34 +104,37 @@ export default function ListPatientsPage() {
                         label="Termos de Pesquisa"
                         startContent={<FaSearch />}
                     />
-                </span>
+                </div>
+
+                <QN_SectionDivider
+                    title='Registros'
+                    styleConfig={{
+                        lineConfig: {
+                            paddingHorizontal: '30px',
+                            dontPadAtCenter: true
+                        },
+                        titleConfig: {
+                            fontSize: '15px',
+                            fontWeight: '600'
+                        }
+                    }}
+                >
+                    <QN_Table
+                        columns={[
+                            { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
+                            { key: 'email', label: searchTypes[1].label },
+                            { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
+                            { key: 'details.cpf', label: searchTypes[2].label },
+                            { key: 'details.phone', label: searchTypes[3].label },
+                        ]}
+                        rows={filteredPatients}
+                        onRowClick={handleRowClick}
+                    />
+
+                </QN_SectionDivider>
             </div>
 
-            <QN_SectionDivider
-                title='Registros'
-                styleConfig={{
-                    lineConfig: {
-                        paddingHorizontal: '30px',
-                        dontPadAtCenter: true
-                    },
-                    titleConfig: {
-                        fontSize: '15px',
-                        fontWeight: '600'
-                    }
-                }}
-            >
-                <QN_Table
-                    columns={[
-                        { key: 'firstName', label: searchTypes[0].label, render: (value, row) => `${value} ${row.lastName ?? ''}`.trim() },
-                        { key: 'email', label: searchTypes[1].label },
-                        { key: 'details.birth', label: 'Data de nascimento', render: (value: string) => new Date(value).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) },
-                        { key: 'details.cpf', label: searchTypes[2].label },
-                        { key: 'details.phone', label: searchTypes[3].label },
-                    ]}
-                    rows={filteredPatients}
-                    onRowClick={handleRowClick}
-                />
-            </QN_SectionDivider>
+
 
             <QN_PatientModal />
         </>

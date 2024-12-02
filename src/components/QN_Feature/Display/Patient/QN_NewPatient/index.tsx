@@ -1,13 +1,18 @@
-import QN_Button from "@/components/QN_Components/QN_Button";
-import QN_DropDown from "@/components/QN_Components/QN_DropDown";
-import QN_Form from "@/components/QN_Components/QN_Form";
-import QN_FormRow from "@/components/QN_Components/QN_FormRow";
-import QN_Input from "@/components/QN_Components/QN_Input";
-import { useModal } from "@/components/QN_Components/QN_Modal/modal.context";
-import { useState } from "react";
+import QN_Button from "@/components/QN_Components/QN_Button"
+import QN_DropDown from "@/components/QN_Components/QN_DropDown"
+import QN_Form from "@/components/QN_Components/QN_Form"
+import QN_FormRow from "@/components/QN_Components/QN_FormRow"
+import QN_Input from "@/components/QN_Components/QN_Input"
+import { useModal } from "@/components/QN_Components/QN_Modal/modal.context"
+import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
+import { useNutritionistPatient } from "@/context/modal.patient.context"
+import { createPatient } from "@/lib/fetchPatients"
+import { useState } from "react"
 
 export default function QN_NewPatient() {
-    const {closeModal} = useModal()
+    const { showPopUp } = usePopUpGlobal()
+    const { closeModal } = useModal()
+    const {setModalPatient} = useNutritionistPatient()
 
     const [isLoading, setIsLoading] = useState(false)
     const [newPatient, setNewPatient] = useState({
@@ -25,10 +30,70 @@ export default function QN_NewPatient() {
         { label: 'Masculino', value: 'male' },
         { label: 'Feminino', value: 'female' },
         { label: 'Outros', value: 'others' },
-    ];
+    ]
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         setIsLoading(true)
+        const emptyFields = Object.entries(newPatient).filter(([key, value]) => !value.trim())
+
+        if (emptyFields.length > 0) {
+            showPopUp({
+                windowConfig: {
+                    width: '200px'
+                },
+                titleConfig: {
+                    title: 'Erro!'
+                },
+                bodyConfig: {
+                    content: (
+                        <div>
+                            <span>
+                                Todos os campos são obrigatórios!
+                            </span>
+                        </div>
+
+                    )
+                },
+                defaultButtons: {
+                    okButton: true
+                }
+            })
+        } else {
+            const res = await createPatient({
+                firstName: newPatient.firstName,
+                lastName: newPatient.lastName,
+                email: newPatient.email,
+                details: {
+                    birth: new Date(newPatient.birth),
+                    gender: newPatient.gender as 'female' | 'male' | 'other',
+                    cpf: newPatient.cpf,
+                    rg: newPatient.rg,
+                    phone: newPatient.phone,
+                }
+            })
+            if(res.status == 201) {
+                showPopUp({
+                    windowConfig: {
+                        width: '200px'
+                    },
+                    titleConfig: {
+                        title: 'Paciente criado com sucesso!!'
+                    },
+                    customButtons: {
+                        items: [
+                            {
+                                text: 'Navegar',
+                                onClick: () => {
+                                    setModalPatient(res.data._id)
+                                    closeModal()
+                                }
+                            }
+                        ]
+                    }
+                })
+            }
+        }
+        setIsLoading(false)
     }
 
     return (
@@ -48,7 +113,7 @@ export default function QN_NewPatient() {
                     border: 'none'
                 }}
             >
-                <QN_FormRow >
+                <QN_FormRow>
                     <QN_Input
                         label="Nome"
                         value={newPatient.firstName}
@@ -63,7 +128,7 @@ export default function QN_NewPatient() {
                     />
                     <QN_Input
                         label="Data de nascimento"
-                        value={newPatient.birth.toLocaleString()}
+                        value={newPatient.birth}
                         onChange={e => setNewPatient({
                             ...newPatient,
                             birth: e.target.value
@@ -71,7 +136,6 @@ export default function QN_NewPatient() {
                         type="date"
                         required
                     />
-
                 </QN_FormRow>
                 <QN_FormRow>
                     <QN_Input
@@ -114,7 +178,7 @@ export default function QN_NewPatient() {
                         mask="(##) #####-####"
                     />
                 </QN_FormRow>
-                <QN_FormRow >
+                <QN_FormRow>
                     <QN_Button
                         colorStyle="red"
                         width="70%"

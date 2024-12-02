@@ -1,5 +1,5 @@
 import { IAddress } from "../Address.interface"
-import IMedicine from "./Health/Medicine.interface"
+import IMedicine from "./Health/Medication.interface"
 import { IWeight } from "./Weight/Weight.interface"
 
 export interface IPatient {
@@ -43,12 +43,15 @@ export interface IPatient {
 			currentMedications?: IMedicine[]
 			obs?: string
 		},
-		address: IAddress
+		address?: IAddress
 	}
 	nutri: string
 	activeDiet?: string
 	diets?: any[]
-	dailyMealRecord?: any[]
+	dailyMealRecord?: {
+		completedToday: string[],
+		checkingDay: 0 | 1 | 2 | 3 | 4 | 5 | 6
+	}
 	createdAt?: any
 	updatedAt?: any
 }

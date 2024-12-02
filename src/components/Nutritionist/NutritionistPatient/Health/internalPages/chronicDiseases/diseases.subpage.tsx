@@ -6,13 +6,17 @@ import QN_Table from "@/components/QN_Components/QN_Table"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
-import IChronicDiseases from "@/models/Patient/Health/chronicDiseases"
-import ChronicDiseasesPopUp from "./chronicDiseases.popup"
+import ChronicDiseasesPopUp from "./diseases.popup"
+import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
+import { deleteChronic } from "@/lib/Health/fetchDisease"
+import IDisease from "@/models/Patient/Health/Diseases.interface"
 
 export default function ChronicDiseasesSubPage() {
-    const { patient } = useNutritionistPatient()
+    const { patient, fetchPatient } = useNutritionistPatient()
+    const { showPopUp } = usePopUpGlobal()
+
     const [isChronicDiseasesOpened, setIsAllergiesOpened] = useState(false)
-    const [chronicDiseasesOpened, setChronicDiseasesOpened] = useState<IChronicDiseases | null>(null)
+    const [chronicDiseasesOpened, setChronicDiseasesOpened] = useState<IDisease | null>(null)
 
     const handleEditAction = (row: any) => {
         setChronicDiseasesOpened(row)
@@ -31,6 +35,21 @@ export default function ChronicDiseasesSubPage() {
     }, [isChronicDiseasesOpened])
 
     const [newChronicDiseasesPopUp, setNewChronicDiseasesPopUp] = useState(false)
+
+    const handleChronicDelete = async (row: any) => {
+        const data = await deleteChronic(patient!._id, row)
+        if (data.status == 200) {
+            await fetchPatient()
+            showPopUp({
+                titleConfig: {
+                    title: 'Doença excluída!'
+                },
+                defaultButtons: {
+                    okButton: true
+                }
+            })
+        }
+    }
 
     return (
         <div style={{ width: '100%', padding: '15px' }}>
@@ -55,8 +74,8 @@ export default function ChronicDiseasesSubPage() {
             <QN_Table
                 columns={[
                     { key: 'name', label: 'Doença' },
-                    { key: 'severity', label: 'Tratamento' },
-                    { key: 'obs', label: 'Data diaginostico' },
+                    { key: 'diagnosedAt', label: 'Tratamento' },
+                    { key: 'treatment', label: 'Data diaginostico' },
                     {
                         key: 'actions',
                         label: 'Ações',
@@ -71,7 +90,7 @@ export default function ChronicDiseasesSubPage() {
                                     if (action === 'edit') {
                                         handleEditAction(row)
                                     } else if (action === 'delete') {
-                                        console.log('Excluir:', row)
+                                        handleChronicDelete(row)
                                     }
                                 }}
                                 buttonConfig={{
@@ -85,36 +104,48 @@ export default function ChronicDiseasesSubPage() {
                         ),
                     },
                 ]}
-                rows={patient?.details?.healthState?.chronicDiseases || []}
+                rows={
+                    patient?.details?.healthState?.chronicDiseases?.sort((a: IDisease, b: IDisease) =>
+                        a.name.localeCompare(b.name)
+                    ) || []
+                }
             />
 
             {/* PRECISA TER DOIS POP UPS SENÃO BUGA O CADASTRO DE UM NOVO!!!!!!!!!!!!! */}
             <QN_PopUp
-                isPopUpOpen={isChronicDiseasesOpened}
-                setPopUpOpen={setIsAllergiesOpened}
-            // config={{
-            //     message: (
-            //         <>
-            //             <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
-            //         </>
-            //     ),
-            //     width: '500px',
-            //     height: 'fit-content'
-            // }}
+                isPopUpOpen={newChronicDiseasesPopUp}
+                setPopUpOpen={setNewChronicDiseasesPopUp}
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <ChronicDiseasesPopUp diseasesRecord={chronicDiseasesOpened} />
+                            </>
+                        )
+                    }
+                }}
             />
 
             <QN_PopUp
-                isPopUpOpen={newChronicDiseasesPopUp}
-                setPopUpOpen={setNewChronicDiseasesPopUp}
-            // config={{
-            //     message: (
-            //         <>
-            //             <ChronicDiseasesPopUp chronicDiseasesRecord={chronicDiseasesOpened} />
-            //         </>
-            //     ),
-            //     width: '500px',
-            //     height: 'fit-content'
-            // }}
+                isPopUpOpen={isChronicDiseasesOpened}
+                setPopUpOpen={setIsAllergiesOpened}
+                styleConfig={{
+                    windowConfig: {
+                        width: '500px',
+                        height: 'fit-content'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <>
+                                <ChronicDiseasesPopUp diseasesRecord={chronicDiseasesOpened} />
+                            </>
+                        )
+                    }
+                }}
             />
         </div>
     )

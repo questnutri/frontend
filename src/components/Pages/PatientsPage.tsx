@@ -33,28 +33,35 @@ export default function PatientsPage() {
 
 
     return (
-        <ListPatientsContext.Provider value={{patients, setPatients, refreshList}}>
+        <ListPatientsContext.Provider value={{ patients, setPatients, refreshList }}>
             <div
                 style={{
                     display: 'flex',
                     width: '100%',
-                    justifyContent: 'center',
+                    justifyContent: 'start',
                     alignItems: 'start',
                     gap: '30px',
                     flexDirection: 'column',
-                    padding: '20px 10px'
+                    padding: '30px',
+                    backgroundColor: '#55B7FE',
+                    height: '100%',
+                    borderRadius: '15px',
                 }}
             >
-                <span>
-                    <QN_Button
-                        colorStyle="blue"
-                        onClick={() => setModalNewPatient(true)}
-                        width="fit-content"
-                        startContent={<FaPlus size={20} />}
-                    >
-                        Novo Paciente
-                    </QN_Button>
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', }}>
+                    <h1 style={{ fontSize: '25px', fontWeight: '700', color: 'white' }}>Controle de Pacientes</h1>
+                    <div style={{ marginLeft: '100px' }}>
+                        <QN_Button
+                            colorStyle="white"
+                            onClick={() => setModalNewPatient(true)}
+                            width="fit-content"
+                            startContent={<FaPlus size={20} />}
+                        >
+                            Novo Paciente
+                        </QN_Button>
+                    </div>
+
+                </div>
                 <ListPatientsPage />
             </div>
             <QN_Modal isOpen={modalNewPatient} setOpen={setModalNewPatient} height="fit-content" width="1000px">

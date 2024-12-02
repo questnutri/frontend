@@ -7,10 +7,14 @@ import QN_Input from '@/components/QN_Components/QN_Input'
 import QN_Button from '@/components/QN_Components/QN_Button'
 import QN_DropDown from '@/components/QN_Components/QN_DropDown'
 import { fetchCep } from '@/lib/fetchCep'
-import { updateOnePatient } from '@/lib/fetchPatients'
+import { deletePatient, updateOnePatient } from '@/lib/fetchPatients'
+import { usePopUpGlobal } from '@/components/QN_Components/QN_PopUp/popup.global.context'
+import { useModal } from '@/components/QN_Components/QN_Modal/modal.context'
 
 export default function QN_NutritionistPatient_ProfilePage() {
     const { patient, setModalPatient } = useNutritionistPatient()
+    const {closeModal} = useModal()
+    const { showPopUp } = usePopUpGlobal()
 
     const updatePatientBtn = (data: any): React.ReactNode => {
         return (
@@ -85,7 +89,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
     useEffect(() => {
         const checkCep = async () => {
             const data = await fetchCep(addressForm.cep)
-            if(data) {
+            if (data) {
                 setIsValidCep(true)
             } else {
                 setIsValidCep(false)
@@ -96,7 +100,7 @@ export default function QN_NutritionistPatient_ProfilePage() {
             checkCep()
         }
     }, [])
-    
+
     const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddressForm({ ...addressForm, cep: e.target.value })
         const data = await fetchCep(e.target.value)
@@ -167,6 +171,48 @@ export default function QN_NutritionistPatient_ProfilePage() {
 
     const nameInputRef = useRef<HTMLInputElement>(null)
     const streetInputRef = useRef<HTMLInputElement>(null)
+
+    const handleDeletePatient = () => {
+        showPopUp({
+            titleConfig: {
+                title: 'ATENÇÃO!',
+                textColor: 'red',
+                fontWeight: '800'
+            }, 
+            bodyConfig: {
+                content: 'Você está prestas a excluir um paciente. Essa é uma ação irreversível. você tem certeza que quer excluir este paciente?'
+            },
+            customButtons: {
+                items: [
+                    {
+                        text: 'Sim, quero excluir!',
+                        confirmationTextRequired: 'EXCLUIR PACIENTE',
+                        colorStyle: 'red',
+                        onClick: async () => {
+                            const data = await deletePatient(patient!._id)
+                            if(data.status == 200) {
+                                showPopUp({
+                                    titleConfig: {
+                                        title: 'Paciente excluído!',
+                                        fontWeight: '600',
+                                        textColor: 'red'
+                                    },
+                                    defaultButtons: {
+                                        okButton: true
+                                    }
+                                })
+                                closeModal()
+                            }
+                        }
+                    },
+                    {
+                        text: "Não, quero mantê-lo.",
+                        onClick: () => {}
+                    }
+                ]
+            }
+        })
+    }
 
     return (
         <div
@@ -421,6 +467,12 @@ export default function QN_NutritionistPatient_ProfilePage() {
                     />
                 </QN_FormRow>
             </QN_Form>
+            <QN_Button
+                colorStyle='red'
+                onClick={handleDeletePatient}
+            >
+                Excluir Paciente
+            </QN_Button>
         </div >
     );
 }

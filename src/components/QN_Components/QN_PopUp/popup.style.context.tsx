@@ -16,6 +16,7 @@ export type QN_PopUp_StyleContextType = {
         textColor?: string
         textAlign?: string
         fontWeight?: string
+        marginBottom?: string
     }
     windowConfig?: {
         width?: string
@@ -27,7 +28,8 @@ export type QN_PopUp_StyleContextType = {
     }
     bodyConfig?: {
         content?: string | React.ReactNode | null
-        textAlign?: 'left' | 'center' | 'right'
+        textAlign?: 'left' | 'center' | 'right',
+        height?: string
     }
     defaultButtons?: {
         closeButton?: boolean

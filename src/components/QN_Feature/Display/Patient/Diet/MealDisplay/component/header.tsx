@@ -5,7 +5,7 @@ import { useUser } from "@/context/user.context"
 import { MdEdit } from "react-icons/md"
 import { FaTrash } from "react-icons/fa6"
 import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { useDiet, useMeal } from "@/context/diet.context"
@@ -16,15 +16,15 @@ import { DayOfWeek } from '@/models/Patient/Diet/Diet.interface'
 import { createPatientMeal, deletePatientMeal } from '@/lib/Diet/diet.api'
 import { useModal } from '@/components/QN_Components/QN_Modal/modal.context'
 import { Divider } from '@nextui-org/react'
+import QN_Checkbox from '@/components/QN_Components/QN_Checkbox'
+import { checkMeal } from '@/lib/fetchPatients'
 
+export default function DietDisplay_Meal_Header_Expanded({ day, inputSize }: { day: number, inputSize?: string }) {
 
-export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputSize?: string }) {
     const { role } = useUser()
-
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet } = useDiet()
     const { meal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges } = useMeal()
-
     const { isOpened, setIsOpened, toggleOpened, isEditable, setIsEditable, toggleEditable } = useMealDisplay()
     const { showPopUp } = usePopUpGlobal()
 
@@ -47,40 +47,28 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     label={""}
                     value={selectedValues}
                     items={daysOfWeek}
-                    onChange={(selected) => {
-                        setSelectedValues(selected as DayOfWeek[])
-                    }}
+                    onChange={(selected) => setSelectedValues(selected as DayOfWeek[])}
                     itemLabelPosition='above'
                     itemLabelMarginLeft='-8px'
                     justifyContent='space-between'
                 />
-                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '30px' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '30px', gap: '10px' }}>
                     <QN_Button colorStyle='red' onClick={closeModal}>Cancelar</QN_Button>
                     <QN_Button
-                        onClick={
-                            async () => {
-                                await createPatientMeal(patient!._id, diet!._id, {
-                                    name: meal?.name,
-                                    hour: meal?.hour,
-                                    daysOfWeek: selectedValues,
-                                })
-                                await fetchPatient()
-                                closeModal()
-                                showPopUp(
-                                    {
-                                        bodyConfig: {
-                                            content: 'Refeição duplicada!',
-                                        },
-                                        windowConfig: {
-                                            width: '300px',
-                                        },
-                                        defaultButtons: {
-                                            okButton: true
-                                        }
-
-                                    }
-                                )
-                            }}
+                        onClick={async () => {
+                            await createPatientMeal(patient!._id, diet!._id, {
+                                name: meal?.name,
+                                hour: meal?.hour,
+                                daysOfWeek: selectedValues,
+                            })
+                            await fetchPatient()
+                            closeModal()
+                            showPopUp({
+                                bodyConfig: { content: 'Refeição duplicada!' },
+                                windowConfig: { width: '300px' },
+                                defaultButtons: { okButton: true }
+                            })
+                        }}
                     >Duplicar</QN_Button>
                 </div>
             </div>
@@ -88,20 +76,10 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
     }
 
     const handleDuplicate = async () => {
-        showPopUp(
-            {
-                titleConfig: {
-                    title: 'Duplicar refeição nos dias:'
-                },
-                bodyConfig: {
-                    content: (
-                        <>
-                            <Duplicate />
-                        </>
-                    )
-                }
-            }
-        )
+        showPopUp({
+            titleConfig: { title: 'Duplicar refeição nos dias:' },
+            bodyConfig: { content: <Duplicate /> }
+        })
     }
 
     return (
@@ -110,11 +88,11 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                 display: 'flex',
                 width: '100%',
                 cursor: 'default',
-                alignItems: 'center',
-                height: '50px',
-                padding: '10px 15px',
-                gap: '15px',
-                boxSizing: 'border-box'
+                height: '100%',
+                padding: '15px',
+                boxSizing: 'border-box',
+                alignItems: 'center', // Alinha os itens verticalmente no centro
+                gap: '20px', // Espaçamento entre os itens
             }}
         >
             <div
@@ -123,17 +101,21 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     cursor: 'pointer',
                     transition: 'transform 0.3s ease',
                     transform: isOpened ? 'rotate(90deg)' : 'rotate(0deg)',
-                    transformOrigin: 'center',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '50px',
                 }}
             >
                 <BiSolidRightArrow color='#55b7fe' size={'20px'} />
             </div>
 
-            <div style={{ flex: 1, maxWidth: inputSize || '70%', cursor: 'pointer' }} onClick={() => { if (!isEditable) toggleOpened() }}>
+            <div
+                style={{
+                    flex: 1,
+                    maxWidth: inputSize || '70%',
+                    cursor: 'pointer',
+                }}
+                onClick={() => {
+                    if (!isEditable) toggleOpened()
+                }}
+            >
                 <QN_Input
                     value={mealChanges?.name || ''}
                     onChange={(e) => handleMealChange('name', e.target.value)}
@@ -141,19 +123,13 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     fontSize='text-lg'
                     fontWeight='font-bold'
                     color='#55b7fe'
-                    height='50px'
                 />
             </div>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                height: '50px',
-                padding: '0px 8px 0px 0px',
-            }}>
+
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                 <QN_Input
                     value={mealChanges?.hour || '00:00'}
                     onChange={(e) => handleMealChange('hour', e.target.value)}
-
                     width='130px'
                     height='100%'
                     removeStyle={!isEditable}
@@ -161,7 +137,6 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     fontWeight='font-bold'
                     color='#55b7fe'
                     type='time'
-
                     textAlign='center'
                     endContent={
                         !isEditable && (
@@ -183,8 +158,26 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                     }
                 />
             </div>
+
             <Divider orientation='vertical' />
+
             <QN_ConditionalRender
+                patient={
+                    day == new Date().getDay() ? (
+                        <div style={{ width: '7%' }}>
+                            <QN_Checkbox
+                                selected={patient!.dailyMealRecord!.completedToday!.includes(meal!._id)}
+                                isDisabled={patient!.dailyMealRecord!.completedToday!.includes(meal!._id)}
+                                onChange={async () => { 
+                                    await checkMeal(meal!._id) 
+                                    await fetchPatient()
+                                }}
+                            />
+                        </div>
+
+                    ) : (<></>)
+                }
+
                 nutritionist={
                     <>
                         {isEditable ? (
@@ -223,9 +216,6 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                     transition: 'color 0.3s ease',
                                 }}
                                 title='Editar'
-                                className='hover-icon'
-                                onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
                                 onClick={() => {
                                     setIsOpened(true)
                                     setIsEditable(true)
@@ -240,9 +230,6 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                 transition: 'color 0.3s ease',
                             }}
                             title='Duplicar'
-                            className='hover-icon'
-                            onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
                             onClick={handleDuplicate}
                         />
                         <FaTrash
@@ -253,17 +240,12 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                 transition: 'color 0.3s ease',
                             }}
                             title='Excluir'
-                            className='hover-icon'
-                            onMouseEnter={(e) => (e.currentTarget.style.color = '#494a4a')}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = '#55b7fe')}
                             onClick={() => {
                                 showPopUp({
                                     titleConfig: {
-                                        title: 'Você deseja mesmo excluir essa refeição?',
+                                        title: 'Você deseja mesmo excluir essa refeição?'
                                     },
-                                    windowConfig: {
-                                        width: '300px',
-                                    },
+                                    windowConfig: { width: '300px' },
                                     customButtons: {
                                         items: [
                                             {
@@ -276,71 +258,33 @@ export default function DietDisplay_Meal_Header_Expanded({ inputSize }: { inputS
                                                         const res = await deletePatientMeal(patient!._id, diet!._id, meal!._id)
                                                         if (res.status == 200) {
                                                             showPopUp({
-                                                                windowConfig: {
-                                                                    width: '200px',
-                                                                },
-                                                                titleConfig: {
-                                                                    title: 'Refeição excluída',
-                                                                },
-                                                                defaultButtons: {
-                                                                    okButton: true
-                                                                }
+                                                                windowConfig: { width: '200px' },
+                                                                titleConfig: { title: 'Refeição excluída' },
+                                                                defaultButtons: { okButton: true }
                                                             })
                                                             await fetchPatient()
                                                         } else {
                                                             showPopUp({
-                                                                windowConfig: {
-                                                                    width: '200px',
-                                                                },
-                                                                titleConfig: {
-                                                                    title: 'Erro!'
-                                                                },
-                                                                bodyConfig: {
-                                                                    content: 'Houve um erro ao tentar excluir a refeição, tente novamente.'
-                                                                },
-                                                                defaultButtons: {
-                                                                    okButton: true
-                                                                }
+                                                                windowConfig: { width: '200px' },
+                                                                titleConfig: { title: 'Erro ao excluir a refeição' },
+                                                                defaultButtons: { okButton: true }
                                                             })
-                                                            await fetchPatient()
                                                         }
-
-                                                    } else {
-                                                        showPopUp({
-                                                            windowConfig: {
-                                                                width: '200px',
-                                                            },
-                                                            titleConfig: {
-                                                                title: 'Erro!'
-                                                            },
-                                                            bodyConfig: {
-                                                                content: 'Houve um erro ao tentar excluir a refeição, tente novamente.'
-                                                            },
-                                                            defaultButtons: {
-                                                                okButton: true
-                                                            }
-                                                        })
-                                                        await fetchPatient()
                                                     }
-
-
                                                 }
                                             },
                                             {
-                                                text: 'Não excluir',
-                                                colorStyle: 'blue',
-                                                width: '120px'
+                                                text: 'Cancelar',
+                                                onClick: () => null
                                             }
                                         ]
                                     }
                                 })
                             }}
                         />
-
                     </>
                 }
             />
         </div>
     )
 }
-

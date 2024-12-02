@@ -76,7 +76,7 @@ export default function QN_DietDisplay_Day({ day }: QN_DietDisplay_DayProps) {
                             return (
                                 <MealContextProvider key={meal._id} refDay={day} mealIndex={index}>
                                     <DietDisplay_Meal_Provider>
-                                        <MealDisplay_Component />
+                                        <MealDisplay_Component day={day}/>
                                     </DietDisplay_Meal_Provider>
                                 </MealContextProvider>
 

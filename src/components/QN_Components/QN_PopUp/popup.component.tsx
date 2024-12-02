@@ -31,21 +31,23 @@ export default function QN_PopUpComponent({ isOpen, setOpen }: QN_PopUpProps) {
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 padding: windowConfig?.padding || '20px',
-                textAlign: bodyConfig?.textAlign || 'center'
+                textAlign: bodyConfig?.textAlign || 'center',
+                height: '100%'
             }}>
                 {titleConfig && (
                     <div style={{
                         fontWeight: titleConfig?.fontWeight || '600',
                         color: titleConfig?.textColor || '',
                         textAlign: titleConfig?.textAlign as 'left' | 'center' | 'right' || 'center' || 'center',
-                        marginBottom: '8px'
+                        marginBottom: titleConfig?.marginBottom || '8px'
                     }}>
                         {titleConfig.title}
                     </div>
                 )}
                 {bodyConfig?.content && (
                     <div style={{
-                        marginBottom: windowConfig?.gapBetweenTextAndButtons || '20px'
+                        marginBottom: windowConfig?.gapBetweenTextAndButtons || '20px',
+                        height: '100%',
                     }}>
                         {bodyConfig?.content}
                     </div>

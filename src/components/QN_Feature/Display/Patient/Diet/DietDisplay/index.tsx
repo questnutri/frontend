@@ -4,11 +4,13 @@ import { useEffect, useState } from "react"
 import { DietContext } from "@/context/diet.context"
 import { IDiet, IMeal } from "@/models/Patient/Diet/Diet.interface"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
+import { useUser } from "@/context/user.context"
 
 export const daysOfWeekBR = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
 export const daysOfWeekEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 export default function QN_NutritionistPatient_DietPage() {
+    const { role } = useUser()
     const { patient } = useNutritionistPatient()
     const [diet, setDiet] = useState<IDiet | null>(null)
     const [expandedDay, setExpandedDay] = useState<number | null>(null)
@@ -32,17 +34,21 @@ export default function QN_NutritionistPatient_DietPage() {
         setMeals(patient?.diets?.at(0)?.meals || [])
     }, [diet])
 
+
+    useEffect(() => {
+        if (role === 'patient') {
+            toggleExpandedDay(new Date().getDay())
+        }
+    }, [])
+
+
     return (
         <>
-            <div style={{ height: '5%' }}>
-                {diet?.name || 'Sem dieta'}
-            </div>
             <div
                 style={{ //CONTROLA A DISTÂNCIA ENTRE OS DIAS DA SEMANA!!!
-                    backgroundColor: 'red',
                     display: 'flex', //FAZ FICAR DO LADO
                     width: '100%',
-                    height: '95%',
+                    height: '100%',
                     gap: (expandedDay == null) ? '20px' : '0px', //DISTÂNCIA ENTRE OS DIAS DA SEMANA
                     transition: expandedDay == null
                         ? 'gap 0.3s ease-out'  // velocidade ao expandir

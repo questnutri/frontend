@@ -5,7 +5,8 @@ import { useNutritionistPatient } from "./modal.patient.context"
 import { updatePatientMeal } from "@/lib/fetchPatients"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context"
-import { createFood } from "@/lib/Diet/diet.api"
+import { createFood, deletePatientMeal } from "@/lib/Diet/diet.api"
+import { useUser } from "./user.context"
 
 type DietContextType = {
     diet: IDiet | null
@@ -30,6 +31,8 @@ type MealContextType = {
     acceptMealChanges: () => Promise<void>
     denyMealChanges: (afterAction?: () => void) => void
 
+    isDone?: boolean
+
     foods: IFood[]
     handleFoodCreation: () => Promise<void>
 }
@@ -43,6 +46,7 @@ export const useMeal = () => {
 }
 
 export function MealContextProvider({ refDay, mealIndex, children }: { refDay: number, mealIndex: number, children: React.ReactNode }) {
+    const {role} = useUser()
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet, meals, setMeals } = useDiet()
 
@@ -53,7 +57,6 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
     //re-renders meal when diets is updated
     useEffect(() => {
         setMeal(diet!.meals!.at(mealIndex) || null)
-        console.log('Single meal Updated')
     }, [diet])
 
 
@@ -82,11 +85,56 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
 
     //Pushes meal changes to database and resync
     const acceptMealChanges = async () => {
-        await updatePatientMeal(patient!._id, diet!._id, meal!._id, {
-            ...mealChanges,
-        })
+        console.log(meal!.daysOfWeek.length)
+        if (mealChanges!.daysOfWeek.length === 0) {
+            showPopUp({
+                windowConfig: {
+                    width: '300px'
+                },
+                titleConfig: {
+                    title: 'Atenção!',
+                },
+                bodyConfig: {
+                    content: 'Essa refeição não tem nenhum dia ativo atribuído e será excluída.'
+                },
+                customButtons: {
+                    items: [
+                        {
+                            text: 'Excluir refeição',
+                            colorStyle: 'red',
+                            onClick: async () => {
+                                const res = await deletePatientMeal(patient!._id, diet!._id, meal!._id)
+                                if (res.status == 200) {
+                                    showPopUp({
+                                        titleConfig: {
+                                            title: 'Refeição excluída'
+                                        },
+                                        defaultButtons: {
+                                            okButton: true
+                                        }
+                                    })
+                                }
 
-        await fetchPatient() //resync
+                            }
+                        },
+                        {
+                            text: 'Cancelar',
+                            onClick: () => { }
+                        },
+
+                    ]
+                }
+            })
+        } else {
+            await updatePatientMeal(patient!._id, diet!._id, meal!._id, {
+                ...mealChanges,
+            })
+            await fetchPatient() //resync
+        }
+
+
+
+
     }
 
     const handleFoodCreation = async () => {

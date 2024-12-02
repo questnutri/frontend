@@ -23,11 +23,22 @@ export default function QN_Table({ columns, rows, height, onRowClick }: QN_Table
     }
 
     return (
-        <Table aria-label="Table" style={{height}}>
+        <Table
+            isHeaderSticky
+            aria-label="Table"
+            style={{ height: '300%'}}
+        >
             <TableHeader columns={columns}>
                 {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
             </TableHeader>
-            <TableBody items={rows} emptyContent="Sem registros.">
+            <TableBody 
+                items={rows} 
+                emptyContent="Sem registros."
+                style={{
+                    height: '150px',
+                    overflowY: 'auto',
+                }}
+                >
                 {rows.map((item, index) => (
                     <TableRow
                         key={index}
