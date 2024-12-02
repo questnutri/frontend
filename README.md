@@ -1,8 +1,8 @@
 <div align="center"> <img src="/img/QuestNutri.png" width="400" height="400"> </div>
 
-# NutriQuest
+# QuestNutri
 
-NutriQuest is a gamified nutritional tracking application designed to simplify diet prescriptions for nutrition professionals and promote patient engagement through interactive nutritional tracking and gamification.
+QuestNutri is a gamified nutritional tracking application designed to simplify diet prescriptions for nutrition professionals and promote patient engagement through interactive nutritional tracking and gamification.
 
 This project is part of the Integrated Project for the third semester of the Systems Analysis and Development course at Fatec Indaiatuba.
 
@@ -84,9 +84,9 @@ We’ve deployed the application on Vercel. Access it via: 👉 [NutriQuest on V
 ## Team
 <p float="left">
   <img src="https://media.licdn.com/dms/image/D4E03AQE5G5I_ebYPvA/profile-displayphoto-shrink_800_800/0/1707865613539?e=1724284800&v=beta&t=MkJhfCvVNbhaDcjNN6zS2LDhguuflqZAVzWOAI75P-w" width="100" />
-  <img src="https://media.licdn.com/dms/image/D4D03AQFULMRKbfs5cw/profile-displayphoto-shrink_800_800/0/1716859104984?e=1724284800&v=beta&t=MVG90yGP7bzaMcsMVViytTbWFJaCsraI6aPoEVWiV98" width="100" /> 
-  <img src="https://media.licdn.com/dms/image/D4D35AQFi10uaCqOuxg/profile-framedphoto-shrink_800_800/0/1705686988044?e=1719284400&v=beta&t=lKeLTJdt1CkZePq6thQUwhRrp1-0TVRNfv3nu5dTeyk" width="100" />
-  <img src="https://media.licdn.com/dms/image/D5603AQH0oflksT_fkQ/profile-displayphoto-shrink_800_800/0/1709664338772?e=1724284800&v=beta&t=D5FwHiGfP8A2HdhzVrXPRaUYavZ8GNRbZwoWZrGOMQA" width="100" />
+  <img src="https://media.licdn.com/dms/image/v2/D4D03AQFULMRKbfs5cw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719038024808?e=1738800000&v=beta&t=-fTXzvIkZ2V7DJ0AFuhDqthMWPFqaBl3QEyHjS0KNF8" width="100" /> 
+  <img src="https://media.licdn.com/dms/image/v2/D4D35AQHUP6mOqwT8XA/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1719434579094?e=1733724000&v=beta&t=N7BLhJT8m2-aDB__634fF6qGgWaFRvM61rF0HZ0I0HE" width="100" />
+  <img src="https://media.licdn.com/dms/image/v2/D5603AQH0oflksT_fkQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1709664338772?e=1738800000&v=beta&t=jq3uhya5qDSbiGGlLKK1YQjzeTr4J8x7zmoECzPcnT8" width="100" />
   <img src="https://media.licdn.com/dms/image/v2/D4D03AQEWlCxIDRUeRw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1704483453828?e=1738800000&v=beta&t=BDkjlHg8yDWmhOnHcz0ZZJ0F1Ft5KrIVozxJksD7JK4" width="100" />
   <img src="https://media.licdn.com/dms/image/v2/D4D03AQFcW4a5v4cwgA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1707394394840?e=1738800000&v=beta&t=acJ3Icm5bwTD0Xj5y1sxToG_GkBL3QwujJD1FkqqX3I" width="100" />
   <img src="https://media.licdn.com/dms/image/v2/C4D03AQFJwGThl0mHEA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1652219794267?e=1738800000&v=beta&t=yIyCuXeErQ_8nKIiXBW0dh_L1oS17dtEs06g4SGtSl0" width="100" />
