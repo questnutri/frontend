@@ -1,5 +1,3 @@
-<div align="center"> <img src="/img/QuestNutri.png" width="400" height="400"> </div>
-
 # QuestNutri
 
 QuestNutri is a gamified nutritional tracking application designed to simplify diet prescriptions for nutrition professionals and promote patient engagement through interactive nutritional tracking and gamification.
@@ -39,29 +37,6 @@ This project is dedicated to our beloved friend, [Miguel](https://github.com/Mig
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" alt="icon" width="30" height="30" />
 </p>
 
-## Installation and Configuration ⚙
-### Requirements
-- Java Development Kit (JDK) 8 or higher
-- Eclipse IDE
-- Docker
-
-### Installation Steps 
-
-1. Clone the Repository:
-```
-    git clone https://github.com/your-username/construware.git
-```
-
-2. Import the Project into Eclipse
-- Open Eclipse IDE.
-- Select File > Import.
-- Choose Existing Projects into Workspace and click Next.
-- Navigate to the cloned directory and select it.
-- Click Finish.
-
-3. Compile and Execute the Project:
-- In Eclipse, open the project in the project explorer.
-- Right-click on the project and select Run As > Java Application.
 
 ## Vercel
 We’ve deployed the application on Vercel. Access it via: 👉 [NutriQuest on Vercel](https://questnutri.vercel.app/)
@@ -74,12 +49,6 @@ We’ve deployed the application on Vercel. Access it via: 👉 [NutriQuest on V
 #### For Patients
 - Email: teste@mail.com
 - Password: teste
-
-## Further plans 📅
-- Reports and analysis: Generation of detailed reports and analyses to support managerial decision-making.  
-- Artificial intelligence (AI): Suggestions for improvements based on analytical reports.
-- WhatsApp integration: Integrated communication functionality to facilitate customer service.
-- Stock alerts: Configurable notifications for proactive inventory management.
 
 ## Team
 <p float="left">
