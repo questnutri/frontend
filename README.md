@@ -23,7 +23,6 @@ This project is dedicated to our beloved friend, [Miguel](https://github.com/Mig
 ### Back-end
 <p float="left">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="icon" width="40" height="40" />
-    <img src= JWT />
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" alt="icon" width="40" height="40" />
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="icon" width="40" height="40" />
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongoose/mongoose-original.svg" alt="icon" width="40" height="40" />
