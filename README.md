@@ -68,5 +68,3 @@ We’ve deployed the application on Vercel. Access it via: 👉 [NutriQuest on V
   <a href="https://www.linkedin.com/in/bruno-soares-da-silva-b476b8268/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100"/></a>
   <a href="https://www.linkedin.com/in/lucas-paulo-de-souza-b73b7a232/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100"/></a>
 </p>
-
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Bebas+Neue&size=40&pause=1000&color=2F7FC4&random=false&width=680&height=60&lines=NutriQuest;😄;%F0%9F%8F%97%EF%B8%8F%F0%9F%93%8A%F0%9F%9B%A0%EF%B8%8F)](https://git.io/typing-svg)
