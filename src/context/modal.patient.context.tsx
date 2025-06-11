@@ -3,6 +3,8 @@ import { createPatientDiet } from "@/lib/Diet/diet.api"
 import { fetchOnePatient } from "@/lib/fetchPatients"
 import { IPatient } from "@/models/Patient/Patient.interface"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
+import { DietProvider } from "./diet/refactoredDietContextProvider"
+import { DietDisplayContextualizer } from "./diet/diet.displayContextualizer"
 
 interface NutritionistPatientContextType {
     patient: IPatient | null
@@ -41,8 +43,10 @@ export function QN_NutritionistPatientProvider({ children }: { children: ReactNo
     }
 
     return (
-        <NutritionistPatientContext.Provider value={{ patient, setModalPatient, fetchPatient}}>
-            {children}
+        <NutritionistPatientContext.Provider value={{ patient, setModalPatient, fetchPatient }}>
+            <DietDisplayContextualizer>
+                {children}
+            </DietDisplayContextualizer>
         </NutritionistPatientContext.Provider >
     )
 }

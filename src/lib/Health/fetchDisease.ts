@@ -1,9 +1,10 @@
 import IDisease from "@/models/Patient/Health/Diseases.interface"
 import { fetchWithAuth } from "../fetchWithAuth"
+import { nutritionistPatient } from "../routes"
 
 export const createDisease = async (patientId: string, data: Partial<IDisease>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/disease`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/disease`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -23,7 +24,7 @@ export const createDisease = async (patientId: string, data: Partial<IDisease>) 
 
 export const updateChronic = async (patientId: string, diseaseId: string, data: Partial<IDisease>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/disease/${diseaseId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/disease/${diseaseId}`, {
             method: 'PATCH',
             body: JSON.stringify(data)
         })
@@ -43,7 +44,7 @@ export const updateChronic = async (patientId: string, diseaseId: string, data: 
 
 export const deleteChronic = async (patientId: string, diseaseId: string) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/disease/${diseaseId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/disease/${diseaseId}`, {
             method: 'DELETE',
         })
 

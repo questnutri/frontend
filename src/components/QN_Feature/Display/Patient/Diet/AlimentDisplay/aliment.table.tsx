@@ -7,11 +7,11 @@ export default function AlimentTable() {
     const handleRowClick = () => {
 
     }
-    const [aliments, setAliments] = useState<IAliment[]>([])
+    const [aliments, setAliments] = useState<any>([])
     useEffect(() => {
         const getAliments = async () => {
             const data = await fetchAliments()
-            setAliments(data as IAliment[])
+            setAliments(data)
         }
         getAliments()
     }, [])

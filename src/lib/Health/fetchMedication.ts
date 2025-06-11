@@ -1,9 +1,10 @@
 import IMedication from "@/models/Patient/Health/Medication.interface"
 import { fetchWithAuth } from "../fetchWithAuth"
+import { nutritionistPatient } from "../routes"
 
 export const createMedication = async (patientId: string, data: Partial<IMedication>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/medication`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/medication`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -23,7 +24,7 @@ export const createMedication = async (patientId: string, data: Partial<IMedicat
 
 export const updateMedication = async (patientId: string, medicationId: string, data: Partial<IMedication>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/medication/${medicationId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/medication/${medicationId}`, {
             method: 'PATCH',
             body: JSON.stringify(data)
         })
@@ -43,7 +44,7 @@ export const updateMedication = async (patientId: string, medicationId: string, 
 
 export const deleteMedication = async (patientId: string, medicationId: string) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/medication/${medicationId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/medication/${medicationId}`, {
             method: 'DELETE',
         })
 

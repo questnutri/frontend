@@ -1,9 +1,10 @@
 import { IDiet, IFood, IMeal } from "@/models/Patient/Diet/Diet.interface"
 import { fetchWithAuth } from "../fetchWithAuth"
+import { nutritionistPatient } from "../routes"
 
 export const createPatientDiet = async (idPatient: string, data: Partial<IDiet>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -23,7 +24,7 @@ export const createPatientDiet = async (idPatient: string, data: Partial<IDiet>)
 
 export const createPatientMeal = async (idPatient: string, idDiet: string, data: Partial<IMeal>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/${idDiet}/meal/`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -43,7 +44,7 @@ export const createPatientMeal = async (idPatient: string, idDiet: string, data:
 
 export const deletePatientMeal = async (idPatient: string, idDiet: string, idMeal: string) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/${idDiet}/meal/${idMeal}`, {
             method: 'DELETE',
         })
         return {
@@ -62,7 +63,7 @@ export const deletePatientMeal = async (idPatient: string, idDiet: string, idMea
 
 export const createFood = async (idPatient: string, idDiet: string, idMeal: string, data: Partial<IFood>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}/food`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/${idDiet}/meal/${idMeal}/food`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -82,7 +83,7 @@ export const createFood = async (idPatient: string, idDiet: string, idMeal: stri
 
 export const deleteFood = async (idPatient: string, idDiet: string, idMeal: string, idFood: string) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}/food/${idFood}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/${idDiet}/meal/${idMeal}/food/${idFood}`, {
             method: 'DELETE',
         })
         return {
@@ -101,7 +102,7 @@ export const deleteFood = async (idPatient: string, idDiet: string, idMeal: stri
 
 export const updateFood = async (idPatient: string, idDiet: string, idMeal: string, idFood: string ,data: Partial<IFood>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${idPatient}/diet/${idDiet}/meal/${idMeal}/food/${idFood}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${idPatient}/diet/${idDiet}/meal/${idMeal}/food/${idFood}`, {
             method: 'PATCH',
             body: JSON.stringify(data)
         })

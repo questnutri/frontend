@@ -24,7 +24,7 @@ export default function PatientsPage() {
 
     const refreshList = async () => {
         const data = await fetchPatients()
-        setPatients(data)
+        setPatients(data.content)
     }
 
     useEffect(() => {

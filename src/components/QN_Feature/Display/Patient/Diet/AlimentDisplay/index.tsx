@@ -2,29 +2,47 @@ import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRende
 import QN_DropDown from "@/components/QN_Components/QN_DropDown"
 import QN_Input from "@/components/QN_Components/QN_Input"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
-import QN_Table from "@/components/QN_Components/QN_Table"
 import AlimentPage from "@/components/QN_Feature/Pages/AlimentPage"
 import { FaSearch } from '@/icons'
-import { useState } from "react"
-import AlimentTable from "./aliment.table"
+import { useEffect, useState } from "react"
 import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import { useFood } from "../FoodDisplay/context"
+import QN_Button from "@/components/QN_Components/QN_Button"
+import { IAliment } from "@/models/Aliment.interface"
+import NutricionalTable from "../new/nutritionalTable"
+import { useDietDisplayContext } from "@/context/diet/diet.displayContextualizer"
+import { useDiet } from "@/context/diet/refactoredDietContextProvider"
 
 export default function AlimentoPrincipal() {
-    const { showPopUp } = usePopUpGlobal()
-    const {food} = useFood()
+    // const { food } = useFood()
 
+    const dietCtx = useDiet();
+    const food = dietCtx.claimedFood;
 
     const [openPopUp, setOpenPopUp] = useState(false)
-
-    const [alimento, setAlimento] = useState("")
-    const [quantidade, setQuantidade] = useState<number | null>(null)
-    const [unidade, setUnidade] = useState("")
-    const [observacoes, setObservacoes] = useState("")
+    const [aliment, setAliment] = useState<IAliment | null>(null)
+    const [quantity, setQuantity] = useState<number | null>(null)
+    const [unit, setUnit] = useState("g")
+    const [observation, setObservation] = useState("")
 
     const handleSave = () => {
-        console.log("Salvar informações", { alimento, quantidade, unidade, observacoes })
+        dietCtx.saveFood();
     }
+
+    const display = useDietDisplayContext();
+
+    useEffect(() => {
+        setOpenPopUp(false)
+        if (food) {
+            food.aliment = aliment
+        }
+    }, [aliment]);
+
+    useEffect(() => {
+        if (food) {
+            food.quantity = quantity
+        }
+    }, [quantity])
 
     return (
         <div style={{ padding: "20px", width: '100%', margin: "0 auto" }}>
@@ -50,7 +68,7 @@ export default function AlimentoPrincipal() {
                 <QN_Input
                     type="text"
                     value={food?.aliment?.name || 'Nenhum selecionado'}
-                    onChange={() => {}}
+                    onChange={() => { }}
                     startContent={
                         <QN_ConditionalRender
                             nutritionist={
@@ -58,79 +76,46 @@ export default function AlimentoPrincipal() {
                                     <FaSearch
                                         color="#23a3ff"
                                         size={20}
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}
-                                        onClick={() => {
-                                            setOpenPopUp(true)
-                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => setOpenPopUp(true)}
                                     />
                                 </div>
-
                             }
                         />
-
                     }
                 />
                 <QN_Input
                     type="number"
-                    value={`${food?.quantity}` || '0'}
+                    value={`${quantity ?? food?.quantity ?? 0}`}
                     onChange={(e) => {
-                        let value = e.target.value
-                        if (Number(value) < 0) setQuantidade(0)
-                        else setQuantidade(Number(e.target.value))
+                        const value = Number(e.target.value)
+                        setQuantity(value < 0 ? 0 : value)
                     }}
                 />
                 <QN_DropDown
-                    items={[{
-                        label: 'g',
-                        value: 'grams'
-                    }]}
-                    value={food?.unit || 'grams'}
-                    onChange={() => { }}
+                    items={[{ label: 'g', value: 'g' }]}
+                    value={unit}
+                    onChange={(val) => setUnit(val)}
                 />
-                <button
+                <QN_Button
                     onClick={handleSave}
-                    style={{
-                        padding: "10px 20px",
-                        background: "#008CBA",
-                        color: "white",
-                        borderRadius: "4px",
-                        border: "none",
-                        cursor: "pointer",
-                    }}
+                    width="auto"
+                    height="40px"
+                    colorStyle="blue"
+                    borderRadius="4px"
+                    fontSize="14px"
                 >
-                    SALVAR
-                </button>
+                    Salvar
+                </QN_Button>
             </div>
 
-            <div style={{ marginBottom: "20px", border: "1px solid #ccc", borderRadius: "4px", padding: "10px" }}>
-                <h3 style={{ marginBottom: "10px" }}>Informações Nutricionais:</h3>
-                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
-                    <thead>
-                        <tr>
-                            <th style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>Porção de 100g</th>
-                            <th style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>(quantidade) {unidade}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {["Valor energético", "Carboidratos", "Proteínas", "Gorduras Totais", "Gorduras Saturadas", "Fibra Alimentar", "Sódio"].map(
-                            (item) => (
-                                <tr key={item}>
-                                    <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>{item}</td>
-                                    <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>0g</td>
-                                </tr>
-                            )
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <NutricionalTable aliment={food?.aliment || aliment} quantity={quantity ?? 0} unit={unit} />
 
             <div style={{ marginBottom: "20px" }}>
                 <h3>Observações do Alimento:</h3>
                 <textarea
-                    value={observacoes}
-                    onChange={(e) => setObservacoes(e.target.value)}
+                    value={observation}
+                    onChange={(e) => setObservation(e.target.value)}
                     style={{
                         width: "100%",
                         height: "80px",
@@ -167,8 +152,8 @@ export default function AlimentoPrincipal() {
                         </table>
                     </div>
                 ))}
-
             </div>
+
             <QN_PopUp
                 isPopUpOpen={openPopUp}
                 setPopUpOpen={setOpenPopUp}
@@ -178,11 +163,7 @@ export default function AlimentoPrincipal() {
                         height: '90%',
                     },
                     bodyConfig: {
-                        content: (
-                            <>
-                                <AlimentPage />
-                            </>
-                        )
+                        content: <AlimentPage setAliment={setAliment} />,
                     }
                 }}
             />

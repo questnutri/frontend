@@ -11,10 +11,11 @@ import QN_Button from "@/components/QN_Components/QN_Button"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import FoodContextProvider from "../../FoodDisplay/context"
 import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
-import QN_CheckBoxGroup from "@/components/QN_Components/QN_CheckBoxGroup"
 
+import { useDiet as useDiet2 } from "@/context/diet/refactoredDietContextProvider"
+import { useDietDisplayContext } from "@/context/diet/diet.displayContextualizer"
 
-export default function MealDisplay_Component({day}: {day: number}) {
+export default function MealDisplay_Component({ day }: { day: number }) {
     const { patient } = useNutritionistPatient()
     const { diet } = useDiet()
     const { meal, refDay, foods, handleFoodCreation } = useMeal()
@@ -28,22 +29,33 @@ export default function MealDisplay_Component({day}: {day: number}) {
         }
     }, [expandedDay])
 
-    const [renderedContent, setRenderedContent] = useState(<></>)
+    const [renderedContent, setRenderedContent] = useState(<></>);
+
+    const { updatedFood } = useDietDisplayContext();
     useEffect(() => {
+        console.log("Tried to update meal display");
+        console.log(updatedFood);
         setRenderedContent(
             <>
-                {
-                    foods?.map((food, index) => {
-                        return (
-                            <FoodContextProvider food={food} key={`food:${food._id}-meal:${meal!._id}`}>
-                                <FoodDisplay />
-                            </FoodContextProvider>
-
-                        )
-                    })
-                }
+                {foods?.map((food, index) => (
+                    <FoodContextProvider
+                        food={food}
+                        key={`food:${food._id}-meal:${meal!._id}-dayOfWeek:${day}-${index}`}
+                    >
+                        <FoodDisplay food={food} meal={meal} />
+                    </FoodContextProvider>
+                ))}
             </>)
-    }, [meal, foods, patient, diet])
+    }, [patient, updatedFood])
+
+
+    const { addFood } = useDiet2();
+    const { setOpenFoodCreation } = useDietDisplayContext();
+    const doFoodCreation = () => {
+        if (meal) {
+            addFood(meal._id);
+        }
+    }
 
     return (
         <div
@@ -64,8 +76,8 @@ export default function MealDisplay_Component({day}: {day: number}) {
             }}
         >
             {expandedDay != null ? (
-                <div style={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
-                    <DietDisplay_Meal_Header_Expanded day={day}/>
+                <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <DietDisplay_Meal_Header_Expanded day={day} />
                     {
                         isOpened && (
                             <>
@@ -76,7 +88,7 @@ export default function MealDisplay_Component({day}: {day: number}) {
                                             <div style={{ paddingBottom: '20px' }}>
                                                 <QN_Button
                                                     width='200px'
-                                                    onClick={handleFoodCreation}
+                                                    onClick={doFoodCreation}
                                                     noShadow
                                                 >
                                                     Adicionar alimento

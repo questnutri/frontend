@@ -138,15 +138,20 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
     }
 
     const handleFoodCreation = async () => {
-        const res = await createFood(patient!._id, diet!._id, meal!._id, {
-            aliment: null,
-            quantity: 0,
-            unit: 'gramas',
-            obs: ''
-        })
-        if (res.status == 201) {
-            await fetchPatient()
+        if(meal) {
+            console.log("Pushed new meal")
+            meal.foods!.push({})
+            setFoods([...foods, {_id: '1', quantity: 1, unit: "g"}])
         }
+        // const res = await createFood(patient!._id, diet!._id, meal!._id, {
+        //     aliment: null,
+        //     quantity: 0,
+        //     unit: 'gramas',
+        //     obs: ''
+        // })
+        // if (res.status == 201) {
+        //     await fetchPatient()
+        // }
 
     }
 

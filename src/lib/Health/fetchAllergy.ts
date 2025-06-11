@@ -1,9 +1,10 @@
 import IAllergy from "@/models/Patient/Health/Allergies.interface"
 import { fetchWithAuth } from "../fetchWithAuth"
+import { nutritionistPatient } from "../routes"
 
 export const createAllergy = async (patientId: string, data: Partial<IAllergy>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/allergy`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/allergy`, {
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -23,7 +24,7 @@ export const createAllergy = async (patientId: string, data: Partial<IAllergy>) 
 
 export const updateAllergy = async (patientId: string, allergyId: string, data: Partial<IAllergy>) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/allergy/${allergyId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/allergy/${allergyId}`, {
             method: 'PATCH',
             body: JSON.stringify(data)
         })
@@ -43,7 +44,7 @@ export const updateAllergy = async (patientId: string, allergyId: string, data: 
 
 export const deleteAllergy = async (patientId: string, allergyId: string) => {
     try {
-        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/nutritionist/patient/${patientId}/allergy/${allergyId}`, {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3030/api/v1'}/${nutritionistPatient}/${patientId}/allergy/${allergyId}`, {
             method: 'DELETE',
         })
 

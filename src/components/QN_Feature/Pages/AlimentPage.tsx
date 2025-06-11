@@ -3,7 +3,7 @@
 import QN_Table from "@/components/QN_Components/QN_Table"
 import { fetchAliments } from "@/lib/fetchAliment"
 import { IAliment } from "@/models/Aliment.interface"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import QN_Input from "@/components/QN_Components/QN_Input"
 import { FaSearch } from "@/icons/index"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
@@ -12,64 +12,85 @@ import { usePopUp } from "@/components/QN_Components/QN_PopUp/popup.context"
 import { updateFood } from "@/lib/Diet/diet.api"
 import { useNutritionistPatient } from "@/context/modal.patient.context"
 import { useDiet, useMeal } from "@/context/diet.context"
+import { PaginatedResult } from "@/utils/interfaces/PaginatedResult.interface"
 
-export default function AlimentPage() {
-    const {showPopUp} = usePopUpGlobal()
-    const {closePopUp} = usePopUp()
-    const {food} = useFood()
-    const {patient, fetchPatient} = useNutritionistPatient()
-    const {diet} = useDiet()
-    const {meal} = useMeal()
+interface AlimentPageProps {
+    setAliment: (value: IAliment | null) => void
+}
 
-    const [aliments, setAliments] = useState<IAliment[]>([])
-    const [filter, setFilter] = useState('') // Estado para o filtro
-    const [filteredAliments, setFilteredAliments] = useState<IAliment[]>([])
+export default function AlimentPage({ setAliment }: AlimentPageProps) {
+    const { showPopUp } = usePopUpGlobal()
+    const { closePopUp } = usePopUp()
+    const { food } = useFood()
+    const { patient, fetchPatient } = useNutritionistPatient()
+    const { diet } = useDiet()
+    const { meal } = useMeal()
+
+    const rowsPerPage = 10
+
+    const [paginatedAliments, setPaginatedAliments] = useState<PaginatedResult<IAliment> | undefined>(undefined)
+    const [filter, setFilter] = useState('')
+    const [debouncedFilter, setDebouncedFilter] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
 
     useEffect(() => {
-        const getAliments = async () => {
-            const data = await fetchAliments()
-            setAliments(data)
-        }
-        getAliments()
+        const handler = setTimeout(() => {
+            setDebouncedFilter(filter)
+            setCurrentPage(1) // reset página quando filtro muda
+        }, 500)
+
+        return () => clearTimeout(handler)
+    }, [filter])
+
+    const fetchPage = useCallback(async (page: number, size: number, nameFilter: string) => {
+        const data = await fetchAliments(page, size, nameFilter)
+        setPaginatedAliments(data)
+        return data
     }, [])
 
     useEffect(() => {
-        setFilteredAliments(
-            aliments.filter((aliment) => {
-                const searchValue = filter.toLocaleLowerCase()
-                return aliment.name.toLocaleLowerCase().includes(searchValue) // Filtro por nome
-            })
-        )
-    }, [aliments, filter])
+        fetchPage(currentPage, rowsPerPage, debouncedFilter)
+    }, [currentPage, rowsPerPage, debouncedFilter, fetchPage])
 
-    const handleRowClick = (row: any) => {
+    const onFetchPage = useCallback(async (page: number, size: number) => {
+        setCurrentPage(page)
+        // Só retorna o estado atualizado, não faz fetch aqui de novo
+        return paginatedAliments ?? { content: [], totalItems: 0, currentPage: 1, pageSize: size, totalPages: 1, isFirstPage: true, isLastPage: true }
+    }, [paginatedAliments])
+
+    const handleRowClick = (id: string) => {
+        const selectedAliment = paginatedAliments?.content.find(a => a._id === id)
+        if (!selectedAliment) return
+
         showPopUp({
-            titleConfig: {
-                title: 'Você deseja selecionar o alimento',
-            }, 
+            titleConfig: { title: 'Você deseja selecionar o alimento' },
             customButtons: {
                 items: [
-                    {
-                        text: 'Não', 
-                        colorStyle: 'red',
-                        onClick: () => {}
-                    }, 
+                    { text: 'Não', colorStyle: 'red', onClick: () => { } },
                     {
                         text: 'Sim',
                         onClick: async () => {
-                            await updateFood(patient!._id, diet!._id, meal!._id, food!._id, {
-                                aliment: row
-                            })
-
-                            await fetchPatient()
-                            
-                            closePopUp()
+                            setAliment(selectedAliment);
+                            // await updateFood(patient!._id, diet!._id, meal!._id, food!._id, { aliment: selectedAliment })
+                            // await fetchPatient()
                         }
                     }
                 ]
             }
         })
     }
+
+    const safePaginatedResult = paginatedAliments
+        ? {
+            content: paginatedAliments.content,
+            totalItems: paginatedAliments.totalItems ?? 0,
+            currentPage: paginatedAliments.currentPage ?? 1,
+            pageSize: paginatedAliments.pageSize ?? rowsPerPage,
+            totalPages: paginatedAliments.totalPages ?? 1,
+            isFirstPage: paginatedAliments.isFirstPage ?? true,
+            isLastPage: paginatedAliments.isLastPage ?? true,
+        }
+        : undefined
 
     return (
         <div
@@ -98,7 +119,7 @@ export default function AlimentPage() {
                     onChange={(e) => setFilter(e.target.value)}
                     clearable
                     label="Pesquisar Alimento"
-                    startContent={<FaSearch style={{marginRight: '20px'}} />}
+                    startContent={<FaSearch style={{ marginRight: '20px' }} />}
                 />
             </div>
 
@@ -117,8 +138,12 @@ export default function AlimentPage() {
                         { key: 'protein', label: 'Proteína' },
                         { key: 'fat', label: 'Gordura' },
                     ]}
-                    rows={filteredAliments}
+                    rows={paginatedAliments?.content ?? []}
                     onRowClick={handleRowClick}
+                    enablePagination
+                    paginatedResult={safePaginatedResult}
+                    onFetchPage={onFetchPage}
+                    rowsPerPage={rowsPerPage}
                 />
             </div>
         </div>

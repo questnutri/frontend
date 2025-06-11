@@ -1,4 +1,5 @@
 export interface IAliment {
+    _id?: string
     name: string
     alimentGroup: string
     kcal: string

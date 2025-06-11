@@ -36,7 +36,8 @@ export default function QN_NewPatient() {
         setIsLoading(true)
         const emptyFields = Object.entries(newPatient).filter(([key, value]) => !value.trim())
 
-        if (emptyFields.length > 0) {
+        // if (emptyFields.length > 0) {
+        if (false) {
             showPopUp({
                 windowConfig: {
                     width: '200px'
