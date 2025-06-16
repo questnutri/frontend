@@ -21,10 +21,6 @@ interface AlimentPageProps {
 export default function AlimentPage({ setAliment }: AlimentPageProps) {
     const { showPopUp } = usePopUpGlobal()
     const { closePopUp } = usePopUp()
-    const { food } = useFood()
-    const { patient, fetchPatient } = useNutritionistPatient()
-    const { diet } = useDiet()
-    const { meal } = useMeal()
 
     const rowsPerPage = 10
 

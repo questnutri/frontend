@@ -4,7 +4,7 @@ import QN_Input from "@/components/QN_Components/QN_Input"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import AlimentPage from "@/components/QN_Feature/Pages/AlimentPage"
 import { FaSearch } from '@/icons'
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
 import { useFood } from "../FoodDisplay/context"
 import QN_Button from "@/components/QN_Components/QN_Button"
@@ -12,10 +12,9 @@ import { IAliment } from "@/models/Aliment.interface"
 import NutricionalTable from "../new/nutritionalTable"
 import { useDietDisplayContext } from "@/context/diet/diet.displayContextualizer"
 import { useDiet } from "@/context/diet/refactoredDietContextProvider"
+import PopUp from "@/components/QN_Components/QN_PopUp/PopUp.class"
 
-export default function AlimentoPrincipal() {
-    // const { food } = useFood()
-
+export default function AlimentDisplay({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (value: boolean) => void }) {
     const dietCtx = useDiet();
     const food = dietCtx.claimedFood;
 
@@ -23,13 +22,47 @@ export default function AlimentoPrincipal() {
     const [aliment, setAliment] = useState<IAliment | null>(null)
     const [quantity, setQuantity] = useState<number | null>(null)
     const [unit, setUnit] = useState("g")
-    const [observation, setObservation] = useState("")
+    const [observation, setObservation] = useState("");
+    const { showPopUp } = usePopUpGlobal();
 
-    const handleSave = () => {
-        dietCtx.saveFood();
+    const handleSave = async () => {
+        console.log("quantity: ", quantity)
+        if (!quantity || quantity! <= 0) {
+            showPopUp(
+                new PopUp()
+                    .title("Quantidade selecionada deve ser maior do que zero")
+                    .width("250px")
+                    .okButton()
+                    .build()
+            )
+            return
+        }
+        if (!aliment) {
+            showPopUp(
+                new PopUp()
+                    .title("Selecione um alimento")
+                    .width("250px")
+                    .okButton()
+                    .build()
+            )
+            return
+        }
+
+        const res = await dietCtx.saveFood();
+        if (res) {
+            setIsOpen(false);
+            console.log("Tried to close popup");
+        }
     }
 
-    const display = useDietDisplayContext();
+    useEffect(() => {
+        if (food) {
+            if (food.aliment) setAliment(food.aliment)
+            if (food.quantity) setQuantity(food.quantity)
+            if (food.unit) setUnit(food.unit)
+            if (food.observation) setObservation(food.observation)
+        }
+    }, [])
 
     useEffect(() => {
         setOpenPopUp(false)
@@ -39,10 +72,17 @@ export default function AlimentoPrincipal() {
     }, [aliment]);
 
     useEffect(() => {
-        if (food) {
-            food.quantity = quantity
-        }
+        if (food) food.quantity = quantity
     }, [quantity])
+
+    useEffect(() => {
+        if (food) food.unit = unit
+    }, [unit])
+
+    useEffect(() => {
+        if (food) food.observation = observation
+    }, [observation])
+
 
     return (
         <div style={{ padding: "20px", width: '100%', margin: "0 auto" }}>
@@ -67,7 +107,7 @@ export default function AlimentoPrincipal() {
             >
                 <QN_Input
                     type="text"
-                    value={food?.aliment?.name || 'Nenhum selecionado'}
+                    value={aliment?.name || 'Nenhum selecionado'}
                     onChange={() => { }}
                     startContent={
                         <QN_ConditionalRender
@@ -108,9 +148,6 @@ export default function AlimentoPrincipal() {
                     Salvar
                 </QN_Button>
             </div>
-
-            <NutricionalTable aliment={food?.aliment || aliment} quantity={quantity ?? 0} unit={unit} />
-
             <div style={{ marginBottom: "20px" }}>
                 <h3>Observações do Alimento:</h3>
                 <textarea
@@ -126,7 +163,9 @@ export default function AlimentoPrincipal() {
                 />
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+            <NutricionalTable aliment={food?.aliment || aliment} quantity={quantity ?? 0} unit={unit} />
+
+            {/* <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
                 {["Proporção Nutricional na Refeição", "Proporção Nutricional na Dieta Inteira"].map((title) => (
                     <div
                         key={title}
@@ -152,7 +191,7 @@ export default function AlimentoPrincipal() {
                         </table>
                     </div>
                 ))}
-            </div>
+            </div> */}
 
             <QN_PopUp
                 isPopUpOpen={openPopUp}

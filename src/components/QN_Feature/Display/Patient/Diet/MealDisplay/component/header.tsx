@@ -5,7 +5,7 @@ import { useUser } from "@/context/user.context"
 import { MdEdit } from "react-icons/md"
 import { FaTrash } from "react-icons/fa6"
 import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRender"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import QN_Button from "@/components/QN_Components/QN_Button"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 import { useDiet, useMeal } from "@/context/diet.context"
@@ -20,13 +20,13 @@ import QN_Checkbox from '@/components/QN_Components/QN_Checkbox'
 import { checkMeal } from '@/lib/fetchPatients'
 
 export default function DietDisplay_Meal_Header_Expanded({ day, inputSize }: { day: number, inputSize?: string }) {
-
-    const { role } = useUser()
     const { patient, fetchPatient } = useNutritionistPatient()
     const { diet } = useDiet()
     const { meal, mealChanges, handleMealChange, acceptMealChanges, denyMealChanges } = useMeal()
     const { isOpened, setIsOpened, toggleOpened, isEditable, setIsEditable, toggleEditable } = useMealDisplay()
     const { showPopUp } = usePopUpGlobal()
+
+    const parseNumber = (val: string) => parseFloat(val.replace(',', '.'))
 
 
     function Duplicate() {
@@ -81,6 +81,36 @@ export default function DietDisplay_Meal_Header_Expanded({ day, inputSize }: { d
             bodyConfig: { content: <Duplicate /> }
         })
     }
+
+    const [totalKcal, setTotalKcal] = useState(0)
+
+    useEffect(() => {
+        if (meal && meal._id) {
+            const foundMeal = patient?.diets?.[0]?.meals.find(m => m._id === meal?._id)
+
+            let total = 0
+
+            if (foundMeal) {
+                for (const food of foundMeal.foods) {
+                    const quantity = Number(food.quantity)
+                    const kcal = parseNumber(food.aliment?.kcal)
+
+                    const kcalTotal = (quantity / 100) * kcal
+
+                    if (!isNaN(kcalTotal)) {
+                        total += kcalTotal
+                    }
+                }
+            }
+
+            if (isNaN(total)) {
+                total = 0
+            }
+
+            setTotalKcal(Number(total.toFixed(2)))
+        }
+
+    }, [patient, diet, meal])
 
     return (
         <div
@@ -148,7 +178,7 @@ export default function DietDisplay_Meal_Header_Expanded({ day, inputSize }: { d
                     width='130px'
                     height='100%'
                     removeStyle={true}
-                    value={`9999 kcal`}
+                    value={`${totalKcal} kcal`}
                     fontWeight='font-bold'
                     textAlign='center'
                     color='#55b7fe'
@@ -168,8 +198,8 @@ export default function DietDisplay_Meal_Header_Expanded({ day, inputSize }: { d
                             <QN_Checkbox
                                 selected={patient!.dailyMealRecord!.completedToday!.includes(meal!._id)}
                                 isDisabled={patient!.dailyMealRecord!.completedToday!.includes(meal!._id)}
-                                onChange={async () => { 
-                                    await checkMeal(meal!._id) 
+                                onChange={async () => {
+                                    await checkMeal(meal!._id)
                                     await fetchPatient()
                                 }}
                             />

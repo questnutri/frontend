@@ -1,3 +1,4 @@
+import { Diet } from "@/utils/interfaces/Diet.interfaces"
 import { IAddress } from "../Address.interface"
 import IMedicine from "./Health/Medication.interface"
 import { IWeight } from "./Weight/Weight.interface"
@@ -47,7 +48,7 @@ export interface IPatient {
 	}
 	nutri: string
 	activeDiet?: string
-	diets?: any[]
+	diets?: Diet[]
 	dailyMealRecord?: {
 		completedToday: string[],
 		checkingDay: 0 | 1 | 2 | 3 | 4 | 5 | 6

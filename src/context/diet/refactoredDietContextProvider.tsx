@@ -2,10 +2,11 @@ import { Diet, Food, Meal } from "@/utils/interfaces/Diet.interfaces"
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
 import { useNutritionistPatient } from "../modal.patient.context"
 import { DietDisplayContextualizer, useDietDisplayContext } from "./diet.displayContextualizer"
-import { createFood } from "@/lib/Diet/diet.api"
+import { createFood, updateFood } from "@/lib/Diet/diet.api"
 import { usePopUpGlobal } from "@/components/QN_Components/QN_PopUp/popup.global.context"
 
 import { deleteFood as apiDeleteFood } from "@/lib/Diet/diet.api";
+import PopUp from "@/components/QN_Components/QN_PopUp/PopUp.class"
 
 
 type DietContextType = {
@@ -18,7 +19,7 @@ type DietContextType = {
     claimMealControl: (meal: string) => void
     claimFoodControl: (food: Partial<Food>) => void
     claimedFood: Partial<Food> | null
-    saveFood: () => void
+    saveFood: () => Promise<boolean>
     deleteFood: (mealId: string, foodId: string) => void
 }
 
@@ -40,7 +41,6 @@ export function useDiet() {
 
 export function DietProvider({ children, initialDiet = null }: DietProviderProps) {
     const { patient, fetchPatient } = useNutritionistPatient();
-    const { updatedDiet } = useDietDisplayContext();
     const [diet, setDiet] = useState<Diet | null>(initialDiet);
 
     const display = useDietDisplayContext();
@@ -107,19 +107,35 @@ export function DietProvider({ children, initialDiet = null }: DietProviderProps
     }
 
     const saveFood = async () => {
-        // console.log("Claimed Food: ", claimedFood);
-        // console.log("Claimed Meal: ", claimedMeal);
-        // console.log("Patient: ", patient);
-        // console.log("Diet: ", diet);
         if (patient && diet && claimedMeal && claimedFood) {
-            const res = await createFood(patient!._id, diet!._id, claimedMeal, {
-                ...claimedFood
-            })
-            if (res.status == 201) {
+            let res;
+            if (!claimedFood._id) {
+                res = await createFood(patient!._id, diet!._id, claimedMeal, {
+                    ...claimedFood
+                })
+            } else {
+                res = await updateFood(patient!._id, diet!._id, claimedMeal, claimedFood._id, { ...claimedFood });
+            }
+            if (res.status == 201 || res.status == 200) {
+                showPopUp(
+                    new PopUp()
+                        .title("Alimento salvo")
+                        .width("250px")
+                        .okButton()
+                        .build()
+                )
                 await fetchPatient();
-                display.setUpdatedFood(true);
+                return true;
             }
         }
+        showPopUp(
+            new PopUp()
+                .title("Houve um erro ao salvar o alimento")
+                .width("250px")
+                .okButton()
+                .build()
+        )
+        return false;
     }
 
     const { showPopUp } = usePopUpGlobal()
@@ -139,6 +155,7 @@ export function DietProvider({ children, initialDiet = null }: DietProviderProps
                         okButton: true
                     }
                 })
+                display.signalUpdate();
             }
         }
 

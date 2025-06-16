@@ -15,6 +15,7 @@ export interface Food {
     aliment?: Aliment | null | any
     quantity: number | any
     unit: 'g' | any
+    observation?: string
 }
 
 export interface Meal {

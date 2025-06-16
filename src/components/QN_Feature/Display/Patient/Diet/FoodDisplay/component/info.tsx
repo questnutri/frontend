@@ -2,13 +2,19 @@
 import QN_Input from "@/components/QN_Components/QN_Input"
 import { useFood } from "../context"
 import QN_DropDown from "@/components/QN_Components/QN_DropDown"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Food } from "@/utils/interfaces/Diet.interfaces"
 
-export default function FoodDisplay_Info() {
+export default function FoodDisplay_Info({ foodPassed }: { foodPassed?: Food }) {
     const { food, isFoodEditable } = useFood()
 
     const [selectedUnit, setSelectedUnit] = useState("grams")
-    const [quantity, setQuantity] = useState(food?.quantity)
+    const [quantity, setQuantity] = useState(foodPassed?.quantity)
+
+    useEffect(() => {
+        setQuantity(foodPassed?.quantity);
+    }, [foodPassed])
+
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0px', marginRight: isFoodEditable ? '40px' : '' }}>

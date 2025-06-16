@@ -12,6 +12,9 @@ type DietDisplayContextualizer = {
     isFoodCreationOpen: boolean,
     setOpenFoodCreation: React.Dispatch<React.SetStateAction<boolean>>
     closeFoodCreation: () => void,
+    signalUpdate: () => void
+    isUpdated: boolean
+    openFoodEditor: () => void,
 }
 
 export const DietDisplayContextualizerContext = createContext<DietDisplayContextualizer | undefined>(undefined)
@@ -44,6 +47,22 @@ export function DietDisplayContextualizer({ children }: { children: ReactNode })
         setOpenFoodCreation(false);
     }
 
+    const openFoodEditor = () => {
+        setOpenFoodCreation(!isFoodCreationOpen);
+        console.log("Opened food editor!");
+    }
+
+    const [isUpdated, setUpdated] = useState(false);
+    const signalUpdate = () => {
+        setUpdated(true);
+    }
+
+    useEffect(() => {
+        if (isUpdated) {
+            setUpdated(false);
+        }
+    }, [isUpdated])
+
     return (
         <DietDisplayContextualizerContext.Provider
             value={{
@@ -56,6 +75,9 @@ export function DietDisplayContextualizer({ children }: { children: ReactNode })
                 isFoodCreationOpen,
                 setOpenFoodCreation,
                 closeFoodCreation,
+                signalUpdate,
+                isUpdated,
+                openFoodEditor
             }}
         >
             <DietProvider>

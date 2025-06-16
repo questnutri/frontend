@@ -143,16 +143,6 @@ export function MealContextProvider({ refDay, mealIndex, children }: { refDay: n
             meal.foods!.push({})
             setFoods([...foods, {_id: '1', quantity: 1, unit: "g"}])
         }
-        // const res = await createFood(patient!._id, diet!._id, meal!._id, {
-        //     aliment: null,
-        //     quantity: 0,
-        //     unit: 'gramas',
-        //     obs: ''
-        // })
-        // if (res.status == 201) {
-        //     await fetchPatient()
-        // }
-
     }
 
     const denyMealChanges = (afterAction?: () => void): void => {

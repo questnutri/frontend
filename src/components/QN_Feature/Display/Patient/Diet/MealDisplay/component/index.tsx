@@ -14,6 +14,10 @@ import QN_ConditionalRender from "@/components/QN_Components/QN_ConditionalRende
 
 import { useDiet as useDiet2 } from "@/context/diet/refactoredDietContextProvider"
 import { useDietDisplayContext } from "@/context/diet/diet.displayContextualizer"
+import { QN_PopUp } from "@/components/QN_Components/QN_PopUp"
+
+import AlimentDisplay from "../../AlimentDisplay"
+
 
 export default function MealDisplay_Component({ day }: { day: number }) {
     const { patient } = useNutritionistPatient()
@@ -21,6 +25,8 @@ export default function MealDisplay_Component({ day }: { day: number }) {
     const { meal, refDay, foods, handleFoodCreation } = useMeal()
     const { expandedDay, toggleExpandedDay } = useDietDisplay()
     const { isOpened, setIsOpened, setIsEditable, toggleOpened } = useMealDisplay()
+
+    const [isAlimentPopUpOpen, setIsAlimentPopUpOpen] = useState(false);
 
     useEffect(() => {
         if (expandedDay == null) {
@@ -31,10 +37,9 @@ export default function MealDisplay_Component({ day }: { day: number }) {
 
     const [renderedContent, setRenderedContent] = useState(<></>);
 
-    const { updatedFood } = useDietDisplayContext();
+    const display = useDietDisplayContext();
     useEffect(() => {
-        console.log("Tried to update meal display");
-        console.log(updatedFood);
+        console.log("Tried to update meal display");    
         setRenderedContent(
             <>
                 {foods?.map((food, index) => (
@@ -46,14 +51,14 @@ export default function MealDisplay_Component({ day }: { day: number }) {
                     </FoodContextProvider>
                 ))}
             </>)
-    }, [patient, updatedFood])
+    }, [patient, diet, display.isUpdated, foods])
 
 
     const { addFood } = useDiet2();
-    const { setOpenFoodCreation } = useDietDisplayContext();
     const doFoodCreation = () => {
         if (meal) {
             addFood(meal._id);
+            setIsAlimentPopUpOpen(true);
         }
     }
 
@@ -135,6 +140,25 @@ export default function MealDisplay_Component({ day }: { day: number }) {
                     />
                 </div>
             )}
+            <QN_PopUp
+                isPopUpOpen={isAlimentPopUpOpen}
+                setPopUpOpen={setIsAlimentPopUpOpen}
+                styleConfig={{
+                    windowConfig: {
+                        width: '80%',
+                        height: '90%',
+                        padding: '0px'
+                    },
+                    bodyConfig: {
+                        content: (
+                            <AlimentDisplay isOpen={isAlimentPopUpOpen} setIsOpen={setIsAlimentPopUpOpen} />
+                        ),
+                    },
+                    titleConfig: {
+                        marginBottom: '0px'
+                    }
+                }}
+            />
         </div>
     )
 }
